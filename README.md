@@ -6,14 +6,14 @@ JERUSALEM is the name of the new routing engine used in GPS-Sport.net RoutePlann
 
 Facts:
 
-* supports 6 routing modes: by foot, bike, mountain bike, racing bike, car (fastest), car (shortest)
-* supports routing on the entire planet (whereever OpenStreetMap  has data)
-* uses up-to-date planet file from <http://www.OpenStreetMap.org>
-* will be open source when the source code is ready for publication (maybe in 2-4 months)
-* currently used for GPS-Sport.net RoutePlanner and will also be used in Run.GPS in the future
+* Supports 6 routing modes: by foot, bike, mountain bike, racing bike, car (fastest), car (shortest)
+* Supports routing on the entire planet (whereever OpenStreetMap  has data) (and is fast enough to handle the entire planet even on a slow computer)
+* Uses up-to-date planet file from <http://www.OpenStreetMap.org>
 * 100% Java
 
-Live demo on Run.GPS Routeplanner: <http://rp.gps-sport.net>
+**TRY IT OUT IN ACTION** on Run.GPS Routeplanner: <http://rp.gps-sport.net>
+
+(you need to create a free account on www.gps-sport.net first)
 
 ##Minimum Requirements
 
