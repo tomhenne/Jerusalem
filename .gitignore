@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -12,7 +11,8 @@
 hs_err_pid*
 
 /bin/*
-/etc/*
+/etc/backup/*
+/etc/jerusalem_production/*
 /jerusalemData/*
 /lib/*
 /osmData/*
