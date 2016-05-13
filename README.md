@@ -8,7 +8,7 @@ Facts:
 
 * supports 6 routing modes: by foot, bike, mountain bike, racing bike, car (fastest), car (shortest)
 * supports routing on the entire planet (whereever OpenStreetMap  has data)
-* uses up-to-date planet file from [http://www.OpenStreetMap.org]
+* uses up-to-date planet file from <http://www.OpenStreetMap.org>
 * will be open source when the source code is ready for publication (maybe in 2-4 months)
 * currently used for GPS-Sport.net RoutePlanner and will also be used in Run.GPS in the future
 * 100% Java
@@ -40,7 +40,6 @@ Rebuild the planet or a subset. Input file is a bzipped osm file (e.g. "planet.o
 
 ```
 java -jar Jerusalem.jar rebuild <source-filepah>|- 
-<highest-node-id-in-Open-Street-Map>
 ```
 
 ###Clean
