@@ -1,5 +1,3 @@
-package de.esymetric.jerusalem.main.tests;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.RandomAccessFile;
@@ -449,6 +447,7 @@ public class JerusalemTests extends TestCase {
 	
 	public void testTransitionsOptimizer() throws Exception {
 		String dataDirectoryPath = "testData";
+		new File(dataDirectoryPath).mkdirs();
 		
 		TransitionsOptimizer to = new TransitionsOptimizer(dataDirectoryPath);
 		to.optimize(new Date());
