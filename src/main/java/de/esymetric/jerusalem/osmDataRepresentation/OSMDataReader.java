@@ -10,9 +10,10 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import nanoxml.XMLElement;
-import nanoxml.XMLParseException;
 import de.esymetric.jerusalem.utils.Utils;
+import nanoxml.XMLElement;
+
+import javax.management.modelmbean.XMLParseException;
 
 public class OSMDataReader {
 
@@ -118,9 +119,9 @@ public class OSMDataReader {
 			way.nodes = new ArrayList<Long>();
 			way.tags = new HashMap<String, String>();
 
-			Iterator<XMLElement> enumeration = xmlNode.getChildrenIterator();
-			while (enumeration.hasNext()) {
-				XMLElement child = enumeration.next();
+			Enumeration enumeration = xmlNode.enumerateChildren();
+			while (enumeration.hasMoreElements()) {
+				XMLElement child = (XMLElement) enumeration.nextElement();
 				if ("nd".equals(child.getName()))
 					way.nodes.add(Long.parseLong(child.getAttribute("ref")
 							.toString()));
@@ -134,7 +135,7 @@ public class OSMDataReader {
 
 			way.nodes.trimToSize();
 			listener.foundWay(way);
-		} catch (XMLParseException e) {
+		} catch (Exception e) {
 			System.out.println("XML Parse Error on: " + content);
 			e.printStackTrace();
 		}
@@ -154,7 +155,7 @@ public class OSMDataReader {
 
 			listener.foundNode(node);
 
-		} catch (XMLParseException e) {
+		} catch (Exception e) {
 			System.out.println("XML Parse Error on: " + content);
 			e.printStackTrace();
 		}

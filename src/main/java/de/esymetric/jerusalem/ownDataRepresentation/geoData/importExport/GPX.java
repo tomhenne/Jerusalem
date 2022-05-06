@@ -13,8 +13,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Vector;
 
-import nanoxml.XMLElement;
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position;
+import net.n3.nanoxml.XMLElement;
 
 public class GPX {
 	public final static String SUFFIX = ".gpx";
@@ -113,7 +113,7 @@ public class GPX {
 	public String Save(String filePath) {
 
 		// erzeugt man zuerst das komplette XML, so kommt es zum
-		// Speicherüberlauf
+		// Speicherï¿½berlauf
 
 		FileWriter fw = null;
 		try {
@@ -336,12 +336,12 @@ public class GPX {
 			XMLElement metadataNode = ixr.readElement("metadata", 5000);
 			if (metadataNode != null) {
 
-				XMLElement nameNode = metadataNode
-						.getChildByPath("metadata/name");
+				XMLElement nameNode =
+						XmlUtil.getChildByPath(metadataNode, "metadata/name");
 				if (nameNode != null)
 					name = nameNode.getContent();
-				XMLElement descNode = metadataNode
-						.getChildByPath("metadata/desc");
+				XMLElement descNode = XmlUtil
+						.getChildByPath(metadataNode, "metadata/desc");
 				if (descNode != null)
 					description = descNode.getContent();
 			}
@@ -365,11 +365,11 @@ public class GPX {
 				p.latitude = String2DoubleEN((String) n.getAttribute("lat"));
 				p.longitude = String2DoubleEN((String) n.getAttribute("lon"));
 
-				XMLElement eleS = n.getChild("ele");
+				XMLElement eleS = XmlUtil.getChild(n, "ele");
 				if (eleS != null)
 					p.altitude = String2DoubleEN(eleS.getContent());
 
-				XMLElement timestampS = n.getChild("time");
+				XMLElement timestampS = XmlUtil.getChild(n, "time");
 				if (timestampS != null) {
 					try {
 						Date timestamp = df.parse(timestampS.getContent());

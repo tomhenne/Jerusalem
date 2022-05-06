@@ -1,9 +1,9 @@
 package de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport;
 
+import net.n3.nanoxml.XMLElement;
+
 import java.io.IOException;
 import java.io.LineNumberReader;
-
-import nanoxml.XMLElement;
 
 public class IncrementalXMLParser {
 
@@ -38,7 +38,8 @@ public class IncrementalXMLParser {
 		
 		String content = buffer.substring(p1, p3 + 1);
 		XMLElement r = new XMLElement();
-		r.parseString(content);
+		r.createElement(content); // TODO don't know if this parses
+		// TODO check r.parseString(content);
 		buffer.delete(0, p3 + 1);
 		return r;
 	}
