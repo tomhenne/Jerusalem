@@ -7,8 +7,8 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Vector;
 
+import nanoxml.XMLElement;
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position;
-import net.n3.nanoxml.XMLElement;
 
 public class KML {
 	public static final String SUFFIX = ".kml";
@@ -151,20 +151,20 @@ public class KML {
 		 * xnm.addNamespace("k", nameSpace);
 		 */
 
-		XMLElement nameNode = XmlUtil.getChildByPath(doc, "Document/Placemark/name");
+		XMLElement nameNode = doc.getChildByPath("Document/Placemark/name");
 		if (nameNode != null)
 			name = nameNode.getContent();
-		XMLElement descNode = XmlUtil
-				.getChildByPath(doc, "Document/Placemark/description");
+		XMLElement descNode = doc
+				.getChildByPath("Document/Placemark/description");
 		if (descNode != null)
 			description = descNode.getContent();
 
 		if (loadFully) {
-			XMLElement coordNode = XmlUtil
-					.getChildByPath(doc, "Document/Placemark/LineString/coordinates");
+			XMLElement coordNode = doc
+					.getChildByPath("Document/Placemark/LineString/coordinates");
 			if (coordNode == null)
-				coordNode = XmlUtil
-						.getChildByPath(doc, "Document/Placemark/MultiGeometry/LineString/coordinates");
+				coordNode = doc
+						.getChildByPath("Document/Placemark/MultiGeometry/LineString/coordinates");
 
 			if (coordNode != null) {
 
@@ -226,8 +226,7 @@ public class KML {
 		FileWriter fw;
 		try {
 			fw = new FileWriter(filePath);
-			//CreateXmlDocument().write(fw);
-			fw.write(CreateXmlDocument().toString());
+			CreateXmlDocument().write(fw);
 			/*
 			String t = CreateXmlDocument().toString();
 			t = t.replace("<Placemark>", "	<Style id=\"trackStyle\">		<LineStyle color=\"d38b3a1b\" width=\"4\">			<color>ff0000ff</color>			<width>5</width>		</LineStyle>" +
