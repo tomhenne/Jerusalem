@@ -285,7 +285,6 @@ public class JerusalemTests extends TestCase {
 	public void testRebuildAndRouting() throws Exception {
 		String dataDirectoryPath = "testData";
 		new File(dataDirectoryPath).mkdirs();
-		//String tempDirectoryPath = "/Users/tomhenne/tempData";
 		String tempDirectoryPath = "tempData";
 		new File(tempDirectoryPath).mkdirs();
 
@@ -371,25 +370,7 @@ public class JerusalemTests extends TestCase {
 
 		nlf.close();
 	}
-	
-	public void testRouting() throws Exception {
-		String dataDirectoryPath = "testData";
 
-		Router router = new Router(dataDirectoryPath,
-				new TomsAStarStarRouting(), new TomsRoutingHeuristics(), 120);
-		Router.setDebugMode(true);
-		makeRoute(router, 48.107891, 11.461865, 48.099986, 11.511051,
-				"durch-waldfriedhof", dataDirectoryPath);
-
-		makeRoute(router, 48.107608, 11.461648, 48.108656, 11.477371,
-				"grosshadern-fussweg", dataDirectoryPath);
-
-		makeRoute(router, 48.116892, 11.487076,    48.117909, 11.472429, 
-				"eichenstrasse", dataDirectoryPath);
-
-	}
-
-	
 	public void testRebuildOnlyWays() throws Exception {
 		String dataDirectoryPath = "testData";
 		String tempDirectoryPath = "tempData";
@@ -436,6 +417,12 @@ public class JerusalemTests extends TestCase {
 
 		makeRoute(router, 48.107608, 11.461648, 48.108656, 11.477371,
 				"grosshadern-fussweg", dataDirectoryPath);
+
+		makeRoute(router, 48.107608, 11.461648, 48.108656, 11.477371,
+				"grosshadern-fussweg", dataDirectoryPath);
+
+		makeRoute(router, 48.116892, 11.487076,    48.117909, 11.472429,
+				"eichenstrasse", dataDirectoryPath);
 
 		/*
 		makeRoute(router, 48.125166, 11.451445, 48.103516, 11.501441,
