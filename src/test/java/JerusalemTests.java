@@ -284,12 +284,14 @@ public class JerusalemTests extends TestCase {
 	
 	public void testRebuildAndRouting() throws Exception {
 		String dataDirectoryPath = "testData";
+		new File(dataDirectoryPath).mkdirs();
 		//String tempDirectoryPath = "/Users/tomhenne/tempData";
 		String tempDirectoryPath = "tempData";
+		new File(tempDirectoryPath).mkdirs();
 
 		Rebuilder rebuilder = new Rebuilder(dataDirectoryPath, tempDirectoryPath, 
 				new TomsRoutingHeuristics(), false, false, false);
-		FileInputStream fis = new FileInputStream("osmData/hadern.osm.bz2");
+		FileInputStream fis = new FileInputStream("osmData/munich.osm.bz2");
 		CBZip2InputStream bzis = new CBZip2InputStream(fis);
 		OSMDataReader reader = new OSMDataReader(bzis, rebuilder, false);
 		reader.read(new Date());
