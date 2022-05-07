@@ -368,7 +368,7 @@ public class Jerusalem {
 		System.out
 				.println("java -jar Jerusalem.jar rebuildTransitions <temp-filepath>");
 		System.out.println("java -jar Jerusalem.jar optimize");
-		System.out.println("java -jar Jerusalem.jar clean <temp-filepath>");
+		System.out.println("java -jar	 Jerusalem.jar clean <temp-filepath>");
 		System.out.println("java -jar Jerusalem.jar routingTest");
 		System.out.println("java -jar Jerusalem.jar findCrossroads foot|bike|racingBike|mountainBike|car|carShortest");
 		System.out.println("java -jar Jerusalem.jar findCrossroadsTest foot|bike|racingBike|mountainBike|car|carShortest");
