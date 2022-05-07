@@ -291,7 +291,7 @@ public class JerusalemTests extends TestCase {
 
 		Rebuilder rebuilder = new Rebuilder(dataDirectoryPath, tempDirectoryPath, 
 				new TomsRoutingHeuristics(), false, false, false);
-		FileInputStream fis = new FileInputStream("osmData/munich.osm.bz2");
+		FileInputStream fis = new FileInputStream("osmData/hadern2.osm.bz2");
 		CBZip2InputStream bzis = new CBZip2InputStream(fis);
 		OSMDataReader reader = new OSMDataReader(bzis, rebuilder, false);
 		reader.read(new Date());
@@ -398,7 +398,7 @@ public class JerusalemTests extends TestCase {
 
 		Rebuilder rebuilder = new Rebuilder(dataDirectoryPath,tempDirectoryPath, 
 				new TomsRoutingHeuristics(), false, false, false);
-		FileInputStream fis = new FileInputStream("osmData/hadern.osm.bz2");
+		FileInputStream fis = new FileInputStream("osmData/hadern2.osm.bz2");
 		CBZip2InputStream bzis = new CBZip2InputStream(fis);
 		OSMDataReader reader = new OSMDataReader(bzis, rebuilder, false);
 		reader.read(new Date());
@@ -417,7 +417,7 @@ public class JerusalemTests extends TestCase {
 
 		rebuilder = new Rebuilder(dataDirectoryPath, tempDirectoryPath,
 				new TomsRoutingHeuristics(), true, true, false);
-		fis = new FileInputStream("osmData/hadern.osm.bz2");
+		fis = new FileInputStream("osmData/hadern2.osm.bz2");
 		bzis = new CBZip2InputStream(fis);
 		reader = new OSMDataReader(bzis, rebuilder, true);
 		reader.read(new Date());

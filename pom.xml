@@ -21,11 +21,11 @@
             <scope>runtime</scope>
         </dependency-->
 
-        <dependency>
+        <!--dependency>
             <groupId>org.apache.ant</groupId>
             <artifactId>ant</artifactId>
             <version>1.10.12</version>
-        </dependency>
+        </dependency-->
 
         <dependency>
             <groupId>junit</groupId>
