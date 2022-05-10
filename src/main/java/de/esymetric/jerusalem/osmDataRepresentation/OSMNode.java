@@ -7,7 +7,6 @@ public class OSMNode {
 	public double lat;
 	public double lng;
 	public int ownID;
-	public int foundID;
 
 	private short latLonDirKey;
 	

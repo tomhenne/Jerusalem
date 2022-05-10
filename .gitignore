@@ -20,3 +20,7 @@ hs_err_pid*
 /unused-src/*
 
 
+etc/production
+target
+testData
+.idea

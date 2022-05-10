@@ -10,9 +10,7 @@ public class OSMWay {
 	public ArrayList<Long> nodes;  // osm ids of nodes
 	public Map<String, String> tags;
 	public int wayCostIDForward, wayCostIDBackward;
-	//public List<Node> wayNodes;
-	
-	
+
 	private short latLonDirKey;
 
 	public short getLatLonDirID(MemoryArrayOsmNodeID2OwnIDMap osmID2ownIDMap) {  // int to short 25.03.13

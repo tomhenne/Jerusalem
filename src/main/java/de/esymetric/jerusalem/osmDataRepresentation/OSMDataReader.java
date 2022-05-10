@@ -19,11 +19,9 @@ public class OSMDataReader {
 	long entityCount;
 
 	public interface OSMDataReaderListener {
-		public void foundNode(OSMNode node);
+		 void foundNode(OSMNode node);
 
-		public void foundWay(OSMWay way);
-
-		public void foundRelation(OSMRelation relation);
+		 void foundWay(OSMWay way);
 	}
 
 	InputStream inputStream;

@@ -16,12 +16,11 @@ public class LongOsmNodeID2OwnIDMapFile implements LongOsmNodeID2OwnIDMap {
 	public final static int NUMBER_OF_ENTRIES_PER_FILE = 50000000;  // 50 Mio Speicherbedarf 200 MB
 	public final static int FILE_SIZE = NUMBER_OF_ENTRIES_PER_FILE * 4;
 
-	// RandomAccessFile currentFile = null;
 	int currentFileNumber = -1;
 	String currentFilePath = null;
 	boolean currentFileIsModified = false;
 
-	int entries[] = new int[NUMBER_OF_ENTRIES_PER_FILE];
+	int[] entries = new int[NUMBER_OF_ENTRIES_PER_FILE];
 	ByteBuffer buf;
 	
 	String dataDirectoryPath;
