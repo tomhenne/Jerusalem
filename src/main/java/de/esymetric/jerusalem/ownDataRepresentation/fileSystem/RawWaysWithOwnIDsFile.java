@@ -90,7 +90,7 @@ public class RawWaysWithOwnIDsFile {
 					break;
 
 				short latLonDirKey = dain.readShort();
-				
+
 				node.loadByID(new LatLonDir(latLonDirKey), nlf);
 				nodes.add(node);
 			}
@@ -185,7 +185,7 @@ public class RawWaysWithOwnIDsFile {
 		nlf.setMaxFileCacheSize(8);
 		// ein Weg kann Nodes aus mehreren benachbarten Sektoren enthalten
 		// daher m�ssen diese auch gebuffert werden
-		
+
 		File[] files = new File(dataDirectoryPath).listFiles();
 		Arrays.sort(files);
 		for (File f : files)
@@ -246,7 +246,7 @@ public class RawWaysWithOwnIDsFile {
 		System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
 				- startTime.getTime())
 				+ " deleting rawWays.data files");
-		
+
 		File[] files = new File(dataDirectoryPath).listFiles();
 		Arrays.sort(files);
 		for (File f : files)
@@ -271,7 +271,7 @@ public class RawWaysWithOwnIDsFile {
 
 	}
 
-	
+
 	private void insertTransitions(OSMWay way, List<Node> wayNodes, PartitionedNodeListFile nlf, PartitionedTransitionListFile wlf, RoutingHeuristics routingHeuristics,
 			LatLonDir lld) {
 
@@ -281,14 +281,14 @@ public class RawWaysWithOwnIDsFile {
 
 			short latLonDirKey = lld.getShortKey();
 			if (way.wayCostIDForward != -1) {
-				
+
 						nodeA.addTransition(nodeB, nlf, wlf, way.wayCostIDForward,
 								latLonDirKey,
 								routingHeuristics, false);
 
 			}
 			if (way.wayCostIDBackward != -1) {
-				
+
 				nodeB.addTransition(nodeA, nlf, wlf, way.wayCostIDBackward,
 						latLonDirKey,
 						routingHeuristics, true);
@@ -298,6 +298,6 @@ public class RawWaysWithOwnIDsFile {
 		wayNodes.clear();
 	}
 
-	
-	
+
+
 }

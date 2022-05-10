@@ -85,7 +85,7 @@ public class Router {
 		List<Node> masterNodesB = nodeB.findConnectedMasterNodes(nlf, wlf);
 		//nodeB = masterNodesB.get(0);
 
-		List<Node> route = routingAlgorithm.getRoute(nodeA, nodeB, type, 
+		List<Node> route = routingAlgorithm.getRoute(nodeA, nodeB, type,
 				nlf, wlf, wcf, heuristics, masterNodesB, maxExecutionTimeS,
 				true  // use optimized routing?
 				);

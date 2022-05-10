@@ -94,16 +94,16 @@ public class TomsRoutingHeuristics implements RoutingHeuristics {
 			if (!isOriginalDirection && hasTag(tags, "oneway", "yes"))
 				return BLOCKED_WAY_COST;
 
-			// check if road is not allowed for bikes, see 
+			// check if road is not allowed for bikes, see
 			// http://wiki.openstreetmap.org/wiki/Bicycle and
 			// http://www.gps-sport.net/forums/thread/2546-0/Routenplaner-Punkte-einf%FCgen-f%FChrt-oft-zu-verwirrenden-Ergebnissen
 			// 24.05.2013
-			
+
 			if( tags.containsKey("bicycle") ) {
 				String bicycle = tags.get("bicycle");
 				if( "no".equals(bicycle) ) return BLOCKED_WAY_COST;
 			}
-			
+
 			// highway types
 
 			if (!highwayTypesForCyclingMap.contains(highwayType)
@@ -132,16 +132,16 @@ public class TomsRoutingHeuristics implements RoutingHeuristics {
 					return BLOCKED_WAY_COST;
 			}
 
-			// check if road is not allowed for bikes, see 
+			// check if road is not allowed for bikes, see
 			// http://wiki.openstreetmap.org/wiki/Bicycle and
 			// http://www.gps-sport.net/forums/thread/2546-0/Routenplaner-Punkte-einf%FCgen-f%FChrt-oft-zu-verwirrenden-Ergebnissen
 			// 24.05.2013
-			
+
 			if( tags.containsKey("bicycle") ) {
 				String bicycle = tags.get("bicycle");
 				if( "no".equals(bicycle) ) return BLOCKED_WAY_COST;
 			}
-			
+
 			// highway types
 
 			if (!highwayTypesForRacingBikeMap.contains(highwayType)

@@ -7,7 +7,7 @@ public class Utils {
 		+ (Runtime.getRuntime().totalMemory() / 1024L / 1024L)
 		+ " MB ";
 	}
-	
+
 	static String D02(int d) {
 		return d < 10 ? "0" + d : String.valueOf(d);
 	}

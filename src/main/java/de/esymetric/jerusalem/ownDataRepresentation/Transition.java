@@ -15,9 +15,9 @@ public class Transition {
 	public double costCar;
 	public double costCarShortest;
 	public double distanceM;
-	
+
 	public double  getCost(RoutingType type) {
-		double transitionCost = 0.0; 
+		double transitionCost = 0.0;
 		switch(type) {
 		case foot:
 			transitionCost = costFoot;
@@ -39,10 +39,10 @@ public class Transition {
 			break;
 		}
 		if( transitionCost == RoutingHeuristics.BLOCKED_WAY_COST ) return transitionCost;
-		
+
 		return transitionCost * distanceM / 1000.0;
 	}
-	
+
 	public boolean isAllBlocked() {
 		return
 		costFoot == RoutingHeuristics.BLOCKED_WAY_COST &&

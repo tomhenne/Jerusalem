@@ -6,7 +6,7 @@ import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
 import de.esymetric.jerusalem.routing.NearestNodeFinder
 import de.esymetric.jerusalem.routing.RoutingType
 
-class CrossroadsFinder(dataDirectoryPath: String?) {
+class CrossroadsFinder(dataDirectoryPath: String) {
     val MAX_DISTANCE_TO_NODE = 10.0
     var nrf: NearestNodeFinder
     var nif: NodeIndexFile

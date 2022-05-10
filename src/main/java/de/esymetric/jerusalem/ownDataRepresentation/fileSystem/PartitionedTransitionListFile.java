@@ -31,7 +31,7 @@ public class PartitionedTransitionListFile {
 		if (readOnly)
 			rafCache.setMaxCacheSize(30);
 	}
-	
+
 	public void setMaxFileCacheSize(int s) { rafCache.setMaxCacheSize(s); }
 
 	void checkAndCreateRandomAccessFile(double lat, double lng) {
@@ -100,13 +100,13 @@ public class PartitionedTransitionListFile {
 				return null;
 			Transition t = new Transition();
 			t.id = transitionID;
-			
+
 			int targetNodeID = raf.readInt();
 			int offsetBits = targetNodeID & 0xF;
 			targetNodeID = targetNodeID >> 4;
 			t.targetNode = nlf.getNode(new LatLonDir(sourceNode.lat,
 					sourceNode.lng, offsetBits), targetNodeID);
-			
+
 			if (t.targetNode == null) {
 				// DEBUG
 
@@ -125,7 +125,7 @@ public class PartitionedTransitionListFile {
 				t.origTargetNode = nlf.getNode(new LatLonDir(sourceNode.lat,
 						sourceNode.lng, offsetBits), origTargetNodeID);
 			}
-			
+
 			t.nextTransitionID = raf.readInt();
 			int wayCostID = raf.readInt();
 			short wayCostLatLonDirKey = raf.readShort();
@@ -183,7 +183,7 @@ public class PartitionedTransitionListFile {
 			raf.writeFloat((float) t.distanceM);
 
 			return true;
-		} catch (IOException e) {  
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}

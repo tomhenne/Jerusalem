@@ -24,72 +24,72 @@ public class BufferedRandomAccessFile  {
 	int size;
 	String filePath;
 	boolean isChanged = false;
-	
+
 	private static int readCount, writeCount;
-	
+
 	private static long readFileSize, writtenFileSize;
-	
+
 	private static int openFileCount;
-	
+
 	private static long openFileSize;
 
 	public static String getShortInfoAndResetCounters() {
-		return 
-				"r#" + getAndResetReadCount() + 
-				"/rfs" + (getAndResetReadFileSize() / 1024L / 1024L) + "mb" + 
-				"/w#" + getAndResetWriteCount() + 
-				"/wfs" + (getAndResetWrittenFileSize() / 1024L / 1024L) + "mb" + 
-				"/op#" + getOpenFileCount() + 
+		return
+				"r#" + getAndResetReadCount() +
+				"/rfs" + (getAndResetReadFileSize() / 1024L / 1024L) + "mb" +
+				"/w#" + getAndResetWriteCount() +
+				"/wfs" + (getAndResetWrittenFileSize() / 1024L / 1024L) + "mb" +
+				"/op#" + getOpenFileCount() +
 				"/fs" + (getOpenFileSize() / 1024L / 1024L) + "mb";
 	}
-	
+
 	public static int getOpenFileCount() {
 		return openFileCount;
 	}
-	
+
 	public static long getOpenFileSize() {
 		return openFileSize;
 	}
-	
+
 	public static int getAndResetReadCount() {
 		int c = readCount;
 		readCount = 0;
 		return c;
 	}
-	
+
 	public static long getAndResetReadFileSize() {
 		long c = readFileSize;
 		readFileSize = 0;
 		return c;
 	}
-	
+
 	public static int getAndResetWriteCount() {
 		int c = writeCount;
 		writeCount = 0;
 		return c;
 	}
-	
+
 	public static long getAndResetWrittenFileSize() {
 		long c = writtenFileSize;
 		writtenFileSize = 0;
 		return c;
 	}
-	
+
 	public void open(String filePath, String mode) throws FileNotFoundException {
-		
+
 		if( this.filePath != null ) {
-			
+
 			if( buf != null && this.filePath.equals(filePath) ) return;
-			
+
 			try {
 				close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		this.filePath = filePath;
-		
+
 		index = 0;
 		size = 0;
 
@@ -101,11 +101,11 @@ public class BufferedRandomAccessFile  {
 				buf = new byte[newBufSize];
 				openFileSize += newBufSize;
 			}
-			
+
 			if( !readFromFile(buf, filePath)) {
 				System.out.println("ERROR cannot read from file " + filePath);
 			}
-			
+
 		}
 		else {
 			if( buf == null || buf.length < INITIAL_SIZE) {
@@ -114,20 +114,20 @@ public class BufferedRandomAccessFile  {
 				buf = new byte[INITIAL_SIZE];
 			}
 		}
-		
+
 		openFileCount++;
 	}
 
 	public int getSize() {
 		return size;
 	}
-	
+
 	public void close() throws IOException {
-		
+
 		if( isChanged )
-			if( !writeToFile(buf, size, filePath) ) 
+			if( !writeToFile(buf, size, filePath) )
 				System.out.println("ERROR cannot write to file " + filePath);
-		
+
 		isChanged = false;
 		filePath = null;
 		if( buf != null ) {
@@ -136,10 +136,10 @@ public class BufferedRandomAccessFile  {
 			openFileCount--;
 		}
 	}
-	
+
 	private static boolean readFromFile(byte [] data, String filePath) {
 		if( data == null ) return false;
-		
+
 		FileInputStream in = null;
 		try {
 			in = new FileInputStream(filePath);
@@ -157,16 +157,16 @@ public class BufferedRandomAccessFile  {
 		}
 		return true;
 	}
-	
-	
+
+
 	private static boolean writeToFile(byte [] data, int size, String filePath) {
 		if( data == null ) return false;
-		
+
 			ByteBuffer buf = ByteBuffer.wrap(data, 0, size);
-			
+
 			buf.rewind();
-			
-			 
+
+
 			FileOutputStream out = null;
 			try {
 				out = new FileOutputStream(filePath);
@@ -174,7 +174,7 @@ public class BufferedRandomAccessFile  {
 				file.write(buf);
 				file.close();
 				//System.out.print('%');
-				writeCount++; 
+				writeCount++;
 				writtenFileSize += size;
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -209,11 +209,11 @@ public class BufferedRandomAccessFile  {
 		if( index > buf.length - 2 ) {
 			System.out.println("Out of bounds!!");
 		}
-		
+
 		if( index > size - 2 ) {
 			System.out.println("Out of bounds also!!");
 		}
-		
+
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(buf,
 				index, 2));
 		short r = dis.readShort();
@@ -226,11 +226,11 @@ public class BufferedRandomAccessFile  {
 		if( index > buf.length - 4 ) {
 			System.out.println("Out of bounds!!");
 		}
-		
+
 		if( index > size - 4 ) {
 			System.out.println("Out of bounds also!!");
 		}
-		
+
 		DataInputStream dis = new DataInputStream(new ByteArrayInputStream(buf,
 				index, 4));
 		int r = dis.readInt();
@@ -259,18 +259,18 @@ public class BufferedRandomAccessFile  {
 
 	public void read(byte[] buffer) throws IOException {
 		// not tested
-		
+
 		System.arraycopy(buf, index, buffer, 0, buffer.length);
 		index += buffer.length;
 	}
 
 	public boolean seek(int i) {
-		if( i < 0 ) 
+		if( i < 0 )
 			System.out.println("negative seek");
-		
+
 		index = i;
-		
-		return i < size;  // not eof  
+
+		return i < size;  // not eof
 	}
 
 	public boolean seek(long i) {
@@ -319,7 +319,7 @@ public class BufferedRandomAccessFile  {
 		index += byteBuf.length;
 		isChanged = true;
 	}
-	
+
 	void increaseBuffer(int nBytes) {
 		int d = buf.length - index; // example: size = 10 index = 10 >> d = 0
 		int increment = nBytes - d; // example: nBytes = 4 >> increment = 4
@@ -336,14 +336,14 @@ public class BufferedRandomAccessFile  {
 
 		d = size - index; // example: size = 10 index = 10 >> d = 0
 		increment = nBytes - d; // example: nBytes = 4 >> increment = 4
-		if (increment > 0) 
+		if (increment > 0)
 			size += increment;
 	}
-	
+
 	public void skipBytes(int nb) {
 		index += nb;
 	}
-	
+
 	public long length() throws IOException { return size; }
 
 }

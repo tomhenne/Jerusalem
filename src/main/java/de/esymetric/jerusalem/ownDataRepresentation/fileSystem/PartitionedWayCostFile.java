@@ -15,10 +15,10 @@ public class PartitionedWayCostFile {
 	String dataDirectoryPath, filePath;
 	boolean readOnly;
 	LatLonDir currentLatLonDir = new LatLonDir(-1000, -1000);
-	
+
 	BufferedRandomAccessFile raf;
 	BufferedRandomAccessFileCache rafCache = new BufferedRandomAccessFileCache();
-	
+
 	int numberOfWayCosts;
 
 	public PartitionedWayCostFile(String dataDirectoryPath, boolean readOnly) {
@@ -29,7 +29,7 @@ public class PartitionedWayCostFile {
 		else
 			rafCache.setMaxCacheSize(10);
 	}
-	
+
 	void checkAndCreateRandomAccessFile(LatLonDir lld) {
 		//LatLonDir newLatLonDir = new LatLonDir(lat, lng);
 		if (lld.equals(currentLatLonDir))
@@ -52,21 +52,21 @@ public class PartitionedWayCostFile {
 	public void close() {
 		rafCache.close();
 	}
-	
 
-	
-	
+
+
+
 
 	public int insertWay(LatLonDir lld, double costFoot, double costBike,
 			double costRacingBike, double costMountainBike, double costCar,
 			double costCarShortest) {
-		checkAndCreateRandomAccessFile(lld);		
-		
+		checkAndCreateRandomAccessFile(lld);
+
 		try {
 			int id = numberOfWayCosts;
-			
+
 			raf.seek((long)numberOfWayCosts * SENTENCE_LENGTH);
-			
+
 			raf.writeFloat((float) costFoot);
 			raf.writeFloat((float) costBike);
 			raf.writeFloat((float) costRacingBike);
@@ -82,8 +82,8 @@ public class PartitionedWayCostFile {
 	}
 
 	public boolean readTransitionCost(LatLonDir lld, int wayCostID, Transition t) {
-		checkAndCreateRandomAccessFile(lld);		
-		
+		checkAndCreateRandomAccessFile(lld);
+
 		try {
 			raf.seek((long) wayCostID * SENTENCE_LENGTH);
 			t.costFoot = raf.readFloat();
@@ -99,13 +99,13 @@ public class PartitionedWayCostFile {
 		}
 	}
 	public void deleteAllWayCostFiles() {
-		for(File f : new File(dataDirectoryPath).listFiles() ) 
-			if( f.isDirectory() && f.getName().startsWith("lat_")) 
-				for(File g : f.listFiles() ) 
+		for(File f : new File(dataDirectoryPath).listFiles() )
+			if( f.isDirectory() && f.getName().startsWith("lat_"))
+				for(File g : f.listFiles() )
 					if( g.isDirectory() && g.getName().startsWith("lng_"))
-						for(File h : g.listFiles() ) 
+						for(File h : g.listFiles() )
 							if( h.isFile() && h.getName().equals(FILENAME) )
 								h.delete();
-		
-	}	
+
+	}
 }

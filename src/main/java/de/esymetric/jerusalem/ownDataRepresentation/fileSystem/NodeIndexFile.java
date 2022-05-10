@@ -8,7 +8,7 @@ public interface NodeIndexFile {
 		public int latInt;
 		public int lngInt;
 	}
-	
+
 	public int setID(double lat, double lng, int id);
 	public int getID(double lat, double lng);
 	public List<NodeIndexNodeDescriptor> getIDPlusSourroundingIDs(double lat, double lng, int radius);

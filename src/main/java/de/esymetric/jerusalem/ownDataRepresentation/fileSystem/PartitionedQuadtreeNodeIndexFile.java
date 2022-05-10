@@ -30,7 +30,7 @@ public class PartitionedQuadtreeNodeIndexFile implements NodeIndexFile {
 	final static long NODELIST_SENTENCE_LENGTH = 8L; // int nodeID, int next
 	final static int MAX_LAT_INT = 180 * USED_DIGITS_MULT;
 	final static int MAX_LNG_INT = 360 * USED_DIGITS_MULT;
-	
+
 	final static String INDEX_FILENAME = "quadtreeIndex.data";
 	final static String LIST_FILENAME = "quadtreeNodeList.data";
 
@@ -40,7 +40,7 @@ public class PartitionedQuadtreeNodeIndexFile implements NodeIndexFile {
 	String dataDirectoryPath;
 	BufferedRandomAccessFileCache rafIndexCache = new BufferedRandomAccessFileCache();
 	BufferedRandomAccessFileCache rafListCache = new BufferedRandomAccessFileCache();
-	
+
 	boolean readOnly = false;
 	int numberOfSentences = 0;
 	byte[] emptySentence = new byte[40];
@@ -87,7 +87,7 @@ public class PartitionedQuadtreeNodeIndexFile implements NodeIndexFile {
 			boolean readOnly, boolean startNewFile) {
 		this.dataDirectoryPath = dataDirectoryPath;
 		this.readOnly = readOnly;
-		
+
 		if( readOnly ) {
 			rafIndexCache.setMaxCacheSize(8);
 			rafListCache.setMaxCacheSize(8);

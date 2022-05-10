@@ -15,9 +15,9 @@ public class MemoryEfficientLongToIntMap {
 		Entry nextEntry;
 		int keyRemainder; // = key >> HASH_ARRAY_NUMBER_OF_BITS
 		int value;
-	
+
 		long getKey(int hash) {
-			return ((long)keyRemainder << HASH_ARRAY_NUMBER_OF_BITS) | (long)hash;		
+			return ((long)keyRemainder << HASH_ARRAY_NUMBER_OF_BITS) | (long)hash;
 		}
 	}
 
@@ -71,38 +71,38 @@ public class MemoryEfficientLongToIntMap {
 		size = 0;
 	}
 
-	
+
 	public Iterator<Long> keysIterator() {
 		return new Iterator<Long>() {
 
 			int hash = -1;  // == index in entries array
 			Entry entry = null;
 			Entry nextEntry = null;
-			
+
 			private Entry getNextEntry() {
 				Entry foundEntry = null;
-				
+
 				if( entry != null ) {
 					foundEntry = entry.nextEntry;
 				}
-				
+
 				if( foundEntry != null ) return foundEntry;
-				
+
 				while(true) {
 					hash++;
 					if( hash >= entries.length ) return null;
-					
+
 					foundEntry = entries[hash];
 					if( foundEntry != null ) return foundEntry;
 				}
 			}
-			
-			
-			
+
+
+
 			@Override
 			public boolean hasNext() {
 				if( nextEntry != null ) return true;
-				
+
 				nextEntry = getNextEntry();
 				return nextEntry != null;
 			}
@@ -118,10 +118,10 @@ public class MemoryEfficientLongToIntMap {
 			public void remove() {
 				// not supported
 			}
-			
+
 		};
 	}
-	
+
 	public long[] keys() {
 		long[] array = new long[size];
 		int i = 0, h = 0;

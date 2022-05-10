@@ -14,12 +14,12 @@ import de.esymetric.jerusalem.ownDataRepresentation.geoData.GPSMath;
 public class NearestNodeFinder {
 
 	final static int MAX_SEARCH_RADIUS = 5;  // was 3 !!!
-	
+
 	public Node findNearestNode(double lat, double lng, NodeIndexFile nif,
 			PartitionedNodeListFile nlf, PartitionedTransitionListFile wlf, PartitionedWayCostFile wcf, RoutingType type) {
 		for( int radius = 0; radius < MAX_SEARCH_RADIUS; radius++) {
 			Node n = findNearestNode(lat, lng, nif, nlf, wlf, wcf, type, radius);
-			if( n != null ) 
+			if( n != null )
 				return n;
 		}
 		return null;
@@ -56,7 +56,7 @@ public class NearestNodeFinder {
 						}
 					}
 				}
-				
+
 				//BUG!!!! cannot be used use other list
 				/*
 				if (n.nextNodeID != -1)

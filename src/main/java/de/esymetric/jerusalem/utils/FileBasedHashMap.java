@@ -18,15 +18,15 @@ public class FileBasedHashMap {
 
 	boolean isEmpty = false;
 	long fileLength;
-	
+
 	int countGets, countGetReads;
-	
-	public float getAvgGetAccessNumberOfReads() { 
+
+	public float getAvgGetAccessNumberOfReads() {
 		float r = (float)countGetReads / (float)countGets;
 		countGetReads = 0; countGets = 0;
 		return r;
 	}
-	
+
 	public int getAndClearNumberOfFileChanges() {
 		return rafCache.getAndClearNumberOfFileChanges();
 	}
@@ -34,7 +34,7 @@ public class FileBasedHashMap {
 	public void open(String filePath, boolean readOnly) {
 		isEmpty = false;
 		fileLength = 0L;
-		
+
 		if (readOnly && !new File(filePath).exists()) {
 			isEmpty = true;
 			return;
@@ -52,7 +52,7 @@ public class FileBasedHashMap {
 					raf.write(buf);
 				System.out.print("$");
 			}
-			
+
 			fileLength = raf.length();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -62,7 +62,7 @@ public class FileBasedHashMap {
 	public void close() {
 		rafCache.close();
 	}
-	
+
 	public void put(int key, int value) {
 
 		try {
@@ -72,24 +72,24 @@ public class FileBasedHashMap {
 			int readKey = raf.readInt();
 			raf.readInt();
 			int readNextIndex = raf.readInt();
-			
+
 			if (readKey == 0) {
 				raf.seek(pos);
 				raf.writeInt(key);
 				raf.writeInt(value);
 			} else {
-				
+
 				int newIndex = (int) (fileLength / (long) SENTENCE_LENGTH);
 				raf.seek(fileLength);
 				raf.writeInt(key);
 				raf.writeInt(value);
-				raf.writeInt(readNextIndex); 
+				raf.writeInt(readNextIndex);
 				fileLength += SENTENCE_LENGTH;
 
 				raf.seek(pos + 8L);
 				raf.writeInt(newIndex);
-				
-				
+
+
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -109,7 +109,7 @@ public class FileBasedHashMap {
 			for (;;countGetReads++) {
 				raf.seek(pos);
 				raf.read(buf);
-				
+
 				ByteArrayInputStream bais = new ByteArrayInputStream(buf);
 				DataInputStream dis = new DataInputStream(bais);
 				int foundKey = dis.readInt();
