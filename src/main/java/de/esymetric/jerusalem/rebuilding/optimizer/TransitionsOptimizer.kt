@@ -58,7 +58,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
         return if (count == 0) null else tn
     }
 
-    fun optimizeNodes(startTime: Date?, nodes: MutableList<Node>, filePath: String?) {
+    fun optimizeNodes(startTime: Date, nodes: MutableList<Node>) {
         var count = 0
 
         while (!nodes.isEmpty()) {
@@ -128,7 +128,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
                                 + " lng=" + dirLngInt + " with "
                                 + nodes.size + " nodes"
                     )
-                    optimizeNodes(startTime, nodes, h.path)
+                    optimizeNodes(startTime, nodes)
                     totalSavedNodes += savedNodes
                     println("saved nodes: " + savedNodes + " total saved nodes: " + totalSavedNodes + " braf: " + BufferedRandomAccessFile.getShortInfoAndResetCounters())
                     savedNodes = 0
