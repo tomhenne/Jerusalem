@@ -1,25 +1,9 @@
 package de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport
 
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.Coord2
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.GPSMath
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.Coord3
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.Placemark
 import nanoxml.XMLElement
-import java.io.FileWriter
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.GPX
-import java.util.Calendar
-import java.util.GregorianCalendar
 import java.io.IOException
-import java.io.FileReader
 import java.io.LineNumberReader
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.IncrementalXMLParser
-import java.text.SimpleDateFormat
-import java.text.DecimalFormat
-import java.text.DecimalFormatSymbols
-import java.util.Locale
 import java.lang.StringBuilder
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.KML
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.LookAt
 import kotlin.Throws
 
 class IncrementalXMLParser(var lnr: LineNumberReader) {

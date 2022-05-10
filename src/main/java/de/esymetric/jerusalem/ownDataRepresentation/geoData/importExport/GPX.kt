@@ -253,10 +253,10 @@ class GPX {
                     continue
                 }
                 val p = Position()
-                p.latitude = String2DoubleEN(n.getAttribute("lat") as String)
-                p.longitude = String2DoubleEN(n.getAttribute("lon") as String)
+                p.latitude = string2DoubleEN(n.getAttribute("lat") as String)
+                p.longitude = string2DoubleEN(n.getAttribute("lon") as String)
                 val eleS = n.getChild("ele")
-                if (eleS != null) p.altitude = String2DoubleEN(eleS.content)
+                if (eleS != null) p.altitude = string2DoubleEN(eleS.content!!)
                 val timestampS = n.getChild("time")
                 if (timestampS != null) {
                     try {
@@ -361,7 +361,7 @@ class GPX {
 	 * public static String Double2StringEN(double d) { return
 	 * String.format(Locale.ENGLISH, "%.9f", d); }
 	 */
-        fun String2DoubleEN(s: String): Double {
+        fun string2DoubleEN(s: String): Double {
             return try {
                 s.toDouble()
             } catch (e: Exception) {
