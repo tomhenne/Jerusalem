@@ -6,8 +6,8 @@ import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedNodeLi
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedTransitionListFile
 
 class TransitionsExpander {
-    fun expandNodes(nodes: List<Node>, nlf: PartitionedNodeListFile, wlf: PartitionedTransitionListFile): List<Node?> {
-        val nnodes: MutableList<Node?> = ArrayList()
+    fun expandNodes(nodes: List<Node>, nlf: PartitionedNodeListFile, wlf: PartitionedTransitionListFile): List<Node> {
+        val nnodes: MutableList<Node> = ArrayList()
         var na: Node? = null
         for (nb in nodes) {
             na?.let { expandNode(it, nb, nnodes, nlf, wlf) }
@@ -20,7 +20,7 @@ class TransitionsExpander {
     private fun expandNode(
         na: Node,
         nb: Node,
-        nnodes: MutableList<Node?>,
+        nnodes: MutableList<Node>,
         nlf: PartitionedNodeListFile,
         wlf: PartitionedTransitionListFile
     ) {
@@ -36,9 +36,9 @@ class TransitionsExpander {
     }
 
     private fun followTransitions(
-        sourceNode: Node?,
+        sourceNode: Node,
         t: Transition,
-        nnodes: MutableList<Node?>,
+        nnodes: MutableList<Node>,
         finalNode: Node,
         nlf: PartitionedNodeListFile,
         wlf: PartitionedTransitionListFile

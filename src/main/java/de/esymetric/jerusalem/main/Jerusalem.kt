@@ -156,7 +156,7 @@ object Jerusalem {
                 TomsAStarStarRouting(), TomsRoutingHeuristics(),
                 maxExecutionTimeS
             )
-            Router.setDebugMode("routeVerbose" == command)
+            Router.debugMode = "routeVerbose" == command
             val outputTransitions = "routeWithTransitions" == command
             val routingType = args[1]
             val lat1 = args[2].toDouble()
@@ -280,7 +280,7 @@ object Jerusalem {
                 TomsAStarStarRouting(), TomsRoutingHeuristics(),
                 maxExecutionTimeS
             )
-            Router.setDebugMode(true)
+            Router.debugMode = true
             testRoute(
                 router, 48.116915489240476, 11.48764371871948, 48.219297,
                 11.372824, "hadern-a8", dataDirectoryPath
