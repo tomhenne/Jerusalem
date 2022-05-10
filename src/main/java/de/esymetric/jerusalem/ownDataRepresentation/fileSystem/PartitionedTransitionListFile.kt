@@ -162,14 +162,14 @@ class PartitionedTransitionListFile(
         return try {
             raf!!.seek(t.id.toLong() * SENTENCE_LENGTH)
             val targetNode = t.targetNode
-            val targetNodeID = targetNode.id.toInt() shl 4
+            val targetNodeID = targetNode!!.id.toInt() shl 4
             var offsetBits = currentLatLonDir.getOffsetBits(
                 targetNode.lat,
                 targetNode.lng
             )
             raf!!.writeInt(targetNodeID or offsetBits)
             val origTargetNode = t.origTargetNode
-            val origTargetNodeID = origTargetNode.id.toInt() shl 4
+            val origTargetNodeID = origTargetNode!!.id.toInt() shl 4
             offsetBits = currentLatLonDir.getOffsetBits(
                 origTargetNode.lat,
                 origTargetNode.lng

@@ -46,8 +46,8 @@ class TransitionsExpander {
         var targetNode = t.origTargetNode
         if (targetNode == null) targetNode = t.targetNode
         if (targetNode == finalNode) return
-        nnodes.add(targetNode)
-        val ts = targetNode!!.listTransitionsWithoutSameWayBack(sourceNode, true, nlf, wlf)
+        nnodes.add(targetNode!!)
+        val ts = targetNode.listTransitionsWithoutSameWayBack(sourceNode, true, nlf, wlf)
         if (ts.size != 1) return
         followTransitions(targetNode, ts[0], nnodes, finalNode, nlf, wlf)
     }

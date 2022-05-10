@@ -108,7 +108,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
         // die targetNode �berspringen w�rde
         for (t in currentNode.listTransitions(!useOptimizedPath || isTargetMasterNode, nlf, wlf, wcf)) {
             var successor = t.targetNode
-            if (closedList.contains(successor.uid)) continue
+            if (closedList.contains(successor!!.uid)) continue
 
             // clone successor object - this is required because successor
             // contains search path specific information and can be in open list

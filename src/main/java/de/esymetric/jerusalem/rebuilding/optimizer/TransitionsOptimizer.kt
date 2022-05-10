@@ -37,10 +37,10 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
         var tf = tn
         while (true) {
             if (tf == null || tf.targetNode == null) return null
-            val ts = tf.targetNode.listTransitionsWithoutSameWayBack(sourceNode, false, nlf, wlf)
+            val ts = tf.targetNode!!.listTransitionsWithoutSameWayBack(sourceNode, false, nlf, wlf)
             if (ts.size != 1) break
             count++
-            sourceNode = tf.targetNode
+            sourceNode = tf.targetNode!!
             if (foundNodes.contains(sourceNode.uid)) return null
             foundNodes.add(sourceNode.uid)
             if (count > 10000) {
