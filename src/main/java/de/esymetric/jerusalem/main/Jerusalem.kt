@@ -131,9 +131,11 @@ object Jerusalem {
                     osmdr.read(startTime)
                 }
                 rebuilder.finishProcessingAndClose()
+
             } catch (e: IOException) {
                 e.printStackTrace()
             }
+
             println("finish date " + Date())
             println(
                 "required time "

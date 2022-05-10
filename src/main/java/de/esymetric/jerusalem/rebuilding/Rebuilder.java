@@ -281,7 +281,7 @@ public class Rebuilder implements OSMDataReaderListener {
 
         // finally make quadtree index
 
-        //if( !readOnly ) makeQuadtreeIndex();
+        if( !readOnly ) makeQuadtreeIndex();
 
         // close
 
