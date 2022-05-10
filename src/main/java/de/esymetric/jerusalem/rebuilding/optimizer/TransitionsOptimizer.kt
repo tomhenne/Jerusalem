@@ -27,7 +27,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
     fun getReplacementTransition(sourceNode: Node, t: Transition): Transition? {
         var sourceNode = sourceNode
         val foundNodes: MutableSet<Long> = HashSet()
-        foundNodes.add(sourceNode.uid)
+        foundNodes.add(sourceNode.uID)
         val tn = Transition()
         var count = 0
         tn.targetNode = t.targetNode
@@ -41,8 +41,8 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
             if (ts.size != 1) break
             count++
             sourceNode = tf.targetNode!!
-            if (foundNodes.contains(sourceNode.uid)) return null
-            foundNodes.add(sourceNode.uid)
+            if (foundNodes.contains(sourceNode.uID)) return null
+            foundNodes.add(sourceNode.uID)
             if (count > 10000) {
                 // avoid loops
                 ts.clear()

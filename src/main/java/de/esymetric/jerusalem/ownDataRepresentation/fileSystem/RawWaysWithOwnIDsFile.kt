@@ -54,7 +54,7 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
                 node.id = dain!!.readInt().toLong()
                 if (node.id == -1L) break
                 val latLonDirKey = dain!!.readShort()
-                node.loadByID(LatLonDir(latLonDirKey), nlf)
+                node.loadByID(LatLonDir(latLonDirKey), nlf!!)
                 nodes.add(node)
             }
         } catch (e: IOException) {

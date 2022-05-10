@@ -59,11 +59,11 @@ class Router(
         if (nodeA == null || nodeB == null) return null
         if (debugMode) {
             println(
-                "START NODE: id=" + nodeA.uid + " lat="
+                "START NODE: id=" + nodeA.uID + " lat="
                         + nodeA.lat + " lng=" + nodeA.lng
             )
             println(
-                "TARGET NODE: id=" + nodeB.uid + " lat="
+                "TARGET NODE: id=" + nodeB.uID + " lat="
                         + nodeB.lat + " lng=" + nodeB.lng
             )
         }

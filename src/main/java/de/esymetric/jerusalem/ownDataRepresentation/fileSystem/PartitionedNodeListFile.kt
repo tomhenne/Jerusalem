@@ -160,7 +160,7 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
             n.lng = dis.readFloat().toDouble()
             //n.nextNodeID = dis.readInt();
             n.transitionID = dis.readInt()
-            n.latLonDirKey = latLonDir.shortKey // for sorting
+            n.setLatLonDirKey(latLonDir.shortKey) // for sorting
             dis.close()
             bais.close()
             n
