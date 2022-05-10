@@ -15,7 +15,7 @@ public class GPSMath {
 
 
     //Haversine
-    public static double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+    public static double calculateDistance(double lat1, double lon1, double lat2, double lon2)
     {
         lat1 = Deg2Rad(lat1);
         lon1 = Deg2Rad(lon1);
@@ -57,7 +57,7 @@ public class GPSMath {
             Position pm = new Position();
             pm.latitude = (p1.latitude + p2.latitude) / 2.0;
             pm.latitude = (p1.longitude + p2.longitude) / 2.0;
-            d = CalculateDistance(pc.latitude, pc.longitude, pm.latitude, pm.longitude);
+            d = calculateDistance(pc.latitude, pc.longitude, pm.latitude, pm.longitude);
         }
         return d;
     }
@@ -76,7 +76,7 @@ public class GPSMath {
             Position pm = new Position();
             pm.latitude = (p1.latitude + p2.latitude) / 2.0;
             pm.latitude = (p1.longitude + p2.longitude) / 2.0;
-            d = CalculateDistance(pc.latitude, pc.longitude, pm.latitude, pm.longitude);
+            d = calculateDistance(pc.latitude, pc.longitude, pm.latitude, pm.longitude);
         }
         return d;
     }
@@ -299,7 +299,7 @@ public class GPSMath {
 
     // compute opening angle between 3 positions
     // p1 --- p (middle) --- p2
-    // returns: angle > -180° < 180°
+    // returns: angle > -180ï¿½ < 180ï¿½
 
     public static int ComputeOpeningAngle(Position p1, Position p, Position p2)
     {

@@ -1,17 +1,13 @@
 package de.esymetric.jerusalem.routing;
 
-import java.util.Date;
-import java.util.List;
-
 import de.esymetric.jerusalem.ownDataRepresentation.Node;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.NodeIndexFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedNodeListFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedQuadtreeNodeIndexFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedTransitionListFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedWayCostFile;
+import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.*;
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position;
 import de.esymetric.jerusalem.rebuilding.optimizer.TransitionsExpander;
 import de.esymetric.jerusalem.utils.Utils;
+
+import java.util.Date;
+import java.util.List;
 
 public class Router {
 
@@ -121,8 +117,6 @@ public class Router {
 			System.out.println("required time "
 					+ Utils.formatTimeStopWatch(new Date().getTime()
 							- startTime.getTime()));
-			// System.out.println("file access info: " +
-			// BufferedRandomAccessFile.getShortInfoAndResetCounters());
 		}
 
 		return route;

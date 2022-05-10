@@ -24,6 +24,6 @@ public class Position {
 
         public double distanceTo(Position p)
         {
-            return GPSMath.CalculateDistance(p.latitude, p.longitude, latitude, longitude);
+            return GPSMath.calculateDistance(p.latitude, p.longitude, latitude, longitude);
         }
     }

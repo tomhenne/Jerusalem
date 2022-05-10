@@ -89,7 +89,7 @@ public class Node implements Comparable<Node> {
 			short wayCostLatLonDirKey, RoutingHeuristics heuristics,
 			boolean isOriginalDirection) {
 
-		double distanceM = GPSMath.CalculateDistance(lat, lng, targetNode.lat,
+		double distanceM = GPSMath.calculateDistance(lat, lng, targetNode.lat,
 				targetNode.lng);
 		transitionID = wlf.insertTransition(this, targetNode, distanceM,
 				transitionID, wayCostID, wayCostLatLonDirKey);
@@ -170,7 +170,7 @@ public class Node implements Comparable<Node> {
 
 	public double getRemainingCost(Node target, RoutingType type,
 			RoutingHeuristics heuristics) {
-		double d = GPSMath.CalculateDistance(lat, lng, target.lat, target.lng);
+		double d = GPSMath.calculateDistance(lat, lng, target.lat, target.lng);
 		return d * heuristics.estimateRemainingCost(type) / 1000.0;
 	}
 

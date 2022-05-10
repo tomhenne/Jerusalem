@@ -196,8 +196,6 @@ public class LongOsmNodeID2OwnIDMapFile implements LongOsmNodeID2OwnIDMap {
 
 	@Override
 	public void delete() {
-		// TODO Auto-generated method stub
-
 	}
 
 }

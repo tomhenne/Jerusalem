@@ -55,7 +55,7 @@ public class TomsAStarStarRouting implements RoutingAlgorithm {
         openListMap.clear();
         closedList.clear();
 
-        start.totalCost = GPSMath.CalculateDistance(start.lat, start.lng,
+        start.totalCost = GPSMath.calculateDistance(start.lat, start.lng,
                 target.lat, target.lng)
                 * heuristics.estimateRemainingCost(type) / 1000.0;
         start.realCostSoFar = 0;

@@ -48,7 +48,7 @@ public class NearestNodeFinder {
 					}
 
 					if (hasSuitableTransitions) {
-						double d = GPSMath.CalculateDistance(lat, lng, n.lat,
+						double d = GPSMath.calculateDistance(lat, lng, n.lat,
 								n.lng);
 						if (d < nearestNodeDistance) {
 							nearestNodeDistance = d;
