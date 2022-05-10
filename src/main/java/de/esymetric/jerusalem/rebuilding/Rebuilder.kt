@@ -229,7 +229,7 @@ class Rebuilder(
                     + " arl "
                     + osmNodeID2OwnIDMap!!.getAvgGetAccessNumberOfReads()
                     + " braf:"
-                    + BufferedRandomAccessFile.getShortInfoAndResetCounters()
+                    + BufferedRandomAccessFile.shortInfoAndResetCounters
                     + " t_prn "
                     + timePrepareNodes
                     + " t_o2o "

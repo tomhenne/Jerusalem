@@ -38,7 +38,7 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
         currentLatLonDir = newLatLonDir
         filePath = (currentLatLonDir.makeDir(dataDirectoryPath, !readOnly)
                 + File.separatorChar + FILE_NAME)
-        raf = rafCache.getRandomAccessFile(filePath, readOnly)
+        raf = rafCache.getRandomAccessFile(filePath!!, readOnly)
         if (raf == null) return false
         maxNodeID = try {
             (raf!!.length() / SENTENCE_LENGTH).toInt() - 1

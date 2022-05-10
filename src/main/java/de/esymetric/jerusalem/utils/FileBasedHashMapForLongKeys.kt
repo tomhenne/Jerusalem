@@ -31,7 +31,7 @@ class FileBasedHashMapForLongKeys {
             return
         }
         try {
-            raf = rafCache.getRandomAccessFile(filePath, readOnly)
+            raf = rafCache.getRandomAccessFile(filePath!!, readOnly)
             if (raf!!.length() < SENTENCE_LENGTH.toLong() * HASH_ARRAY_SIZE.toLong()) {
                 val bufSize = HASH_ARRAY_SIZE // other sizes could be chosen
                 val buf = ByteArray(bufSize)

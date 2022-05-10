@@ -23,7 +23,7 @@ class PartitionedWayCostFile(var dataDirectoryPath: String, var readOnly: Boolea
         currentLatLonDir = lld
         filePath = (currentLatLonDir.makeDir(dataDirectoryPath, !readOnly)
                 + File.separatorChar + FILENAME)
-        raf = rafCache.getRandomAccessFile(filePath, readOnly)
+        raf = rafCache.getRandomAccessFile(filePath!!, readOnly)
         try {
             val fileLength = raf!!.length()
             numberOfWayCosts = (fileLength / SENTENCE_LENGTH).toInt()

@@ -130,7 +130,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
                     )
                     optimizeNodes(startTime, nodes)
                     totalSavedNodes += savedNodes
-                    println("saved nodes: " + savedNodes + " total saved nodes: " + totalSavedNodes + " braf: " + BufferedRandomAccessFile.getShortInfoAndResetCounters())
+                    println("saved nodes: " + savedNodes + " total saved nodes: " + totalSavedNodes + " braf: " + BufferedRandomAccessFile.shortInfoAndResetCounters)
                     savedNodes = 0
                     Rebuilder.cleanMem(startTime)
                 }

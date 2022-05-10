@@ -31,7 +31,7 @@ class FileBasedHashMap {
             return
         }
         try {
-            raf = rafCache.getRandomAccessFile(filePath, readOnly)
+            raf = rafCache.getRandomAccessFile(filePath!!, readOnly)
             if (raf!!.length() < SENTENCE_LENGTH.toLong() * HASH_ARRAY_SIZE.toLong()) {
                 val buf = ByteArray(1024)
                 for (i in 0 until HASH_ARRAY_SIZE / 1024 * SENTENCE_LENGTH) raf?.write(buf)

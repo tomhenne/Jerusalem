@@ -33,7 +33,7 @@ class PartitionedTransitionListFile(
         currentLatLonDir = newLatLonDir
         filePath = (currentLatLonDir.makeDir(dataDirectoryPath, !readOnly)
                 + File.separatorChar + FILENAME)
-        raf = rafCache.getRandomAccessFile(filePath, readOnly)
+        raf = rafCache.getRandomAccessFile(filePath!!, readOnly)
         try {
             val fileLength = raf!!.length()
             numberOfTransitions = (fileLength / SENTENCE_LENGTH).toInt()
