@@ -1,15 +1,8 @@
 package de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir;
+
+import java.io.*;
 
 public class OsmNodeID2CellIDMapMemory {
 
@@ -102,15 +95,11 @@ public class OsmNodeID2CellIDMapMemory {
 			}
 
 			dos.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return false;
-
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 
 	}
@@ -137,9 +126,6 @@ public class OsmNodeID2CellIDMapMemory {
 			}
 
 			dis.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return false;
 
 		} catch (IOException e) {
 			e.printStackTrace();

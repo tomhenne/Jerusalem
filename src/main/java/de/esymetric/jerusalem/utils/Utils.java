@@ -9,10 +9,10 @@ public class Utils {
 	}
 	
 	static String D02(int d) {
-		return d < 10 ? "0" + String.valueOf(d) : String.valueOf(d);
+		return d < 10 ? "0" + d : String.valueOf(d);
 	}
 
-	public static String FormatTimeStopWatch(long ticks) {
+	public static String formatTimeStopWatch(long ticks) {
 		int sec = (int) (ticks / 1000L);
 
 		int days = sec / 86400;

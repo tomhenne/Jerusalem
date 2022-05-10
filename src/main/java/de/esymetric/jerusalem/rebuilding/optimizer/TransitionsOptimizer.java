@@ -152,7 +152,7 @@ public class TransitionsOptimizer {
 										.getPath());
 								
 								System.out.println("\n"
-										+ Utils.FormatTimeStopWatch(new Date()
+										+ Utils.formatTimeStopWatch(new Date()
 												.getTime()
 												- startTime.getTime())
 										+ " optimizing lat=" + dirLatInt
@@ -173,7 +173,7 @@ public class TransitionsOptimizer {
 			}
 
 		System.out.println("\n"
-				+ Utils.FormatTimeStopWatch(new Date()
+				+ Utils.formatTimeStopWatch(new Date()
 						.getTime()
 						- startTime.getTime())
 				+ " optimization done");

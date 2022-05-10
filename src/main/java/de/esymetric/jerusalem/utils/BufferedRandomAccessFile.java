@@ -19,7 +19,7 @@ public class BufferedRandomAccessFile  {
 	final static int SIZE_INCREMENT = 800000;  // 0,8 MB
 	final static int INITIAL_SIZE =   1500000;  // 1,5 MB
 
-	byte buf[];
+	byte[] buf;
 	int index;
 	int size;
 	String filePath;
@@ -206,9 +206,6 @@ public class BufferedRandomAccessFile  {
 	}
 
 	public short readShort() throws IOException {
-		// DEBUG
-		
-		
 		if( index > buf.length - 2 ) {
 			System.out.println("Out of bounds!!");
 		}
@@ -226,9 +223,6 @@ public class BufferedRandomAccessFile  {
 	}
 
 	public int readInt() throws IOException {
-		// DEBUG
-		
-		
 		if( index > buf.length - 4 ) {
 			System.out.println("Out of bounds!!");
 		}

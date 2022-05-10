@@ -135,11 +135,11 @@ public class Rebuilder implements OSMDataReaderListener {
 
         startTime = new Date();
 
-        System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+        System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime())
                 + " Starting REBUILD ");
 
-        System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+        System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime())
                 + " Deleting files");
 
@@ -168,36 +168,36 @@ public class Rebuilder implements OSMDataReaderListener {
 
 
         if (jumpOverNodes) {
-            System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+            System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                     - startTime.getTime())
                     + " Rebuilding only ways: deleting transition files\n");
             wlf.deleteAllTransitionFiles();
 
-            System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+            System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                     - startTime.getTime())
                     + " Rebuilding only ways: deleting wayCost files\n");
             wcf.deleteAllWayCostFiles();
 
-            System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+            System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                     - startTime.getTime())
                     + " Rebuilding only ways: deleting rawWays.data files\n");
             rawWaysFile.deleteFiles(startTime);
 
             System.out
-                    .println(Utils.FormatTimeStopWatch(new Date().getTime()
+                    .println(Utils.formatTimeStopWatch(new Date().getTime()
                             - startTime.getTime())
                             + " Rebuilding only ways: resetting transition IDs in nodes files\n");
             nlf.resetTransitionIDsInAllFilesBuffered(startTime);
 
-            System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+            System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                     - startTime.getTime())
                     + " Rebuilding only ways: loading osm2own ID memory map\n");
             osmNodeID2OwnIDMap.loadExistingOsm2OwnIDIntoMemory(startTime);
 
-            System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+            System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                     - startTime.getTime())
                     + " Rebuilding only ways: skipping nodes ...\n");
-            System.out.print(Utils.FormatTimeStopWatch(new Date().getTime()
+            System.out.print(Utils.formatTimeStopWatch(new Date().getTime()
                     - startTime.getTime())
                     + " free memory: " + Utils.memInfoStr());
             System.gc();
@@ -206,7 +206,7 @@ public class Rebuilder implements OSMDataReaderListener {
         }
 
 
-        System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+        System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime())
                 + " Info on read nodes and ways:\n");
         System.out.println("nd#: number of nodes read");
@@ -232,7 +232,7 @@ public class Rebuilder implements OSMDataReaderListener {
     }
 
     public static void cleanMem(Date startTime) {
-        System.out.print(Utils.FormatTimeStopWatch(new Date().getTime()
+        System.out.print(Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime())
                 + "free memory: " + Utils.memInfoStr());
         System.gc();
@@ -255,11 +255,11 @@ public class Rebuilder implements OSMDataReaderListener {
 
         cleanMem();
         System.out.println("\n"
-                + Utils.FormatTimeStopWatch(new Date().getTime()
+                + Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime()) + " SUMMARY:");
 
         System.out
-                .println(Utils.FormatTimeStopWatch(new Date().getTime()
+                .println(Utils.formatTimeStopWatch(new Date().getTime()
                         - startTime.getTime())
                         + " "
                         + countNodes
@@ -368,7 +368,7 @@ public class Rebuilder implements OSMDataReaderListener {
         nodesCacheSize = 0;
 
         System.gc();
-        System.out.println("\n" + Utils.FormatTimeStopWatch(new Date().getTime()
+        System.out.println("\n" + Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime())
                 + " nd#"
                 + countNodes
@@ -453,7 +453,7 @@ public class Rebuilder implements OSMDataReaderListener {
         waysCacheSize = 0;
 
         cleanMem();
-        System.out.println("\n" + Utils.FormatTimeStopWatch(new Date().getTime()
+        System.out.println("\n" + Utils.formatTimeStopWatch(new Date().getTime()
                 - startTime.getTime())
                 + " wd# "
                 + countWays

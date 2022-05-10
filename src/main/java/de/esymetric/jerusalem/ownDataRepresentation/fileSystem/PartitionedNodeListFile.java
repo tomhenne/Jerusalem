@@ -1,24 +1,15 @@
 package de.esymetric.jerusalem.ownDataRepresentation.fileSystem;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-
 import de.esymetric.jerusalem.ownDataRepresentation.Node;
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFile;
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFileCache;
 import de.esymetric.jerusalem.utils.Utils;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 public class PartitionedNodeListFile {
 	final static long SENTENCE_LENGTH = 12L;
@@ -235,7 +226,7 @@ public class PartitionedNodeListFile {
 			if (f.isDirectory() && f.getName().startsWith("lat_")) {
 				
 				
-				System.out.println(Utils.FormatTimeStopWatch(new Date()
+				System.out.println(Utils.formatTimeStopWatch(new Date()
 						.getTime()
 						- startTime.getTime())
 						+ "  >>> " + f.getName() + " # " + count++);
@@ -277,7 +268,7 @@ public class PartitionedNodeListFile {
 		Arrays.sort(files);
 		for (File f : files)
 			if (f.isDirectory() && f.getName().startsWith("lat_")) {
-				System.out.println(Utils.FormatTimeStopWatch(new Date()
+				System.out.println(Utils.formatTimeStopWatch(new Date()
 						.getTime()
 						- startTime.getTime())
 						+ "  >>> " + f.getName() + " # " + count++);

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -66,7 +65,7 @@ public class OSMDataReader {
 
 				entityCount++;
 				if ((entityCount & 0xFFFFF) == 0) {
-					System.out.println(Utils.FormatTimeStopWatch(new Date()
+					System.out.println(Utils.formatTimeStopWatch(new Date()
 							.getTime()
 							- startTime.getTime())
 							+ " " + entityCount + " entities read");

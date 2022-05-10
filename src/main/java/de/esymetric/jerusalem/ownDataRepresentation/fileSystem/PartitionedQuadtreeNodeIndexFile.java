@@ -453,7 +453,7 @@ public class PartitionedQuadtreeNodeIndexFile implements NodeIndexFile {
 								List<Node> nodes = nlf.getAllNodesInFile(h
 										.getPath());
 								System.out.println("\n"
-										+ Utils.FormatTimeStopWatch(new Date()
+										+ Utils.formatTimeStopWatch(new Date()
 												.getTime()
 												- startTime.getTime())
 										+ " building quadtree lat=" + dirLatInt
@@ -496,7 +496,7 @@ public class PartitionedQuadtreeNodeIndexFile implements NodeIndexFile {
 					}
 				Rebuilder.cleanMem(startTime);
 			}
-		System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+		System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
 				- startTime.getTime())
 				+ " finished building quadtree");
 

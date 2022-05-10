@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class FileBasedHashMap {
 
-	final static int HASH_ARRAY_SIZE = 0x100000; // was: 0x100000 1048576
+	final static int HASH_ARRAY_SIZE = 0x100000;
 	final static int HASH_ARRAY_MASK = HASH_ARRAY_SIZE - 1;
 	final static int SENTENCE_LENGTH = 12; // 12 bytes: int key, int value, int
 	// nextIndex
@@ -61,14 +61,6 @@ public class FileBasedHashMap {
 
 	public void close() {
 		rafCache.close();
-		/*
-		try {
-			if (raf != null)
-				raf.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/
 	}
 	
 	public void put(int key, int value) {

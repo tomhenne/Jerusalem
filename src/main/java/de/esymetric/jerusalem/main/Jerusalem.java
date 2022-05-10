@@ -163,7 +163,7 @@ public class Jerusalem {
 			}
 			System.out.println("finish date " + new Date());
 			System.out.println("required time "
-					+ Utils.FormatTimeStopWatch(new Date().getTime()
+					+ Utils.formatTimeStopWatch(new Date().getTime()
 							- startTime.getTime()));
 
 			return;
@@ -352,7 +352,7 @@ public class Jerusalem {
 
 			System.out.println("finish date " + new Date());
 			System.out.println("required time "
-					+ Utils.FormatTimeStopWatch(new Date().getTime()
+					+ Utils.formatTimeStopWatch(new Date().getTime()
 							- startTime.getTime()));
 			return;
 		}

@@ -184,7 +184,7 @@ public class RawWaysWithOwnIDsFile {
 			MemoryArrayOsmNodeID2OwnIDMap osmID2ownIDMap) {
 		nlf.setMaxFileCacheSize(8);
 		// ein Weg kann Nodes aus mehreren benachbarten Sektoren enthalten
-		// daher mŸssen diese auch gebuffert werden
+		// daher mï¿½ssen diese auch gebuffert werden
 		
 		File[] files = new File(dataDirectoryPath).listFiles();
 		Arrays.sort(files);
@@ -211,7 +211,7 @@ public class RawWaysWithOwnIDsFile {
 										- (int) LatLonDir.LNG_OFFS;
 
 								System.out.println("\n"
-										+ Utils.FormatTimeStopWatch(new Date()
+										+ Utils.formatTimeStopWatch(new Date()
 												.getTime()
 												- startTime.getTime())
 										+ " building transitions for lat="
@@ -236,14 +236,14 @@ public class RawWaysWithOwnIDsFile {
 					}
 				Rebuilder.cleanMem(startTime);
 			}
-		System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+		System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
 				- startTime.getTime())
 				+ " finished building transitions");
 
 	}
 
 	public void deleteFiles(Date startTime) {
-		System.out.println(Utils.FormatTimeStopWatch(new Date().getTime()
+		System.out.println(Utils.formatTimeStopWatch(new Date().getTime()
 				- startTime.getTime())
 				+ " deleting rawWays.data files");
 		

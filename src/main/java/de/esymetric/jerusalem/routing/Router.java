@@ -119,7 +119,7 @@ public class Router {
 
 		if (debugMode) {
 			System.out.println("required time "
-					+ Utils.FormatTimeStopWatch(new Date().getTime()
+					+ Utils.formatTimeStopWatch(new Date().getTime()
 							- startTime.getTime()));
 			// System.out.println("file access info: " +
 			// BufferedRandomAccessFile.getShortInfoAndResetCounters());
