@@ -40,7 +40,7 @@ class NearestNodeFinder {
                     LatLonDir(nind.latInt.toDouble(), nind.lngInt.toDouble()),
                     nind.id
                 ) // this is new and hopefully finds all nodes
-                if (n.transitionID != -1) { // must have transitions :-)
+                if (n != null && n.transitionID != -1) { // must have transitions :-)
 
                     // must have transitions for this routingType!!
                     val transitions = n.listTransitions(false, nlf, wlf, wcf)

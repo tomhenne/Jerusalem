@@ -115,9 +115,8 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
                     val dirLngInt = g.name
                         .replace("lng_", "").toInt() - LatLonDir.LNG_OFFS.toInt()
                     val nodes = nlf.getAllNodesInFile(
-                        h
-                            .path
-                    )
+                        h.path
+                    ).toMutableList()
                     println(
                         "\n"
                                 + Utils.formatTimeStopWatch(

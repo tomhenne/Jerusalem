@@ -1,27 +1,21 @@
 package de.esymetric.jerusalem.rebuilding;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Map;
-
 import de.esymetric.jerusalem.osmDataRepresentation.OSMDataReader.OSMDataReaderListener;
 import de.esymetric.jerusalem.osmDataRepresentation.OSMNode;
 import de.esymetric.jerusalem.osmDataRepresentation.OSMWay;
 import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.MemoryArrayOsmNodeID2OwnIDMap;
 import de.esymetric.jerusalem.ownDataRepresentation.Transition;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.NodeIndexFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedNodeListFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedQuadtreeNodeIndexFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedTransitionListFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedWayCostFile;
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.RawWaysWithOwnIDsFile;
+import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.*;
 import de.esymetric.jerusalem.routing.RoutingHeuristics;
 import de.esymetric.jerusalem.routing.RoutingType;
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFile;
 import de.esymetric.jerusalem.utils.MemoryEfficientLongToIntMap;
 import de.esymetric.jerusalem.utils.Utils;
+
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Map;
 
 public class Rebuilder implements OSMDataReaderListener {
 
@@ -509,7 +503,7 @@ public class Rebuilder implements OSMDataReaderListener {
     void prepareNodes(OSMWay way) {
         // neue Nodes erzeugen und das LatLonDir setzen f�r die Sortierung
 
-        for (long osmID : way.nodes) {
+        for (long osmID : way.getNodes()) {
             findNodesNodesCache.put(osmID, -1);
         }
     }
@@ -533,7 +527,7 @@ public class Rebuilder implements OSMDataReaderListener {
         // berechnet die Kostenfaktoren, nicht die absoluten Kosten
         countWays++;
 
-        Map<String, String> wayTags = way.tags;
+        Map<String, String> wayTags = way.getTags();
         LatLonDir lld = new LatLonDir(way.getLatLonDirID(osmNodeID2OwnIDMap));
 
         Transition forward = new Transition();
@@ -578,11 +572,11 @@ public class Rebuilder implements OSMDataReaderListener {
                     backward.costMountainBike, backward.costCar,
                     backward.costCarShortest);
 
-        way.wayCostIDForward = wayCostIDForward;
-        way.wayCostIDBackward = wayCostIDBackward;
+        way.setWayCostIDForward(wayCostIDForward);
+        way.setWayCostIDBackward(wayCostIDBackward);
 
-        way.tags.clear();
-        way.tags = null; // not needed after that point
+        way.getTags().clear();
+        way.setTags(null); // not needed after that point
     }
 
     public void makeQuadtreeIndex() {

@@ -8,7 +8,7 @@ import de.esymetric.jerusalem.utils.Utils
 import java.util.*
 
 class Router(
-    dataDirectoryPath: String?, routingAlgorithm: RoutingAlgorithm,
+    dataDirectoryPath: String, routingAlgorithm: RoutingAlgorithm,
     heuristics: RoutingHeuristics, maxExecutionTimeS: Int
 ) {
     protected var maxExecutionTimeS = 60
