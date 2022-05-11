@@ -19,7 +19,7 @@ class Transition {
     var costCar = 0.0
     var costCarShortest = 0.0
     var distanceM = 0.0
-    fun getCost(type: RoutingType?): Double {
+    fun getCost(type: RoutingType): Double {
         var transitionCost = 0.0
         when (type) {
             RoutingType.foot -> transitionCost = costFoot

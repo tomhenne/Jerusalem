@@ -13,7 +13,6 @@ import java.util.*
 class TransitionsOptimizerTest {
     var routerTest = RouterTest()
     @Test
-    @Throws(Exception::class)
     fun testTransitionsOptimizer() {
         val dataDirectoryPath = "testData"
         File(dataDirectoryPath).mkdirs()

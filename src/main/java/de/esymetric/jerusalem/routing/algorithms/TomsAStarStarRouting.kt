@@ -18,15 +18,17 @@ class TomsAStarStarRouting : RoutingAlgorithm {
     var openList: SortedSet<Node> = TreeSet()
     var openListMap = HashMap<Long, Node>()
     var closedList = HashSet<Long>()
-    var nlf: PartitionedNodeListFile? = null
-    var wlf: PartitionedTransitionListFile? = null
-    var wcf: PartitionedWayCostFile? = null
-    var type: RoutingType? = null
-    var target: Node? = null
-    var heuristics: RoutingHeuristics? = null
+
+    lateinit var nlf: PartitionedNodeListFile
+    lateinit var wlf: PartitionedTransitionListFile
+    lateinit var wcf: PartitionedWayCostFile
+    lateinit var type: RoutingType
+    lateinit var target: Node
+    lateinit var heuristics: RoutingHeuristics
+
     override fun getRoute(
-        start: Node, target: Node, type: RoutingType?,
-        nlf: PartitionedNodeListFile?, wlf: PartitionedTransitionListFile?, wcf: PartitionedWayCostFile?,
+        start: Node, target: Node, type: RoutingType,
+        nlf: PartitionedNodeListFile, wlf: PartitionedTransitionListFile, wcf: PartitionedWayCostFile,
         heuristics: RoutingHeuristics, targetNodeMasterNodes: List<Node>, maxExecutionTimeSec: Int,
         useOptimizedPath: Boolean
     ): List<Node>? {
@@ -89,7 +91,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
     }
 
     fun getFullPath(sourceNode: Node): List<Node>? {
-        var node: Node = sourceNode ?: return null
+        var node: Node = sourceNode
         val foundPath: MutableList<Node> = LinkedList()
         while (true) {
             foundPath.add(node)

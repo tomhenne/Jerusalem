@@ -184,7 +184,7 @@ class Rebuilder(
             nlf.close() // switch from stream access to RandomAccessFile access, no need to reopen
             osmNodeID2OwnIDMap!!.persistCellMap(startTime)
         }
-        waysCache!![waysCacheSize++] = way
+        waysCache[waysCacheSize++] = way
         if (waysCacheSize >= MAX_NEW_WAY_QUEUE_SIZE) processWaysCache()
     }
 
@@ -192,33 +192,32 @@ class Rebuilder(
         Arrays.sort(waysCache, 0, waysCacheSize, OSMWayByDirComparator())
         timespan()
         for (i in 0 until waysCacheSize) {
-            val w = waysCache!![i]
+            val w = waysCache[i]
             calculateCost(w)
         }
         timeCalcAndInsertCost += timespan()
         for (i in 0 until waysCacheSize) {
-            val w = waysCache!![i]
+            val w = waysCache[i]
             prepareNodes(w)
         }
         timePrepareNodes += timespan()
         translateNodesOSMID2OWNID()
         for (i in 0 until waysCacheSize) {
-            val w = waysCache!![i]
+            val w = waysCache[i]
             rawWaysFile.writeWay(w!!, osmNodeID2OwnIDMap!!, findNodesNodesCache)
         }
         findNodesNodesCache.clear()
         for (i in 0 until waysCacheSize) {
-            waysCache!![i] = null
+            waysCache[i] = null
         }
         waysCacheSize = 0
         waysCache = arrayOfNulls(MAX_NEW_WAY_QUEUE_SIZE)
         cleanMem()
         println(
             "\n" + Utils.formatTimeStopWatch(
-                Date().time
-                        - startTime.time
+                Date().time - startTime.time
             )
-                    + " wd# "
+                    + " wa# "
                     + countWays
                     + " nfc "
                     + nlf.fileChangesWithNewFileCreation
@@ -234,21 +233,12 @@ class Rebuilder(
                     + timePrepareNodes
                     + " t_o2o "
                     + timeOsm2Own
-                    + " t_gno "
-                    + timeGetNodes
                     + " t_cos "
                     + timeCalcAndInsertCost
-                    + " t_prt "
-                    + timePrepareTransitions
-                    + " t_tra "
-                    + timeInsertTransitions + " mem " + Utils.memInfoStr()
         )
         timePrepareNodes = 0L
         timeOsm2Own = 0L
-        timeGetNodes = 0L
         timeCalcAndInsertCost = 0L
-        timeInsertTransitions = 0L
-        timePrepareTransitions = 0L
     }
 
     private inner class OSMWayByDirComparator : Comparator<OSMWay?> {
@@ -260,11 +250,8 @@ class Rebuilder(
     }
 
     private var timeOsm2Own: Long = 0
-    private var timeGetNodes: Long = 0
     private var timePrepareNodes: Long = 0
     private var timeCalcAndInsertCost: Long = 0
-    private var timePrepareTransitions: Long = 0
-    private var timeInsertTransitions: Long = 0
     var findNodesNodesCache = MemoryEfficientLongToIntMap()
 
     init {
@@ -284,7 +271,7 @@ class Rebuilder(
                     + " Deleting files"
         )
         nif = PartitionedQuadtreeNodeIndexFile(
-            dataDirectoryPath!!, readOnly,
+            dataDirectoryPath, readOnly,
             !readOnly
         )
         nlf = PartitionedNodeListFile(dataDirectoryPath, readOnly)

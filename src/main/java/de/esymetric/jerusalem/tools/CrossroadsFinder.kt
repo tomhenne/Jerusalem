@@ -1,4 +1,4 @@
-package de.esymetric.jerusalem.extraTools
+package de.esymetric.jerusalem.tools
 
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.*
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.GPSMath
@@ -31,7 +31,7 @@ class CrossroadsFinder(dataDirectoryPath: String) {
         wcf.close()
     }
 
-    fun loadNumberOfCrossroads(positions: List<Position>, routingType: RoutingType?) {
+    fun loadNumberOfCrossroads(positions: List<Position>, routingType: RoutingType) {
         for (p in positions) {
             val n = nrf.findNearestNode(p.latitude, p.longitude, nif, nlf, wlf, wcf, routingType) ?: continue
             val d = GPSMath.calculateDistance(

@@ -1,6 +1,6 @@
 package de.esymetric.jerusalem.main
 
-import de.esymetric.jerusalem.extraTools.CrossroadsFinder
+import de.esymetric.jerusalem.tools.CrossroadsFinder
 import de.esymetric.jerusalem.osmDataRepresentation.OSMDataReader
 import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.PartitionedOsmNodeID2OwnIDMap
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position

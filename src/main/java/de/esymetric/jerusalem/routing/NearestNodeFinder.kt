@@ -10,9 +10,9 @@ class NearestNodeFinder {
         lng: Double,
         nif: NodeIndexFile,
         nlf: PartitionedNodeListFile,
-        wlf: PartitionedTransitionListFile?,
+        wlf: PartitionedTransitionListFile,
         wcf: PartitionedWayCostFile?,
-        type: RoutingType?
+        type: RoutingType
     ): Node? {
         for (radius in 0 until MAX_SEARCH_RADIUS) {
             val n = findNearestNode(lat, lng, nif, nlf, wlf, wcf, type, radius)
@@ -26,9 +26,9 @@ class NearestNodeFinder {
         lng: Double,
         nif: NodeIndexFile,
         nlf: PartitionedNodeListFile,
-        wlf: PartitionedTransitionListFile?,
+        wlf: PartitionedTransitionListFile,
         wcf: PartitionedWayCostFile?,
-        type: RoutingType?,
+        type: RoutingType,
         radius: Int
     ): Node? {
         val list = nif.getIDPlusSourroundingIDs(lat, lng, radius)
@@ -43,7 +43,7 @@ class NearestNodeFinder {
                 if (n != null && n.transitionID != -1) { // must have transitions :-)
 
                     // must have transitions for this routingType!!
-                    val transitions = n.listTransitions(false, nlf, wlf!!, wcf)
+                    val transitions = n.listTransitions(false, nlf, wlf, wcf)
                     var hasSuitableTransitions = false
                     for (t in transitions) {
                         if (t.getCost(type) != RoutingHeuristics.Companion.BLOCKED_WAY_COST) {

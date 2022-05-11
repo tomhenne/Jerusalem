@@ -20,10 +20,14 @@ interface RoutingAlgorithm {
      * @return List of nodes the of the route
      */
     fun getRoute(
-        start: Node, target: Node, type: RoutingType?,
-        nlf: PartitionedNodeListFile?, wlf: PartitionedTransitionListFile?, wcf: PartitionedWayCostFile?,
+        start: Node, target: Node,
+        type: RoutingType,
+        nlf: PartitionedNodeListFile,
+        wlf: PartitionedTransitionListFile,
+        wcf: PartitionedWayCostFile,
         heuristics: RoutingHeuristics,
         targetNodeMasterNodes: List<Node>,  // 2 crossroads nodes connected to target node
-        maxExecutionTimeSec: Int, useOptimizedPath: Boolean
+        maxExecutionTimeSec: Int,
+        useOptimizedPath: Boolean
     ): List<Node>?
 }
