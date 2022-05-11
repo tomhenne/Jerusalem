@@ -39,16 +39,6 @@ class RebuilderTest {
                     shortInfoAndResetCounters
         )
 
-
-        // create quadtree index
-
-        rebuilder = Rebuilder(
-            dataDirectoryPath, tempDirectoryPath,
-            TomsRoutingHeuristics(), true, false, true
-        )
-        rebuilder.makeQuadtreeIndex()
-        rebuilder.finishProcessingAndClose()
-
         // test
         val router = Router(
             dataDirectoryPath,
@@ -86,14 +76,6 @@ class RebuilderTest {
         reader.read(Date())
         bzis.close()
         fis.close()
-        rebuilder.finishProcessingAndClose()
-
-        // create quadtree index
-        rebuilder = Rebuilder(
-            dataDirectoryPath, tempDirectoryPath,
-            TomsRoutingHeuristics(), true, false, true
-        )
-        rebuilder.makeQuadtreeIndex()
         rebuilder.finishProcessingAndClose()
 
         // rebuild only ways

@@ -80,7 +80,7 @@ class Rebuilder(
         rawWaysFile.close()
 
         // finally make quadtree index
-        //if (!readOnly) makeQuadtreeIndex()
+        if (!readOnly) makeQuadtreeIndex()
 
         // close
         nif.close()
