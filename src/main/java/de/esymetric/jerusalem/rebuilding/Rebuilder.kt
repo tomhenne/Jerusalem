@@ -26,13 +26,14 @@ class Rebuilder(
     private val nlf: PartitionedNodeListFile
     private val wlf: PartitionedTransitionListFile
     private val wcf: PartitionedWayCostFile
-    private var osmNodeID2OwnIDMap: MemoryArrayOsmNodeID2OwnIDMap?
+    private var osmNodeID2OwnIDMap: MemoryArrayOsmNodeID2OwnIDMap
     private val rawWaysFile: RawWaysWithOwnIDsFile
     private val startTime: Date
     private var countNodes: Long = 0
     private var countWays: Long = 0
     private var highestNodeID: Long = 0
     private var lowestNodeID = Long.MAX_VALUE
+
     fun cleanMem() {
         cleanMem(startTime)
     }
@@ -67,8 +68,7 @@ class Rebuilder(
         )
 
         // close
-        osmNodeID2OwnIDMap!!.close()
-        osmNodeID2OwnIDMap = null // free memory
+        osmNodeID2OwnIDMap.close()
         cleanMem()
         rawWaysFile.close() // close for writing and flush
         wcf.close()
@@ -96,11 +96,12 @@ class Rebuilder(
 
     private var timeInsertNewNode: Long = 0
     private var timePutOsm2OwnIDMap: Long = 0
-    private var nodesCache: Array<OSMNode?>? = arrayOfNulls(MAX_NODE_CACHE_SIZE)
+    private var nodesCache: Array<OSMNode?> = arrayOfNulls(MAX_NODE_CACHE_SIZE)
     private var nodesCacheSize = 0
-    override fun foundNode(node: OSMNode?) {
+
+    override fun foundNode(node: OSMNode) {
         if (jumpOverNodes) return
-        nodesCache!![nodesCacheSize++] = node
+        nodesCache[nodesCacheSize++] = node
         if (nodesCacheSize >= MAX_NODE_CACHE_SIZE) processNodesCache()
     }
 
@@ -124,14 +125,14 @@ class Rebuilder(
         Arrays.sort(nodesCache, 0, nodesCacheSize, OSMNodeByDirComparator())
         timespan()
         for (i in 0 until nodesCacheSize) {
-            val n = nodesCache!![i]
-            insertNewNode(n)
+            val n = nodesCache[i]
+            insertNewNode(n!!)
         }
         timeInsertNewNode += timespan()
         Arrays.sort(nodesCache, 0, nodesCacheSize, OSMNodeByOSMIDComparator()) //mod!!!!
         for (i in 0 until nodesCacheSize) {
-            val node = nodesCache!![i]
-            osmNodeID2OwnIDMap!!.put(node!!.lat, node.lng, node.id, node.ownID)
+            val node = nodesCache[i]
+            osmNodeID2OwnIDMap.put(node!!.lat, node.lng, node.id, node.ownID)
         }
         timePutOsm2OwnIDMap += timespan()
         countNodes += nodesCacheSize.toLong()
@@ -166,21 +167,19 @@ class Rebuilder(
         lowestNodeID = Long.MAX_VALUE
     }
 
-    private fun insertNewNode(node: OSMNode?) {
-        if (node!!.id > highestNodeID) highestNodeID = node.id
+    private fun insertNewNode(node: OSMNode) {
+        if (node.id > highestNodeID) highestNodeID = node.id
         if (node.id < lowestNodeID) lowestNodeID = node.id
         node.ownID = nlf.insertNewNodeStreamAppend(node.lat, node.lng)
     }
 
     private var waysCache: Array<OSMWay?> = arrayOfNulls(MAX_NEW_WAY_QUEUE_SIZE)
     private var waysCacheSize = 0
-    override fun foundWay(way: OSMWay?) {
-        if (countWays == 0L && nodesCache != null) {
+    override fun foundWay(way: OSMWay) {
+        if (countWays == 0L) {
             processNodesCache() // process remaining
-            nodesCache = null // free mem
             nodesCacheSize = 0
             osmNodeID2OwnIDMap!!.setReadOnly()
-            nodesCache = null
             nlf.close() // switch from stream access to RandomAccessFile access, no need to reopen
             osmNodeID2OwnIDMap!!.persistCellMap(startTime)
         }

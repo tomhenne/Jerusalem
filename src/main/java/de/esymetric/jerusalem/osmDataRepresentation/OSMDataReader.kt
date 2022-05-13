@@ -16,8 +16,8 @@ class OSMDataReader(
     var entityCount: Long = 0
 
     interface OSMDataReaderListener {
-        fun foundNode(node: OSMNode?)
-        fun foundWay(way: OSMWay?)
+        fun foundNode(node: OSMNode)
+        fun foundWay(way: OSMWay)
     }
 
     var buffer = ""

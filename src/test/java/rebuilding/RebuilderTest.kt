@@ -2,6 +2,7 @@ package rebuilding
 
 import de.esymetric.jerusalem.osmDataRepresentation.OSMDataReader
 import de.esymetric.jerusalem.rebuilding.Rebuilder
+import de.esymetric.jerusalem.rebuilding.optimizer.TransitionsOptimizer
 import de.esymetric.jerusalem.routing.Router
 import de.esymetric.jerusalem.routing.Router.Companion.debugMode
 import de.esymetric.jerusalem.routing.algorithms.TomsAStarStarRouting
@@ -16,6 +17,9 @@ import java.util.*
 
 class RebuilderTest {
     var routerTest = RouterTest()
+
+    val osmTestFilePath = "osmData/hadern2022.osm.bz2"
+
     @Test
     @Throws(Exception::class)
     fun testRebuildAndRouting() {
@@ -27,7 +31,7 @@ class RebuilderTest {
             dataDirectoryPath, tempDirectoryPath,
             TomsRoutingHeuristics(), false, false, false
         )
-        val fis = FileInputStream("osmData/hadern2.osm.bz2")
+        val fis = FileInputStream(osmTestFilePath)
         val bzis = CBZip2InputStream(fis)
         val reader = OSMDataReader(bzis, rebuilder, false)
         reader.read(Date())
@@ -38,6 +42,12 @@ class RebuilderTest {
             "BRAF-INFO: " +
                     shortInfoAndResetCounters
         )
+
+        // optimize
+
+        val to = TransitionsOptimizer(dataDirectoryPath)
+        to.optimize(Date())
+        to.close()
 
         // test
         val router = Router(
@@ -57,6 +67,10 @@ class RebuilderTest {
             router, 48.116892, 11.487076, 48.117909, 11.472429,
             "eichenstrasse", dataDirectoryPath
         )
+        routerTest.makeRoute(
+            router, 48.098146, 11.477182, 48.099103, 11.455648,
+            "durch-den-wald", dataDirectoryPath
+        )
     }
 
     @Test
@@ -70,7 +84,7 @@ class RebuilderTest {
             dataDirectoryPath, tempDirectoryPath,
             TomsRoutingHeuristics(), false, false, false
         )
-        var fis = FileInputStream("osmData/hadern2.osm.bz2")
+        var fis = FileInputStream(osmTestFilePath)
         var bzis = CBZip2InputStream(fis)
         var reader = OSMDataReader(bzis, rebuilder, false)
         reader.read(Date())
@@ -83,7 +97,7 @@ class RebuilderTest {
             dataDirectoryPath, tempDirectoryPath,
             TomsRoutingHeuristics(), true, true, false
         )
-        fis = FileInputStream("osmData/hadern2.osm.bz2")
+        fis = FileInputStream(osmTestFilePath)
         bzis = CBZip2InputStream(fis)
         reader = OSMDataReader(bzis, rebuilder, true)
         reader.read(Date())

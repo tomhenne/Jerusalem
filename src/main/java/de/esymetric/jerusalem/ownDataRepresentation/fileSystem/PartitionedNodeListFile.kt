@@ -61,7 +61,7 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
         currentLatLonDir = LatLonDir(-1000.0, -1000.0)
     }
 
-    fun getAllNodesInFile(filePath: String?): List<Node> {
+    fun getAllNodesInFile(filePath: String): List<Node> {
         val fs = File(filePath).length()
         val nr = (fs / SENTENCE_LENGTH).toInt()
         val arrayList: MutableList<Node> = ArrayList()
@@ -117,7 +117,6 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
         return try {
             appendNewNodeStream!!.writeFloat(lat.toFloat())
             appendNewNodeStream!!.writeFloat(lng.toFloat())
-            //appendNewNodeStream.writeInt(-1);
             appendNewNodeStream!!.writeInt(-1)
             maxNodeID++
             maxNodeID
@@ -158,7 +157,6 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
             val dis = DataInputStream(bais)
             n.lat = dis.readFloat().toDouble()
             n.lng = dis.readFloat().toDouble()
-            //n.nextNodeID = dis.readInt();
             n.transitionID = dis.readInt()
             n.setLatLonDirKey(latLonDir.shortKey) // for sorting
             dis.close()
@@ -213,62 +211,8 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
         }
     }
 
-    fun resetTransitionIDsInAllFilesStreamed(startTime: Date) {
-        var count = 1
-        val files = File(dataDirectoryPath).listFiles()
-        Arrays.sort(files)
-        for (f in files) if (f.isDirectory && f.name.startsWith("lat_")) {
-            println(
-                Utils.formatTimeStopWatch(
-                    Date()
-                        .time
-                            - startTime.time
-                )
-                        + "  >>> " + f.name + " # " + count++
-            )
-            for (g in f.listFiles()) if (g != null && g.isDirectory
-                && g.name.startsWith("lng_")
-            ) {
-                val list = g.listFiles()
-                if (list == null) {
-                    println("Cannot list files in " + g.path)
-                    continue
-                }
-                for (h in list) if (h != null && h.isFile
-                    && h.name == FILE_NAME
-                ) {
-                    resetTransitionIDs(h)
-                }
-            }
-        }
-    }
-
-    fun resetTransitionIDs(f: File) {
-        val f2 = File(f.path + "_")
-        try {
-            val dis = DataInputStream(BufferedInputStream(FileInputStream(f), 100000))
-            val dos = DataOutputStream(BufferedOutputStream(FileOutputStream(f2), 100000))
-            while (dis.available() > 0) {
-                dos.writeInt(dis.readInt())
-                dos.writeInt(dis.readInt())
-                //dos.writeInt(dis.readInt());
-                dis.readInt()
-                dos.writeInt(-1)
-            }
-            dis.close()
-            dos.close()
-        } catch (e: FileNotFoundException) {
-            e.printStackTrace()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        f.delete()
-        f2.renameTo(f)
-    }
-
     companion object {
         const val SENTENCE_LENGTH = 12L
-        const val MAX_CACHE_SIZE = 5000
         const val FILE_NAME = "nodes.data"
     }
 }

@@ -25,10 +25,6 @@ class MemoryArrayOsmNodeID2OwnIDMap(
         return 0f
     }
 
-    fun getAndClearNumberOfFileChanges(): Int {
-        return 0
-    }
-
     fun put(lat: Double, lng: Double, osmID: Long, ownID: Int) {
         val lld = LatLonDir(lat, lng)
         cellMap.put(osmID, lld)
