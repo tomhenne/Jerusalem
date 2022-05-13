@@ -74,17 +74,6 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
                 val tn = getReplacementTransition(n, t)
                 if (tn != null) {
                     wlf.updateTransition(n, tn, nlf)
-
-                    /* DEBUG
-					Transition tt = wlf.getTransition(n, tn.id, true, nlf);
-					if( tt.id != tn.id ) 
-						System.out.print("ERROR");
-							if( tt.targetNode.getUID() != tn.targetNode.getUID() )
-								System.out.print("ERROR");
-									if( tt.origTargetNode.getUID() != tn.origTargetNode.getUID() )
-										System.out.print("ERROR");
-							if( (int)Math.round(tt.distanceM * 10.0) != (int)Math.round(tn.distanceM  * 10.0) )
-						System.out.print("ERROR");*/
                 }
             }
         }

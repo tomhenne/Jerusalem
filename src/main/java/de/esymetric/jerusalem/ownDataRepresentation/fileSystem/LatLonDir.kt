@@ -64,7 +64,7 @@ class LatLonDir {
     companion object {
         const val LAT_OFFS = 90.0
         const val LNG_OFFS = 180.0
-        @JvmStatic
+
 		fun deleteAllLatLonDataFiles(dataDirectoryPath: String?) {
             for (f in File(dataDirectoryPath).listFiles()) if (f.isDirectory && f.name.startsWith("lat_")) for (g in f.listFiles()) if (g.isDirectory && g.name.startsWith(
                     "lng_"

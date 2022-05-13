@@ -18,7 +18,6 @@ class PartitionedWayCostFile(var dataDirectoryPath: String, var readOnly: Boolea
     }
 
     fun checkAndCreateRandomAccessFile(lld: LatLonDir) {
-        //LatLonDir newLatLonDir = new LatLonDir(lat, lng);
         if (lld.equals(currentLatLonDir)) return
         currentLatLonDir = lld
         filePath = (currentLatLonDir.makeDir(dataDirectoryPath, !readOnly)

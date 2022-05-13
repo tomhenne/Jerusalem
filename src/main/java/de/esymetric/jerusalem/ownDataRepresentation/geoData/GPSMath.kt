@@ -7,7 +7,6 @@ object GPSMath {
      * Distances
      */
 
-    @JvmStatic
     fun calculateDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
         var lat1 = lat1
         var lon1 = lon1
