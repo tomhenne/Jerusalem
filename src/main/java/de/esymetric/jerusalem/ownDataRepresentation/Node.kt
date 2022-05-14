@@ -105,7 +105,6 @@ class Node : Comparable<Node>, Cloneable {
         return transitions!!
     }
 
-    @JvmOverloads
     fun listTransitionsWithoutSameWayBack(
         predecessor: Node?,
         loadOriginalTargetNodes: Boolean,

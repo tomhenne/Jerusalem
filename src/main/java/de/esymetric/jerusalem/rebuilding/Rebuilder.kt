@@ -136,7 +136,7 @@ class Rebuilder(
         }
         timePutOsm2OwnIDMap += timespan()
         countNodes += nodesCacheSize.toLong()
-        for (i in 0 until nodesCacheSize) nodesCache!![i] = null
+        for (i in 0 until nodesCacheSize) nodesCache[i] = null
         nodesCacheSize = 0
         System.gc()
         println(
@@ -151,11 +151,11 @@ class Rebuilder(
                     + " ndl"
                     + lowestNodeID
                     + " ona"
-                    + osmNodeID2OwnIDMap!!.getNumberOfUsedArrays()
+                    + osmNodeID2OwnIDMap.getNumberOfUsedArrays()
                     + "/"
-                    + osmNodeID2OwnIDMap!!.getMaxNumberOfArrays()
+                    + osmNodeID2OwnIDMap.getMaxNumberOfArrays()
                     + " ons"
-                    + osmNodeID2OwnIDMap!!.getEstimatedMemorySizeMB().toInt() + "mb"
+                    + osmNodeID2OwnIDMap.getEstimatedMemorySizeMB().toInt() + "mb"
                     + " mem"
                     + Utils.memInfoStr()
                     + " t_ins"
@@ -176,12 +176,12 @@ class Rebuilder(
     private var waysCache: Array<OSMWay?> = arrayOfNulls(MAX_NEW_WAY_QUEUE_SIZE)
     private var waysCacheSize = 0
     override fun foundWay(way: OSMWay) {
-        if (countWays == 0L) {
+        if (countWays == 0L && nodesCacheSize > 0) {
             processNodesCache() // process remaining
             nodesCacheSize = 0
-            osmNodeID2OwnIDMap!!.setReadOnly()
+            osmNodeID2OwnIDMap.setReadOnly()
             nlf.close() // switch from stream access to RandomAccessFile access, no need to reopen
-            osmNodeID2OwnIDMap!!.persistCellMap(startTime)
+            osmNodeID2OwnIDMap.persistCellMap(startTime)
         }
         waysCache[waysCacheSize++] = way
         if (waysCacheSize >= MAX_NEW_WAY_QUEUE_SIZE) processWaysCache()
@@ -210,7 +210,6 @@ class Rebuilder(
             waysCache[i] = null
         }
         waysCacheSize = 0
-        waysCache = arrayOfNulls(MAX_NEW_WAY_QUEUE_SIZE)
         cleanMem()
         println(
             "\n" + Utils.formatTimeStopWatch(

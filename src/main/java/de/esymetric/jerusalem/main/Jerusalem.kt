@@ -191,12 +191,12 @@ object Jerusalem {
                         trackPts.add(p)
                     }
                     gpx.trackPositions = trackPts
-                    gpx.Save(
+                    gpx.save(
                         dataDirectoryPath + File.separatorChar + filename
                                 + "-" + routingType + ".gpx"
                     )
                     kml.trackPositions = trackPts
-                    kml.Save(
+                    kml.save(
                         dataDirectoryPath + File.separatorChar + filename
                                 + "-" + routingType + ".kml"
                     )
@@ -393,7 +393,7 @@ object Jerusalem {
             trackPts.add(p)
         }
         kml.trackPositions = trackPts
-        kml.Save(
+        kml.save(
             dataDirectoryPath + File.separatorChar + name + "-"
                     + routingType + ".kml"
         )

@@ -46,7 +46,7 @@ class RouterTest {
             trackPts.add(p)
         }
         kml.trackPositions = trackPts
-        kml.Save(
+        kml.save(
             dataDirectoryPath + File.separatorChar + name + "-"
                     + routingType + ".kml"
         )

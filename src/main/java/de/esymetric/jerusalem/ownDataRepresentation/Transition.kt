@@ -5,11 +5,8 @@ import de.esymetric.jerusalem.routing.RoutingType
 
 class Transition {
     var id = 0
-    @JvmField
 	var nextTransitionID = 0
-    @JvmField
 	var targetNode: Node? = null
-    @JvmField
 	var origTargetNode // for TransitionOptimizer, original targetNode before optimization
             : Node? = null
     var costFoot = 0.0
@@ -19,6 +16,7 @@ class Transition {
     var costCar = 0.0
     var costCarShortest = 0.0
     var distanceM = 0.0
+
     fun getCost(type: RoutingType): Double {
         var transitionCost = 0.0
         when (type) {

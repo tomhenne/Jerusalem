@@ -118,7 +118,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
             successor = successor.clone() as Node
             var cost = currentNode.realCostSoFar
             val transitionCost = t.getCost(type)
-            if (transitionCost == RoutingHeuristics.Companion.BLOCKED_WAY_COST) continue
+            if (transitionCost == RoutingHeuristics.BLOCKED_WAY_COST) continue
             cost += transitionCost
             successor.realCostSoFar = cost
             cost += successor.getRemainingCost(target!!, type, heuristics!!)
@@ -146,7 +146,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
             trackPts.add(p)
         }
         kml.trackPositions = trackPts
-        kml.Save("current_$count.kml")
+        kml.save("current_$count.kml")
     }
 
     companion object {
