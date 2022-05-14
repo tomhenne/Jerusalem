@@ -9,6 +9,14 @@ import java.io.DataOutputStream
 import java.io.File
 import java.io.IOException
 
+// sentence structure:
+// 0 targetNodeID, INT
+// 4 origTargetNodeID, INT
+// 8 nextTransitionID, INT
+// 12 wayCostID, INT
+// 16 wayCostLatLonDirKey SHORT
+// 18 distance FLOAT
+
 class PartitionedTransitionListFile(
     var dataDirectoryPath: String,
     var readOnly: Boolean
@@ -81,13 +89,6 @@ class PartitionedTransitionListFile(
 
     fun getTransition(
         sourceNode: Node, transitionID: Int, loadOriginalTargetNode: Boolean,
-        nlf: PartitionedNodeListFile
-    ): Transition? {
-        return getTransition(sourceNode, transitionID, loadOriginalTargetNode, nlf, null)
-    }
-
-    fun getTransition(
-        sourceNode: Node, transitionID: Int, loadOriginalTargetNode: Boolean,
         nlf: PartitionedNodeListFile, wcf: PartitionedWayCostFile?
     ): Transition? {
         checkAndCreateRandomAccessFile(sourceNode.lat, sourceNode.lng)
@@ -133,6 +134,7 @@ class PartitionedTransitionListFile(
             val wayCostID = raf!!.readInt()
             val wayCostLatLonDirKey = raf!!.readShort()
             t.distanceM = raf!!.readFloat().toDouble()
+            // TODO get waycost from ALL optimized transitions?
             wcf?.readTransitionCost(
                 LatLonDir(wayCostLatLonDirKey),
                 wayCostID, t
@@ -155,8 +157,7 @@ class PartitionedTransitionListFile(
     }
 
     fun updateTransition(
-        sourceNode: Node, t: Transition,
-        nlf: PartitionedNodeListFile?
+        sourceNode: Node, t: Transition, wcf: PartitionedWayCostFile
     ): Boolean {
         checkAndCreateRandomAccessFile(sourceNode.lat, sourceNode.lng)
         return try {
@@ -175,12 +176,20 @@ class PartitionedTransitionListFile(
                 origTargetNode.lng
             )
             raf!!.writeInt(origTargetNodeID or offsetBits)
-            raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 18L) // targetNodeID,
-            // origTargetNodeID,
-            // nextTransitionID,
-            // wayCostID,
-            // wayCostLatLonDirKey
+            raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 18L)
             raf!!.writeFloat(t.distanceM.toFloat())
+
+            //TODO also update transition costs??
+
+            raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 12L)
+            val wayCostID = raf!!.readInt()
+            val wayCostLatLonDirKey = raf!!.readShort()
+
+            wcf.updateWay(LatLonDir(wayCostLatLonDirKey), wayCostID,
+                t.costFoot, t.costBike, t.costRacingBike,
+                t.costMountainBike, t.costCar, t.costCarShortest
+            )
+
             true
         } catch (e: IOException) {
             e.printStackTrace()

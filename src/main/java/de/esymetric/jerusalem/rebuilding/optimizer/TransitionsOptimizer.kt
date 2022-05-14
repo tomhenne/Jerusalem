@@ -5,6 +5,7 @@ import de.esymetric.jerusalem.ownDataRepresentation.Transition
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedNodeListFile
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedTransitionListFile
+import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedWayCostFile
 import de.esymetric.jerusalem.rebuilding.Rebuilder
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFile
 import de.esymetric.jerusalem.utils.Utils
@@ -14,6 +15,7 @@ import java.util.*
 class TransitionsOptimizer(var dataDirectoryPath: String) {
     var nlf: PartitionedNodeListFile
     var wlf: PartitionedTransitionListFile
+    var wcf : PartitionedWayCostFile
     var savedNodes = 0
     var totalSavedNodes = 0
 
@@ -22,11 +24,12 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
         nlf.setMaxFileCacheSize(30)
         wlf = PartitionedTransitionListFile(dataDirectoryPath, false)
         wlf.setMaxFileCacheSize(30)
+        wcf = PartitionedWayCostFile(dataDirectoryPath, false)
     }
 
-    fun getReplacementTransition(sourceNode: Node, t: Transition): Transition? {
+    private fun getReplacementTransition(sourceNode: Node, t: Transition): Transition? {
         var sourceNode = sourceNode
-        val foundNodes: MutableSet<Long> = HashSet()
+        val foundNodes = mutableSetOf<Long>()
         foundNodes.add(sourceNode.uID)
         val tn = Transition()
         var count = 0
@@ -36,9 +39,9 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
         tn.distanceM = t.distanceM
         var tf = tn
         while (true) {
-            if (tf == null || tf.targetNode == null) return null
+            if (tf.targetNode == null) return null
             val ts = tf.targetNode!!.listTransitionsWithoutSameWayBack(sourceNode, false, nlf, wlf)
-            if (ts.size != 1) break
+            if (ts.size != 1) break // break if master node is found
             count++
             sourceNode = tf.targetNode!!
             if (foundNodes.contains(sourceNode.uID)) return null
@@ -50,6 +53,12 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
             }
             tf = ts[0]
             tn.distanceM += tf.distanceM
+            tn.costFoot += tf.costFoot
+            tn.costBike += tf.costBike
+            tn.costCar += tf.costCar
+            tn.costRacingBike += tf.costRacingBike
+            tn.costMountainBike += tf.costMountainBike
+            tn.costCarShortest += tf.costCarShortest
             tn.targetNode = tf.targetNode
             ts.clear()
         }
@@ -58,7 +67,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
         return if (count == 0) null else tn
     }
 
-    fun optimizeNodes(startTime: Date, nodes: MutableList<Node>) {
+    private fun optimizeNodes(startTime: Date, nodes: MutableList<Node>) {
         var count = 0
 
         while (!nodes.isEmpty()) {
@@ -73,7 +82,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
             for (t in ts) {
                 val tn = getReplacementTransition(n, t)
                 if (tn != null) {
-                    wlf.updateTransition(n, tn, nlf)
+                    wlf.updateTransition(n, tn, wcf)
                 }
             }
         }

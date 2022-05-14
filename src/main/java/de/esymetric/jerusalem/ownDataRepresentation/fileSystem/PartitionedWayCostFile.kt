@@ -75,6 +75,27 @@ class PartitionedWayCostFile(var dataDirectoryPath: String, var readOnly: Boolea
         }
     }
 
+    // TODO update waycost
+    fun updateWay(
+        lld: LatLonDir, wayCostID: Int, costFoot: Double, costBike: Double,
+        costRacingBike: Double, costMountainBike: Double, costCar: Double,
+        costCarShortest: Double
+    ) {
+        checkAndCreateRandomAccessFile(lld)
+        return try {
+            raf!!.seek(wayCostID.toLong() * SENTENCE_LENGTH)
+            raf!!.writeFloat(costFoot.toFloat())
+            raf!!.writeFloat(costBike.toFloat())
+            raf!!.writeFloat(costRacingBike.toFloat())
+            raf!!.writeFloat(costMountainBike.toFloat())
+            raf!!.writeFloat(costCar.toFloat())
+            raf!!.writeFloat(costCarShortest.toFloat())
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+
     fun deleteAllWayCostFiles() {
         for (f in File(dataDirectoryPath).listFiles()) if (f.isDirectory && f.name.startsWith("lat_")) for (g in f.listFiles()) if (g.isDirectory && g.name.startsWith(
                 "lng_"
