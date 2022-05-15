@@ -18,7 +18,7 @@ import java.util.*
 class RebuilderTest {
     var routerTest = RouterTest()
 
-    val osmTestFilePath = "osmData/hadern2022.osm.bz2"
+    val osmTestFilePath = "osmData/hadern2.osm.bz2"
 
     @Test
     @Throws(Exception::class)
