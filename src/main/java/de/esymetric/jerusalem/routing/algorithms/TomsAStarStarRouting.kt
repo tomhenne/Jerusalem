@@ -60,7 +60,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
             openListMap.remove(node.uID)
             if (bestNode == null || bestNode.remainingCost() > node.remainingCost()) bestNode = node
             if (node == target) {
-                if (Router.Companion.debugMode) println(
+                if (Router.debugMode) println(
                     "final number of open nodes was "
                             + openList.size + " - closed list size was "
                             + closedList.size + " - final cost is "

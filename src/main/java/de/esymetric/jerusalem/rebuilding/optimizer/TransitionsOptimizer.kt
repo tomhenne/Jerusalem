@@ -15,7 +15,6 @@ import java.util.*
 class TransitionsOptimizer(var dataDirectoryPath: String) {
     var nlf: PartitionedNodeListFile
     var wlf: PartitionedTransitionListFile
-    var wcf : PartitionedWayCostFile
     var savedNodes = 0
     var totalSavedNodes = 0
 
@@ -24,7 +23,6 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
         nlf.setMaxFileCacheSize(30)
         wlf = PartitionedTransitionListFile(dataDirectoryPath, false)
         wlf.setMaxFileCacheSize(30)
-        wcf = PartitionedWayCostFile(dataDirectoryPath, false)
     }
 
     private fun getReplacementTransition(sourceNode: Node, t: Transition): Transition? {
@@ -44,7 +42,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
             if (ts.size != 1) break // break if master node is found
             count++
             sourceNode = tf.targetNode!!
-            if (foundNodes.contains(sourceNode.uID)) return null
+            if (foundNodes.contains(sourceNode.uID)) return null  // avoid loops
             foundNodes.add(sourceNode.uID)
             if (count > 10000) {
                 // avoid loops
@@ -53,13 +51,8 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
             }
             tf = ts[0]
             tn.distanceM += tf.distanceM
-            tn.costFoot += tf.costFoot
-            tn.costBike += tf.costBike
-            tn.costCar += tf.costCar
-            tn.costRacingBike += tf.costRacingBike
-            tn.costMountainBike += tf.costMountainBike
-            tn.costCarShortest += tf.costCarShortest
             tn.targetNode = tf.targetNode
+            // costs are NOT accumlated because they are factors
             ts.clear()
         }
         foundNodes.clear()
@@ -82,7 +75,7 @@ class TransitionsOptimizer(var dataDirectoryPath: String) {
             for (t in ts) {
                 val tn = getReplacementTransition(n, t)
                 if (tn != null) {
-                    wlf.updateTransition(n, tn, wcf)
+                    wlf.updateTransition(n, tn)
                 }
             }
         }

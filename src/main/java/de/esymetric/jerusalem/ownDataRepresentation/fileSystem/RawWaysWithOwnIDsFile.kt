@@ -14,6 +14,7 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
     var filePath: String? = null
     var readOnly = false
     var currentLatLonDir = LatLonDir(-1000.0, -1000.0)
+
     fun writeWay(
         way: OSMWay,
         osmID2ownIDMap: MemoryArrayOsmNodeID2OwnIDMap,
@@ -25,9 +26,9 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
             daos!!.writeInt(way.wayCostIDForward)
             daos!!.writeInt(way.wayCostIDBackward)
             for (osmNodeID in way.nodes!!) {
-                val nodeID = findNodesNodesCache[osmNodeID!!]
-                if (nodeID == -1) {
-                    println("RawWaysFile: Error - node ID is -1")
+                val nodeID = findNodesNodesCache[osmNodeID]
+                if (nodeID == null || nodeID == -1) {
+                    println("RawWaysFile: Error - node ID is -1 for osm node ID $osmNodeID")
                     continue
                 }
                 daos!!.writeInt(nodeID)
@@ -55,6 +56,10 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
                 if (node.id == -1L) break
                 val latLonDirKey = dain!!.readShort()
                 node.loadByID(LatLonDir(latLonDirKey), nlf!!)
+                if (!node.isLoaded()) {
+                    System.out.println("Node: node ${node.id} cannot be loaded for osm way ${way.id}")
+                }
+
                 nodes.add(node)
             }
         } catch (e: IOException) {

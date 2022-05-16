@@ -7,8 +7,9 @@ class LongOsmNodeID2OwnIDMapFile(var dataDirectoryPath: String) : LongOsmNodeID2
     var currentFileNumber = -1
     var currentFilePath: String? = null
     var currentFileIsModified = false
-    var entries = IntArray(NUMBER_OF_ENTRIES_PER_FILE)
+    var entries = IntArray(NUMBER_OF_ENTRIES_PER_FILE) { i -> -1 }
     var buf: ByteBuffer? = null
+
     override val numberOfUsedArrays: Int
         get() = 0
 

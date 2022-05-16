@@ -128,6 +128,16 @@ class OSMDataReader(
                 .toString().toDouble()
             node.lng = xmlNode.getAttribute("lon")
                 .toString().toDouble()
+
+            val tags = mutableMapOf<String, String>()
+            val enumeration = xmlNode.childrenIterator
+            while (enumeration.hasNext()) {
+                val child = enumeration.next()
+                if ("tag" == child.name)
+                    (tags as HashMap<String?, String?>)[child.getAttribute("k").toString()] =
+                        child.getAttribute("v").toString()
+            }
+            if (tags.isNotEmpty()) node.tags = tags
             listener.foundNode(node)
         } catch (e: XMLParseException) {
             println("XML Parse Error on: $content")
