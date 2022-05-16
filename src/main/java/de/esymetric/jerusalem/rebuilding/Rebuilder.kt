@@ -171,7 +171,7 @@ class Rebuilder(
     private fun insertNewNode(node: OSMNode) {
         if (node.id > highestNodeID) highestNodeID = node.id
         if (node.id < lowestNodeID) lowestNodeID = node.id
-        node.ownID = nlf.insertNewNodeStreamAppend(node.lat, node.lng)
+        node.ownID = nlf.insertNewNodeStreamAppend(node.lat, node.lng)  // ownID within LatLonDir
     }
 
     private var waysCache: Array<OSMWay?> = arrayOfNulls(MAX_NEW_WAY_QUEUE_SIZE)

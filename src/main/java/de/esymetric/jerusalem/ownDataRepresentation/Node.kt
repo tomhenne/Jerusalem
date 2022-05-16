@@ -24,6 +24,7 @@ class Node : Comparable<Node>, Cloneable {
     var predecessor: Node? = null
     private var transitions: MutableList<Transition>? = null
     private var latLonDirKey: Short = 0
+
     override fun equals(obj: Any?): Boolean {
         return if (obj is Node) {
             val n = obj
