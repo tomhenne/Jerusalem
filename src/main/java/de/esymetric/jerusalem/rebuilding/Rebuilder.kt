@@ -105,6 +105,7 @@ class Rebuilder(
         if (nodesCacheSize >= MAX_NODE_CACHE_SIZE) processNodesCache()
     }
 
+
     private class OSMNodeByDirComparator : Comparator<OSMNode?> {
         override fun compare(o1: OSMNode?, o2: OSMNode?): Int {
             val k1 = o1?.getLatLonDirKey() ?: Int.MIN_VALUE
@@ -377,9 +378,10 @@ class Rebuilder(
         Arrays.sort(foundNodes)
         timespan()
         for (osmID in foundNodes) {
-            val nodeID = osmNodeID2OwnIDMap!![osmID] // translate osm ID to
+            val nodeID = osmNodeID2OwnIDMap[osmID] // translate osm ID to
             // own ID
-            if (nodeID == -1) println("Rebuilder Error: cannot get own ID for OSM ID $osmID")
+            if (nodeID == -1)
+                println("Rebuilder Error: cannot get own ID for OSM ID $osmID")
             findNodesNodesCache.put(osmID, nodeID)
         }
         timeOsm2Own += timespan()

@@ -11,13 +11,9 @@ import de.esymetric.jerusalem.routing.RoutingType
 class Node : Comparable<Node>, Cloneable {
     var id // used for ownID, but in Rebuilder also for osmID
             : Long = 0
-    @JvmField
 	var lat = 0.0
-    @JvmField
 	var lng = 0.0
 
-    // public int nextNodeID;
-	@JvmField
 	var transitionID = 0
 
     // routing
@@ -145,9 +141,11 @@ class Node : Comparable<Node>, Cloneable {
         return totalCost - realCostSoFar
     }
 
-    fun loadByID(lld: LatLonDir?, nlf: PartitionedNodeListFile) {
-        nlf.getNode(this, lld!!, id.toInt())
+    fun loadByID(lld: LatLonDir, nlf: PartitionedNodeListFile) {
+        nlf.getNode(this, lld, id.toInt())
     }
+
+    fun isLoaded() = lat != 0.0 || lng != 0.0
 
     fun findConnectedMasterNodes(nlf: PartitionedNodeListFile?, wlf: PartitionedTransitionListFile): List<Node> {
         val nodes: MutableList<Node> = ArrayList()

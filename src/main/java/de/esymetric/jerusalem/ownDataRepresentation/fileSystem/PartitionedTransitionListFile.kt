@@ -68,7 +68,8 @@ class PartitionedTransitionListFile(
                 targetNode.lat,
                 targetNode.lng
             )
-            daos.writeInt(targetNodeID or offsetBits)
+            println("targetNodeId=" + targetNodeID)
+            daos.writeInt(targetNodeID or offsetBits!!)
             daos.writeInt(-1) // origTargetNodeID, for TransitionOptimizer
             daos.writeInt(nextTransitionID)
             daos.writeInt(wayCostID)
@@ -157,7 +158,7 @@ class PartitionedTransitionListFile(
     }
 
     fun updateTransition(
-        sourceNode: Node, t: Transition, wcf: PartitionedWayCostFile
+        sourceNode: Node, t: Transition
     ): Boolean {
         checkAndCreateRandomAccessFile(sourceNode.lat, sourceNode.lng)
         return try {
@@ -168,28 +169,21 @@ class PartitionedTransitionListFile(
                 targetNode.lat,
                 targetNode.lng
             )
-            raf!!.writeInt(targetNodeID or offsetBits)
-            val origTargetNode = t.origTargetNode
-            val origTargetNodeID = origTargetNode!!.id.toInt() shl 4
-            offsetBits = currentLatLonDir.getOffsetBits(
-                origTargetNode.lat,
-                origTargetNode.lng
-            )
-            raf!!.writeInt(origTargetNodeID or offsetBits)
-            raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 18L)
-            raf!!.writeFloat(t.distanceM.toFloat())
-
-            //TODO also update transition costs??
-
-            raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 12L)
-            val wayCostID = raf!!.readInt()
-            val wayCostLatLonDirKey = raf!!.readShort()
-
-            wcf.updateWay(LatLonDir(wayCostLatLonDirKey), wayCostID,
-                t.costFoot, t.costBike, t.costRacingBike,
-                t.costMountainBike, t.costCar, t.costCarShortest
-            )
-
+            if (offsetBits != null) {
+                raf!!.writeInt(targetNodeID or offsetBits)
+                val origTargetNode = t.origTargetNode
+                val origTargetNodeID = origTargetNode!!.id.toInt() shl 4
+                offsetBits = currentLatLonDir.getOffsetBits(
+                    origTargetNode.lat,
+                    origTargetNode.lng
+                )
+                if (offsetBits != null) {
+                    raf!!.writeInt(origTargetNodeID or offsetBits)
+                    raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 18L)
+                    raf!!.writeFloat(t.distanceM.toFloat())
+                    // no NOT update costs since these are only factors, not absolute costs
+                }
+            }
             true
         } catch (e: IOException) {
             e.printStackTrace()

@@ -1,6 +1,7 @@
 package de.esymetric.jerusalem.ownDataRepresentation.fileSystem
 
 import java.io.File
+import java.lang.Math.abs
 
 class LatLonDir {
     var latInt: Int
@@ -27,10 +28,16 @@ class LatLonDir {
         lngInt = key - 360 * latInt
     }
 
-    fun getOffsetBits(lat: Double, lng: Double): Int {
+    fun getOffsetBits(lat: Double, lng: Double): Int? {
         val lld2 = LatLonDir(lat, lng)
         val deltaLat = lld2.latInt - latInt
         val deltaLng = lld2.lngInt - lngInt
+
+        if( abs(deltaLat) > 1 || abs(deltaLng) > 1) {
+            System.out.println("Not a neighbouring node.")
+            return null
+        }
+
         var bits = 0
         if (deltaLat == 1) bits = bits or 1
         if (deltaLat == -1) bits = bits or 2
