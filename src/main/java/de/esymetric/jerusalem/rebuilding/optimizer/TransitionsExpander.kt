@@ -27,6 +27,7 @@ class TransitionsExpander {
         na.clearTransitionsCache() // clear transitions that do not have origTargetNodes loaded
         val ts = na.listTransitions(true, nlf, wlf)
         for (t in ts) {
+            // find exactly the correct transition na >> nb
             if (t.targetNode == nb) {
                 followTransitions(na, t, nnodes, nb, nlf, wlf)
                 return

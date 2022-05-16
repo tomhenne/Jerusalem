@@ -5,7 +5,6 @@ import de.esymetric.jerusalem.ownDataRepresentation.Transition
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedNodeListFile
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedTransitionListFile
-import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedWayCostFile
 import de.esymetric.jerusalem.rebuilding.Rebuilder
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFile
 import de.esymetric.jerusalem.utils.Utils

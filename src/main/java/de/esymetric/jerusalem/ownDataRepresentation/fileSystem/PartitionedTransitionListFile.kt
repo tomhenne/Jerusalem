@@ -68,7 +68,6 @@ class PartitionedTransitionListFile(
                 targetNode.lat,
                 targetNode.lng
             )
-            println("targetNodeId=" + targetNodeID)
             daos.writeInt(targetNodeID or offsetBits!!)
             daos.writeInt(-1) // origTargetNodeID, for TransitionOptimizer
             daos.writeInt(nextTransitionID)
@@ -135,7 +134,6 @@ class PartitionedTransitionListFile(
             val wayCostID = raf!!.readInt()
             val wayCostLatLonDirKey = raf!!.readShort()
             t.distanceM = raf!!.readFloat().toDouble()
-            // TODO get waycost from ALL optimized transitions?
             wcf?.readTransitionCost(
                 LatLonDir(wayCostLatLonDirKey),
                 wayCostID, t

@@ -1,5 +1,6 @@
 package routing
 
+import de.esymetric.jerusalem.ownDataRepresentation.Node
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.KML
 import de.esymetric.jerusalem.routing.Router
@@ -12,17 +13,21 @@ class RouterTest {
     fun makeRoute(
         router: Router, lat1: Double, lng1: Double, lat2: Double,
         lng2: Double, name: String, dataDirectoryPath: String
-    ) {
-        for (rt in RoutingType.values()) makeRoute(
+    ): Map<RoutingType, List<Node>?> {
+        val map = mutableMapOf<RoutingType, List<Node>?>()
+        for (rt in RoutingType.values())
+            map[rt] =
+            makeRoute(
             router, rt.name, lat1, lng1, lat2, lng2, name,
             dataDirectoryPath
         )
+        return map
     }
 
     fun makeRoute(
         router: Router, routingType: String, lat1: Double, lng1: Double,
         lat2: Double, lng2: Double, name: String, dataDirectoryPath: String
-    ) {
+    ) : List<Node>? {
         println("---------------------------------------------")
         println("Computing Route $name ($routingType)")
         println("---------------------------------------------")
@@ -34,7 +39,7 @@ class RouterTest {
                 "ERROR: no route found for " + name + " ("
                         + routingType + ")"
             )
-            return
+            return null
         }
         println()
         val kml = KML()
@@ -51,5 +56,6 @@ class RouterTest {
                     + routingType + ".kml"
         )
         Assert.assertTrue(trackPts.size > 10)
+        return route
     }
 }
