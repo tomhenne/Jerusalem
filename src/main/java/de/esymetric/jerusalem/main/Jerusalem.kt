@@ -7,7 +7,6 @@ import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.GPX
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.KML
 import de.esymetric.jerusalem.rebuilding.Rebuilder
-import de.esymetric.jerusalem.rebuilding.optimizer.TransitionsOptimizer
 import de.esymetric.jerusalem.routing.Router
 import de.esymetric.jerusalem.routing.RoutingType
 import de.esymetric.jerusalem.routing.algorithms.TomsAStarStarRouting
@@ -32,15 +31,6 @@ object Jerusalem {
         var tempDirectoryPath = dataDirectoryPath
         File(dataDirectoryPath).mkdir()
 
-        // rebuild all
-        if ("optimize" == command) {
-            val to = TransitionsOptimizer(
-                dataDirectoryPath
-            )
-            to.optimize(Date())
-            to.close()
-            return
-        }
         if ("clean" == command) {
             // remove temp files from osm 2 own id map
             if (args.size < 2) {
@@ -349,7 +339,6 @@ object Jerusalem {
         println("java -jar Jerusalem.jar rebuild <source-filepath>|- <temp-filepath>")
         println("java -jar Jerusalem.jar rebuildIndex <temp-filepath>")
         println("java -jar Jerusalem.jar rebuildTransitions <temp-filepath>")
-        println("java -jar Jerusalem.jar optimize")
         println("java -jar Jerusalem.jar clean <temp-filepath>")
         println("java -jar Jerusalem.jar routingTest")
         println("java -jar Jerusalem.jar findCrossroads foot|bike|racingBike|mountainBike|car|carShortest")

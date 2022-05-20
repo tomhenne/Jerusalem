@@ -53,5 +53,25 @@ class BufferedRandomAccessFileTest {
             i += 9
         }
         braf.close()
+        braf.open("testData/braf.data", "rw")
+
+        run {
+            var i = 0
+            while (i < 65000) {
+                braf.seek(i)
+                braf.writeUShort(i.toUShort())
+                i += 59
+            }
+        }
+        braf.close()
+        braf.open("testData/braf.data", "rw")
+
+        i = 0
+        while (i < 65000) {
+            braf.seek(i)
+            Assert.assertEquals(braf.readUShort(), i.toUShort())
+            i += 59
+        }
+        braf.close()
     }
 }

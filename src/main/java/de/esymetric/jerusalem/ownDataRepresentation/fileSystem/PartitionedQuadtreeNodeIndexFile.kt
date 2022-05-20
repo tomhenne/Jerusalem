@@ -350,8 +350,7 @@ class PartitionedQuadtreeNodeIndexFile(
                     numberOfSentences = 0
                     insertNewSentence(rafIndex)
                     val nodes = nlf.getAllNodesInFile(
-                        h
-                            .path
+                        h.path
                     )
                     println(
                         "\n"
@@ -362,12 +361,12 @@ class PartitionedQuadtreeNodeIndexFile(
                         )
                                 + " building quadtree lat=" + dirLatInt
                                 + " lng=" + dirLngInt + " with "
-                                + nodes!!.size + " nodes"
+                                + nodes.size + " nodes"
                     )
                     var idInListFile = 0
                     for (n in nodes) {
                         try {
-                            val latInt = ((n!!.lat + LAT_OFFS) * USED_DIGITS_MULT).toInt()
+                            val latInt = ((n.lat + LAT_OFFS) * USED_DIGITS_MULT).toInt()
                             val lngInt = ((n.lng + LNG_OFFS) * USED_DIGITS_MULT).toInt()
                             val foundID = setID(
                                 latInt, lngInt,
@@ -379,7 +378,8 @@ class PartitionedQuadtreeNodeIndexFile(
 										 * int testID = getID(latInt, lngInt,
 										 * rafIndex); if( testID != idInListFile
 										 * ) System.out.println("error");
-										 */idInListFile++
+										 */
+                            idInListFile++
                             rafList.writeInt(n.id.toInt())
                             rafList.writeInt(foundID)
                         } catch (e: IOException) {

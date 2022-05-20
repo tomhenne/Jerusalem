@@ -11,11 +11,10 @@ import java.io.IOException
 
 // sentence structure:
 // 0 targetNodeID, INT
-// 4 origTargetNodeID, INT
-// 8 nextTransitionID, INT
-// 12 wayCostID, INT
-// 16 wayCostLatLonDirKey SHORT
-// 18 distance FLOAT
+// 4 nextTransitionID, INT
+// 8 wayCostID, INT
+// 12 wayCostLatLonDirKey SHORT
+// 14 distance FLOAT
 
 class PartitionedTransitionListFile(
     var dataDirectoryPath: String,
@@ -69,7 +68,6 @@ class PartitionedTransitionListFile(
                 targetNode.lng
             )
             daos.writeInt(targetNodeID or offsetBits!!)
-            daos.writeInt(-1) // origTargetNodeID, for TransitionOptimizer
             daos.writeInt(nextTransitionID)
             daos.writeInt(wayCostID)
             daos.writeShort(wayCostLatLonDirKey.toInt())
@@ -88,7 +86,7 @@ class PartitionedTransitionListFile(
     }
 
     fun getTransition(
-        sourceNode: Node, transitionID: Int, loadOriginalTargetNode: Boolean,
+        sourceNode: Node, transitionID: Int,
         nlf: PartitionedNodeListFile, wcf: PartitionedWayCostFile?
     ): Transition? {
         checkAndCreateRandomAccessFile(sourceNode.lat, sourceNode.lng)
@@ -119,17 +117,6 @@ class PartitionedTransitionListFile(
                 )
                 return null
             }
-            var origTargetNodeID = raf!!.readInt() // TransitionOptimizer backed up node
-            if (loadOriginalTargetNode && origTargetNodeID != -1) {
-                offsetBits = origTargetNodeID and 0xF
-                origTargetNodeID = origTargetNodeID shr 4
-                t.origTargetNode = nlf.getNode(
-                    LatLonDir(
-                        sourceNode.lat,
-                        sourceNode.lng, offsetBits
-                    ), origTargetNodeID
-                )
-            }
             t.nextTransitionID = raf!!.readInt()
             val wayCostID = raf!!.readInt()
             val wayCostLatLonDirKey = raf!!.readShort()
@@ -155,42 +142,8 @@ class PartitionedTransitionListFile(
         ) for (h in g.listFiles()) if (h.isFile && h.name == FILENAME) h.delete()
     }
 
-    fun updateTransition(
-        sourceNode: Node, t: Transition
-    ): Boolean {
-        checkAndCreateRandomAccessFile(sourceNode.lat, sourceNode.lng)
-        return try {
-            raf!!.seek(t.id.toLong() * SENTENCE_LENGTH)
-            val targetNode = t.targetNode
-            val targetNodeID = targetNode!!.id.toInt() shl 4
-            var offsetBits = currentLatLonDir.getOffsetBits(
-                targetNode.lat,
-                targetNode.lng
-            )
-            if (offsetBits != null) {
-                raf!!.writeInt(targetNodeID or offsetBits)
-                val origTargetNode = t.origTargetNode
-                val origTargetNodeID = origTargetNode!!.id.toInt() shl 4
-                offsetBits = currentLatLonDir.getOffsetBits(
-                    origTargetNode.lat,
-                    origTargetNode.lng
-                )
-                if (offsetBits != null) {
-                    raf!!.writeInt(origTargetNodeID or offsetBits)
-                    raf!!.seek(t.id.toLong() * SENTENCE_LENGTH + 18L)
-                    raf!!.writeFloat(t.distanceM.toFloat())
-                    // no NOT update costs since these are only factors, not absolute costs
-                }
-            }
-            true
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        }
-    }
-
     companion object {
-        const val SENTENCE_LENGTH = 22L
+        const val SENTENCE_LENGTH = 18L
         const val FILENAME = "transitions.data"
     }
 }

@@ -7,8 +7,6 @@ class Transition {
     var id = 0
 	var nextTransitionID = 0
 	var targetNode: Node? = null
-	var origTargetNode // for TransitionOptimizer, original targetNode before optimization
-            : Node? = null
     var costFoot = 0.0
     var costBike = 0.0
     var costRacingBike = 0.0

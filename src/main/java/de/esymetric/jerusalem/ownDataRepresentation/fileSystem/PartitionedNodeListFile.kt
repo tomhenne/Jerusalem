@@ -73,7 +73,6 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
                 n.id = i.toLong()
                 n.lat = dis.readFloat().toDouble()
                 n.lng = dis.readFloat().toDouble()
-                //n.nextNodeID = dis.readInt();
                 n.transitionID = dis.readInt()
                 arrayList.add(n)
             }

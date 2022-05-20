@@ -43,7 +43,7 @@ class NearestNodeFinder {
                 if (n != null && n.transitionID != -1) { // must have transitions :-)
 
                     // must have transitions for this routingType!!
-                    val transitions = n.listTransitions(false, nlf, wlf, wcf)
+                    val transitions = n.listTransitions(nlf, wlf, wcf)
                     var hasSuitableTransitions = false
                     for (t in transitions) {
                         if (t.getCost(type) != RoutingHeuristics.Companion.BLOCKED_WAY_COST) {

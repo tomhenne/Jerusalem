@@ -82,17 +82,17 @@ class Node : Comparable<Node>, Cloneable {
     val numberOfTransitionsIfTransitionsAreLoaded: Int
         get() = if (transitions == null) -1 else transitions!!.size
 
-    @JvmOverloads
     fun listTransitions(
-        loadOriginalTargetNodes: Boolean, nlf: PartitionedNodeListFile?,
-        wlf: PartitionedTransitionListFile, wcf: PartitionedWayCostFile? = null
+        nlf: PartitionedNodeListFile,
+        wlf: PartitionedTransitionListFile,
+        wcf: PartitionedWayCostFile? = null
     ): List<Transition> {
         if (transitions != null) return transitions!! // return cached version
         transitions = ArrayList()
         if (transitionID == -1) return transitions!!
         var tID = transitionID
         while (true) {
-            val t = wlf.getTransition(this, tID, loadOriginalTargetNodes, nlf!!, wcf) ?: break
+            val t = wlf.getTransition(this, tID, nlf, wcf) ?: break
             // bug in data
             transitions!!.add(t)
             if (t.nextTransitionID == -1) break
@@ -104,24 +104,19 @@ class Node : Comparable<Node>, Cloneable {
 
     fun listTransitionsWithoutSameWayBack(
         predecessor: Node?,
-        loadOriginalTargetNodes: Boolean,
-        nlf: PartitionedNodeListFile?, wlf: PartitionedTransitionListFile,
+        nlf: PartitionedNodeListFile,
+        wlf: PartitionedTransitionListFile,
         wcf: PartitionedWayCostFile? = null
     ): MutableList<Transition> {
-        if (transitions == null) listTransitions(loadOriginalTargetNodes, nlf, wlf, wcf)
+        if (transitions == null) listTransitions(nlf, wlf, wcf)
         val l: MutableList<Transition> = ArrayList()
-        for (t in transitions!!) if (t.targetNode != predecessor &&
-            (t.origTargetNode == null || t.origTargetNode != predecessor)
-        ) l.add(t)
+        for (t in transitions!!)
+            if (t.targetNode != predecessor) l.add(t)
         return l
     }
 
     override fun toString(): String {
         return "$id $lat $lng f=$totalCost"
-    }
-
-    fun clearTransitionsCache() {
-        transitions = null
     }
 
     override fun compareTo(o: Node): Int {
@@ -148,9 +143,9 @@ class Node : Comparable<Node>, Cloneable {
 
     fun isLoaded() = lat != 0.0 || lng != 0.0
 
-    fun findConnectedMasterNodes(nlf: PartitionedNodeListFile?, wlf: PartitionedTransitionListFile): List<Node> {
+    fun findConnectedMasterNodes(nlf: PartitionedNodeListFile, wlf: PartitionedTransitionListFile): List<Node> {
         val nodes: MutableList<Node> = ArrayList()
-        val ts = listTransitions(true, nlf, wlf)
+        val ts = listTransitions(nlf, wlf)
         if (ts.size > 2) {  // is master node
             nodes.add(this)
             return nodes
@@ -164,10 +159,10 @@ class Node : Comparable<Node>, Cloneable {
     fun searchMasterNode(
         n: Node,
         comingFromNode: Node?,
-        nlf: PartitionedNodeListFile?,
+        nlf: PartitionedNodeListFile,
         wlf: PartitionedTransitionListFile
     ): Node {
-        val ts = n!!.listTransitionsWithoutSameWayBack(comingFromNode, true, nlf, wlf)
+        val ts = n.listTransitionsWithoutSameWayBack(comingFromNode, nlf, wlf)
         return if (ts.size == 1) searchMasterNode(ts[0].targetNode!!, n, nlf, wlf) else n
     }
 

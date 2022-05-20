@@ -125,6 +125,13 @@ class BufferedRandomAccessFile {
     }
 
     @Throws(IOException::class)
+    fun readUShort(): UShort {
+        val bytes = buf!!.copyOfRange(index, index + 2)
+        index += 2
+        return toUShort(bytes)
+    }
+
+    @Throws(IOException::class)
     fun read(buffer: ByteArray) {
         // not tested
         System.arraycopy(buf, index, buffer, 0, buffer.size)
@@ -177,6 +184,25 @@ class BufferedRandomAccessFile {
         dis.close()
         bos.close()
         index += 4
+        isChanged = true
+    }
+
+    private fun toBytes(s: UShort): ByteArray {
+        return byteArrayOf((s.toInt() and 0x00FF).toByte(), ((s.toInt() and 0xFF00) shr (8)).toByte())
+    }
+
+    private fun toUShort(a: ByteArray): UShort {
+        return ((a[0].toUInt() and 0xff.toUInt()) or (a[1].toUInt() shl (8))).toUShort()
+    }
+
+    @Throws(IOException::class)
+    fun writeUShort(v: UShort) {
+        increaseBuffer(2)
+        val bos = ByteArrayOutputStream(2)
+        val bytes = toBytes(v)
+        System.arraycopy(bytes, 0, buf, index, 2)
+        bos.close()
+        index += 2
         isChanged = true
     }
 

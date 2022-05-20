@@ -2,7 +2,6 @@ package rebuilding
 
 import de.esymetric.jerusalem.osmDataRepresentation.OSMDataReader
 import de.esymetric.jerusalem.rebuilding.Rebuilder
-import de.esymetric.jerusalem.rebuilding.optimizer.TransitionsOptimizer
 import de.esymetric.jerusalem.routing.Router
 import de.esymetric.jerusalem.routing.Router.Companion.debugMode
 import de.esymetric.jerusalem.routing.algorithms.TomsAStarStarRouting
@@ -14,12 +13,11 @@ import routing.RouterTest
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
-import kotlin.test.assertEquals
 
 class RebuilderTest {
     var routerTest = RouterTest()
 
-    val osmTestFilePath = "osmData/hadern2.osm.bz2"
+    val osmTestFilePath = "osmData/hadern2022.osm.bz2"
 
     @Test
     @Throws(Exception::class)
@@ -49,28 +47,10 @@ class RebuilderTest {
             TomsAStarStarRouting(), TomsRoutingHeuristics(), 120
         )
 
-        val durchWaldFriedhof = routerTest.makeRoute(
-            router, 48.107891, 11.461865, 48.099986, 11.511051,
-            "durch-waldfriedhof", dataDirectoryPath
-        )
-        val grosshadernFussweg = routerTest.makeRoute(
-            router, 48.107608, 11.461648, 48.108656, 11.477371,
-            "grosshadern-fussweg", dataDirectoryPath
-        )
         val eichenstrasse = routerTest.makeRoute(
             router, 48.116892, 11.487076, 48.117909, 11.472429,
             "eichenstrasse", dataDirectoryPath
         )
-        val durchdenWald = routerTest.makeRoute(
-            router, 48.098146, 11.477182, 48.099103, 11.455648,
-            "durch-den-wald", dataDirectoryPath
-        )
-
-        // optimize
-
-        val to = TransitionsOptimizer(dataDirectoryPath)
-        to.optimize(Date())
-        to.close()
 
         // test
 
@@ -79,27 +59,11 @@ class RebuilderTest {
             TomsAStarStarRouting(), TomsRoutingHeuristics(), 120
         )
         debugMode = true
-        val durchWaldFriedhof2 = routerTest.makeRoute(
-            router, 48.107891, 11.461865, 48.099986, 11.511051,
-            "durch-waldfriedhof", dataDirectoryPath
-        )
-        val grosshadernFussweg2 = routerTest.makeRoute(
-            router, 48.107608, 11.461648, 48.108656, 11.477371,
-            "grosshadern-fussweg", dataDirectoryPath
-        )
         val eichenstrasse2 = routerTest.makeRoute(
             router, 48.116892, 11.487076, 48.117909, 11.472429,
             "eichenstrasse", dataDirectoryPath
         )
-        val durchdenWald2 = routerTest.makeRoute(
-            router, 48.098146, 11.477182, 48.099103, 11.455648,
-            "durch-den-wald", dataDirectoryPath
-        )
 
-        assertEquals(durchWaldFriedhof, durchWaldFriedhof2)
-        assertEquals(grosshadernFussweg, grosshadernFussweg2)
-        assertEquals(eichenstrasse, eichenstrasse2)
-        assertEquals(durchdenWald, durchdenWald2)
     }
 
     @Test

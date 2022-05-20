@@ -69,7 +69,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
                 return getFullPath(node)
             }
             if (SAVE_STATE_AS_KML) saveStateAsKml(getFullPath(node), ++count) // for debugging
-            expand(node, targetNodeMasterNodes, useOptimizedPath)
+            expand(node, targetNodeMasterNodes)
             closedList.add(node.uID)
             if (closedList.size > MAX_NODES_IN_CLOSED_LIST) break
             if (closedList.size and 0xfff == 0
@@ -103,13 +103,17 @@ class TomsAStarStarRouting : RoutingAlgorithm {
         return foundPath
     }
 
-    fun expand(currentNode: Node, targetNodeMasterNodes: List<Node?>, useOptimizedPath: Boolean) {
-        val isTargetMasterNode = targetNodeMasterNodes.contains(currentNode) // check!
+    fun expand(currentNode: Node, targetNodeMasterNodes: List<Node?>) {
         // falls es sich um eine mit dem Ziel verbunde Kreuzungsnode handelt,
         // den Original-Pfad verfolgen und nicht den optimierten Pfad, welcher
         // die targetNode �berspringen w�rde
-        for (t in currentNode.listTransitions(!useOptimizedPath || isTargetMasterNode, nlf, wlf!!, wcf)) {
-            var successor = t.targetNode
+        for (t in currentNode.listTransitions(nlf, wlf, wcf)) {
+            var transition = t
+            if (targetNodeMasterNodes.contains(t.targetNode) && targetNodeMasterNodes.contains(currentNode) ) {
+                transition = wlf.getTransition(currentNode, t.id, nlf, wcf) ?: t
+            }
+
+            var successor = transition.targetNode
             if (closedList.contains(successor!!.uID)) continue
 
             // clone successor object - this is required because successor
@@ -117,7 +121,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
             // multiple times
             successor = successor.clone() as Node
             var cost = currentNode.realCostSoFar
-            val transitionCost = t.getCost(type)
+            val transitionCost = transition.getCost(type)
             if (transitionCost == RoutingHeuristics.BLOCKED_WAY_COST) continue
             cost += transitionCost
             successor.realCostSoFar = cost

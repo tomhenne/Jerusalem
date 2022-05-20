@@ -38,7 +38,7 @@ class CrossroadsFinder(dataDirectoryPath: String) {
                 p.latitude, p.longitude, n.lat,
                 n.lng
             )
-            if (d <= MAX_DISTANCE_TO_NODE) p.nrOfTransitions = n.listTransitions(false, nlf, wlf).size.toByte()
+            if (d <= MAX_DISTANCE_TO_NODE) p.nrOfTransitions = n.listTransitions( nlf, wlf).size.toByte()
         }
     }
 }

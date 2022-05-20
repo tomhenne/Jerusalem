@@ -3,7 +3,6 @@ package de.esymetric.jerusalem.routing
 import de.esymetric.jerusalem.ownDataRepresentation.Node
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.*
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
-import de.esymetric.jerusalem.rebuilding.optimizer.TransitionsExpander
 import de.esymetric.jerusalem.utils.Utils
 import java.util.*
 
@@ -74,24 +73,7 @@ class Router(
             nlf, wlf, wcf, heuristics, masterNodesB, maxExecutionTimeS,
             true // use optimized routing?
         )
-        if (route != null) {
 
-            // expand transitions for optimized version
-            val te = TransitionsExpander()
-            val numberOfNodesBefore = route.size
-            route = te.expandNodes(route, nlf, wlf).toMutableList()
-            if (debugMode) println("node expansion (optimized path): " + numberOfNodesBefore + " >>> " + route.size)
-
-            // add start and end point
-            val originalStartNode = Node()
-            originalStartNode.lat = lat1
-            originalStartNode.lng = lng1
-            route.add(0, originalStartNode)
-            val originalTargetNode = Node()
-            originalTargetNode.lat = lat2
-            originalTargetNode.lng = lng2
-            route.add(originalTargetNode)
-        }
         if (debugMode) {
             println(
                 "required time "
