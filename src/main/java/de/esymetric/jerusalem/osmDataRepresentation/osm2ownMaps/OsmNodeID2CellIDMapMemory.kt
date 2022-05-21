@@ -114,8 +114,8 @@ class OsmNodeID2CellIDMapMemory {
     }
 
     companion object {
-        const val INITIAL_NUMBER_OF_ARRAYS = 128000
+        const val INITIAL_NUMBER_OF_ARRAYS = 512000
         const val NUMBER_OF_ARRAYS_INCREMENT = 16000
-        const val HIGHEST_OSM_NODE_ID = 2200000000L // just an estimate
+        const val HIGHEST_OSM_NODE_ID = 8_000_000_000 // just an estimate
     }
 }
