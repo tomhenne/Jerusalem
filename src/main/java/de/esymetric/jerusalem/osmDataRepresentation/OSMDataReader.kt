@@ -1,18 +1,19 @@
 package de.esymetric.jerusalem.osmDataRepresentation
 
 import de.esymetric.jerusalem.utils.Utils
-import nanoxml.XMLElement
 import nanoxml.XMLParseException
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
+import org.xml.sax.InputSource
+import java.io.*
 import java.util.*
+import javax.xml.parsers.DocumentBuilderFactory
 
 class OSMDataReader(
     var inputStream: InputStream,
     var listener: OSMDataReaderListener, var jumpOverNodes: Boolean
 ) {
+    val documentBuilderFactory = DocumentBuilderFactory.newInstance()
+    val documentBuilder = documentBuilderFactory.newDocumentBuilder()
+
     var entityCount: Long = 0
 
     interface OSMDataReaderListener {
@@ -25,7 +26,7 @@ class OSMDataReader(
         val lnr = BufferedReader(
             InputStreamReader(
                 inputStream
-            ), 100000
+            ), 1_000_000
         )
         try {
             readToTag(lnr, "<osm")
@@ -91,9 +92,10 @@ class OSMDataReader(
     }
 
     private fun makeOSMWay(content: String) {
+        /*
         try {
-            var xmlNode: XMLElement? = XMLElement()
-            xmlNode!!.parseString(content)
+            val xmlNode = XMLElement()
+            xmlNode.parseString(content)
             val way = OSMWay()
             way.id = xmlNode.getAttribute("id").toString().toInt()
             way.nodes = ArrayList()
@@ -109,7 +111,31 @@ class OSMDataReader(
                     (way.tags as HashMap<String?, String?>)[child.getAttribute("k").toString()] =
                         child.getAttribute("v").toString()
             }
-            xmlNode = null
+            way.nodes!!.trimToSize()
+            listener.foundWay(way)
+        } catch (e: XMLParseException) {
+            println("XML Parse Error on: $content")
+            e.printStackTrace()
+        }*/
+
+        try {
+            val doc = documentBuilder.parse(InputSource(StringReader(content)))
+            val way = OSMWay()
+            val attributes = doc.firstChild.attributes
+            way.id = attributes.getNamedItem("id").nodeValue.toInt()
+            way.nodes = ArrayList()
+            way.tags = mutableMapOf()
+            val childNodes = doc.firstChild.childNodes
+            for ( i in 0 until childNodes.length ) {
+                val child = childNodes.item(i)
+                if ("nd" == child.nodeName)
+                    way.nodes!!.add(child.attributes.getNamedItem("ref")
+                        .nodeValue.toLong()
+                )
+                if ("tag" == child.nodeName)
+                        way.tags!![child.attributes.getNamedItem("k").nodeValue] =
+                            child.attributes.getNamedItem("v").nodeValue
+            }
             way.nodes!!.trimToSize()
             listener.foundWay(way)
         } catch (e: XMLParseException) {
@@ -120,6 +146,21 @@ class OSMDataReader(
 
     private fun makeOSMNode(content: String) {
         try {
+            val doc = documentBuilder.parse(InputSource(StringReader(content)))
+            val node = OSMNode()
+            val attributes = doc.firstChild.attributes
+            node.id = attributes.getNamedItem("id").nodeValue.toLong()
+            node.lat = attributes.getNamedItem("lat").nodeValue.toDouble()
+            node.lng = attributes.getNamedItem("lon").nodeValue.toDouble()
+            listener.foundNode(node)
+        } catch (e: XMLParseException) {
+            println("XML Parse Error on: $content")
+            e.printStackTrace()
+        }
+
+
+/*
+        try {
             val xmlNode = XMLElement()
             xmlNode.parseString(content)
             val node = OSMNode()
@@ -129,25 +170,27 @@ class OSMDataReader(
             node.lng = xmlNode.getAttribute("lon")
                 .toString().toDouble()
 
-            val tags = mutableMapOf<String, String>()
-            val enumeration = xmlNode.childrenIterator
-            while (enumeration.hasNext()) {
-                val child = enumeration.next()
-                if ("tag" == child.name)
-                    (tags as HashMap<String?, String?>)[child.getAttribute("k").toString()] =
-                        child.getAttribute("v").toString()
+            if (readTags) {
+                val tags = mutableMapOf<String, String>()
+                val enumeration = xmlNode.childrenIterator
+                while (enumeration.hasNext()) {
+                    val child = enumeration.next()
+                    if ("tag" == child.name)
+                        (tags as HashMap<String?, String?>)[child.getAttribute("k").toString()] =
+                            child.getAttribute("v").toString()
+                }
+                if (tags.isNotEmpty()) node.tags = tags
             }
-            if (tags.isNotEmpty()) node.tags = tags
             listener.foundNode(node)
         } catch (e: XMLParseException) {
             println("XML Parse Error on: $content")
             e.printStackTrace()
-        }
+        }*/
     }
 
     @Throws(IOException::class)
     fun readToTag(lnr: BufferedReader, tag: String): String? {
-        if (buffer.length > 0) {
+        if (buffer.isNotEmpty()) {
             val p = buffer.indexOf(tag)
             if (p >= 0) {
                 val head = buffer.substring(0, p)
