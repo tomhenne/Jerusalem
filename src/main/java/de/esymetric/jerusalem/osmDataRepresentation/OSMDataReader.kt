@@ -1,9 +1,10 @@
 package de.esymetric.jerusalem.osmDataRepresentation
 
 import de.esymetric.jerusalem.utils.Utils
-import nanoxml.XMLParseException
-import org.xml.sax.InputSource
-import java.io.*
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 import java.util.*
 import javax.xml.parsers.DocumentBuilderFactory
 
@@ -43,11 +44,18 @@ class OSMDataReader(
             while (true) {
                 if (readToTag(lnr, "<") == null) break
                 val xmlNodeName = readToTag(lnr, " ")
-                var content = "<" + xmlNodeName + " " + readToTag(lnr, ">")
-                content += if (!content.endsWith("/"))
-                    ">" + readToTag(lnr, "</$xmlNodeName>") + "</" + xmlNodeName + ">"
-                else
-                    ">"
+                val sb = StringBuilder()
+                sb.append(xmlNodeName)
+                sb.append(' ')
+                val tail = readToTag(lnr, ">")
+                sb.append(tail)
+                if (tail?.last() != '/')  {
+                    sb.append('>')
+                    sb.append(readToTag(lnr, "</$xmlNodeName>"))
+                    sb.append("</")
+                    sb.append(xmlNodeName)
+                }
+                val content = sb.toString()
                 entityCount++
                 if (entityCount and 0xFFFFF == 0L) {
                     println(
@@ -119,26 +127,30 @@ class OSMDataReader(
         }*/
 
         try {
-            val doc = documentBuilder.parse(InputSource(StringReader(content)))
             val way = OSMWay()
-            val attributes = doc.firstChild.attributes
-            way.id = attributes.getNamedItem("id").nodeValue.toInt()
+            val xmlNodes = splitXmlNodes(content)
+            val attributes = getAttributes(xmlNodes.first())
+            way.id = attributes["id"]?.toInt() ?: throw OsmReaderXMLParseException()
             way.nodes = ArrayList()
             way.tags = mutableMapOf()
-            val childNodes = doc.firstChild.childNodes
-            for ( i in 0 until childNodes.length ) {
-                val child = childNodes.item(i)
-                if ("nd" == child.nodeName)
-                    way.nodes!!.add(child.attributes.getNamedItem("ref")
-                        .nodeValue.toLong()
-                )
-                if ("tag" == child.nodeName)
-                        way.tags!![child.attributes.getNamedItem("k").nodeValue] =
-                            child.attributes.getNamedItem("v").nodeValue
+
+            for (childNode in xmlNodes) {
+                if (childNode.startsWith("nd")) {
+                    val childAttrib = getAttributes(childNode)
+                    childAttrib["ref"]?.toLong()?.let {
+                        way.nodes!!.add(it)
+                    }
+                } else
+                    if (childNode.startsWith("tag")) {
+                        val childAttrib = getAttributes(childNode)
+                        way.tags!![childAttrib["k"]!!] =
+                            childAttrib["v"]!!
+                    }
             }
+
             way.nodes!!.trimToSize()
             listener.foundWay(way)
-        } catch (e: XMLParseException) {
+        } catch (e: OsmReaderXMLParseException) {
             println("XML Parse Error on: $content")
             e.printStackTrace()
         }
@@ -146,14 +158,14 @@ class OSMDataReader(
 
     private fun makeOSMNode(content: String) {
         try {
-            val doc = documentBuilder.parse(InputSource(StringReader(content)))
             val node = OSMNode()
-            val attributes = doc.firstChild.attributes
-            node.id = attributes.getNamedItem("id").nodeValue.toLong()
-            node.lat = attributes.getNamedItem("lat").nodeValue.toDouble()
-            node.lng = attributes.getNamedItem("lon").nodeValue.toDouble()
+            val xmlNodes = splitXmlNodes(content)
+            val attributes = getAttributes(xmlNodes.first())
+            node.id = attributes["id"]?.toLong() ?: throw OsmReaderXMLParseException()
+            node.lat = attributes["lat"]?.toDouble() ?: throw OsmReaderXMLParseException()
+            node.lng = attributes["lon"]?.toDouble() ?: throw OsmReaderXMLParseException()
             listener.foundNode(node)
-        } catch (e: XMLParseException) {
+        } catch (e: OsmReaderXMLParseException) {
             println("XML Parse Error on: $content")
             e.printStackTrace()
         }
@@ -195,10 +207,7 @@ class OSMDataReader(
             if (p >= 0) {
                 val head = buffer.substring(0, p)
                 val tail = buffer.substring(p + tag.length)
-                buffer = """
-                    $tail
-                    
-                    """.trimIndent()
+                buffer = tail + '\n'
                 return head
             }
         }
@@ -214,12 +223,40 @@ class OSMDataReader(
                 val head = line.substring(0, p)
                 val tail = line.substring(p + tag.length)
                 buf.append(head)
-                buffer = """
-                    $tail
-                    
-                    """.trimIndent()
+                buffer = tail + '\n'
                 return buf.toString()
             }
         }
     }
+
+    private inline fun splitXmlNodes(content: String): List<String> =
+        content.split('<')
+
+    private fun getAttributes(content: String): Map<String, String> {
+        var tail = content
+        val attrib = mutableMapOf<String, String>()
+
+        while(true) {
+            val pBlank = tail.indexOf(' ')
+            if (pBlank < 0 ) break;
+
+            val pEquals = tail.indexOf('=')
+            if (pEquals < 0 ) break;
+
+            val name = tail.substring(pBlank + 1, pEquals)
+            tail = tail.substring(pEquals + 2) // jump over quote
+
+            val pQuote = tail.indexOf('"')
+            if (pQuote < 0 ) break;
+
+            val value = tail.substring(0, pQuote)
+            tail = tail.substring(pQuote + 1)
+
+            attrib[name] = value
+        }
+
+        return attrib
+    }
 }
+
+class OsmReaderXMLParseException : RuntimeException()
