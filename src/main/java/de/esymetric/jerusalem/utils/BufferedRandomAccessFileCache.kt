@@ -29,7 +29,7 @@ class BufferedRandomAccessFileCache {
         if (readOnly && !File(filePath).exists()) return null
 
         // remove first element?
-        var raf: BufferedRandomAccessFile? = null
+        var raf: BufferedRandomAccessFile?
         raf = if (queue.size >= maxSize) {
             val fp = queue.poll()
             cache.remove(fp)

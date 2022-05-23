@@ -1,7 +1,5 @@
 package de.esymetric.jerusalem.utils
 
-import de.esymetric.jerusalem.utils.MemoryEfficientLongToIntMap
-
 class MemoryEfficientLongToIntMap {
     inner class Entry {
         // 12 bytes
@@ -34,8 +32,8 @@ class MemoryEfficientLongToIntMap {
         }
     }
 
-    private fun findMatchingEntry(e: Entry?, strippedKey: Int): Entry? {
-        var e = e
+    private fun findMatchingEntry(entry: Entry?, strippedKey: Int): Entry? {
+        var e = entry
         while (e != null) {
             if (e.keyRemainder == strippedKey) return e
             e = e.nextEntry

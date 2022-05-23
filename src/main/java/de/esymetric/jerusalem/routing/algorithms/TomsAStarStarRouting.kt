@@ -15,9 +15,9 @@ import de.esymetric.jerusalem.utils.Utils
 import java.util.*
 
 class TomsAStarStarRouting : RoutingAlgorithm {
-    var openList: SortedSet<Node> = TreeSet()
-    var openListMap = HashMap<Long, Node>()
-    var closedList = HashSet<Long>()
+    private var openList: SortedSet<Node> = TreeSet()
+    private var openListMap = HashMap<Long, Node>()
+    private var closedList = HashSet<Long>()
 
     lateinit var nlf: PartitionedNodeListFile
     lateinit var wlf: PartitionedTransitionListFile
@@ -75,12 +75,12 @@ class TomsAStarStarRouting : RoutingAlgorithm {
             if (closedList.size and 0xfff == 0
                 && Date().time > maxTime
             ) break
-            if (Router.Companion.debugMode && closedList.size and 0xffff == 0) println(
+            if (Router.debugMode && closedList.size and 0xffff == 0) println(
                 "closed list now contains "
                         + closedList.size + " entries"
             )
         }
-        if (Router.Companion.debugMode) println(
+        if (Router.debugMode) println(
             "no route - open list is empty - final number of open nodes was "
                     + openList.size
                     + " - closed list size was "
@@ -90,7 +90,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
         return getFullPath(bestNode)
     }
 
-    fun getFullPath(sourceNode: Node): List<Node>? {
+    private fun getFullPath(sourceNode: Node): List<Node> {
         var node: Node = sourceNode
         val foundPath: MutableList<Node> = LinkedList()
         while (true) {
@@ -125,7 +125,7 @@ class TomsAStarStarRouting : RoutingAlgorithm {
             if (transitionCost == RoutingHeuristics.BLOCKED_WAY_COST) continue
             cost += transitionCost
             successor.realCostSoFar = cost
-            cost += successor.getRemainingCost(target!!, type, heuristics!!)
+            cost += successor.getRemainingCost(target, type, heuristics)
             successor.totalCost = cost
             if (openListMap.containsKey(successor.uID)
                 && cost > openListMap[successor.uID]!!.totalCost

@@ -134,7 +134,7 @@ class BufferedRandomAccessFile {
     @Throws(IOException::class)
     fun read(buffer: ByteArray) {
         // not tested
-        System.arraycopy(buf, index, buffer, 0, buffer.size)
+        System.arraycopy(buf!!, index, buffer, 0, buffer.size)
         index += buffer.size
     }
 
@@ -154,7 +154,7 @@ class BufferedRandomAccessFile {
         val bos = ByteArrayOutputStream(4)
         val dis = DataOutputStream(bos)
         dis.writeInt(v)
-        System.arraycopy(bos.toByteArray(), 0, buf, index, 4)
+        System.arraycopy(bos.toByteArray(), 0, buf!!, index, 4)
         dis.close()
         bos.close()
         index += 4
@@ -167,7 +167,7 @@ class BufferedRandomAccessFile {
         val bos = ByteArrayOutputStream(4)
         val dis = DataOutputStream(bos)
         dis.writeLong(v.toLong())
-        System.arraycopy(bos.toByteArray(), 0, buf, index, 8)
+        System.arraycopy(bos.toByteArray(), 0, buf!!, index, 8)
         dis.close()
         bos.close()
         index += 8
@@ -315,7 +315,6 @@ class BufferedRandomAccessFile {
                 val file = out.channel
                 file.write(buf)
                 file.close()
-                //System.out.print('%');
                 writeCount++
                 writtenFileSize += size.toLong()
             } catch (e: IOException) {

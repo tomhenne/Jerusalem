@@ -4,49 +4,49 @@ import de.esymetric.jerusalem.routing.RoutingHeuristics
 import de.esymetric.jerusalem.routing.RoutingType
 
 class TomsRoutingHeuristics : RoutingHeuristics {
-    var highwayTypesNOTForPedestrians = arrayOf(
+    private var highwayTypesNOTForPedestrians = arrayOf(
         "motorway", "motorway_link",
         "trunk", "trunk_link", "raceway",
         "bus_guideway"
     ) // primary should be allowed - otherwise
 
     // pedestrian routing does not work for London
-    var highwayTypesNOTForPedestriansMap: MutableSet<String> = HashSet()
-    var highwayTypesForCycling = arrayOf(
+    private var highwayTypesNOTForPedestriansMap: MutableSet<String> = HashSet()
+    private var highwayTypesForCycling = arrayOf(
         "primary", "primary_link", "secondary",
         "secondary_link", "tertiary", "unclassified", "road",
         "residential", "living_street", "service", "track", "path",
         "cycleway", "birdleway", "byway", "roundabout"
     )
-    var highwayTypesForCyclingMap: MutableSet<String> = HashSet()
-    var highwayTypesForRacingBike = arrayOf(
+    private var highwayTypesForCyclingMap: MutableSet<String> = HashSet()
+    private var highwayTypesForRacingBike = arrayOf(
         "primary", "primary_link",
         "secondary", "secondary_link", "tertiary", "unclassified", "road",
         "residential", "living_street", "service", "cycleway", "roundabout"
     )
-    var highwayTypesForRacingBikeMap: MutableSet<String> = HashSet()
-    var highwayTypesForMountainBike = arrayOf(
+    private var highwayTypesForRacingBikeMap: MutableSet<String> = HashSet()
+    private var highwayTypesForMountainBike = arrayOf(
         "secondary", "secondary_link",
         "tertiary", "unclassified", "road", "residential", "living_street",
         "service", "track", "path", "cycleway", "footway", "birdleway",
         "byway", "roundabout"
     )
-    var highwayTypesForMountainBikeMap: MutableSet<String> = HashSet()
-    var highwayTypesForCar = arrayOf(
+    private var highwayTypesForMountainBikeMap: MutableSet<String> = HashSet()
+    private var highwayTypesForCar = arrayOf(
         "motorway", "motorway_link", "trunk",
         "trunk_link", "primary", "primary_link", "secondary",
         "secondary_link", "tertiary", "unclassified", "road",
         "residential", "living_street", "service", "roundabout"
     )
-    var highwaySpeedsForCarKMH = intArrayOf(
+    private var highwaySpeedsForCarKMH = intArrayOf(
         130, 60, 105, 50, 100, 50, 80, 40, 70, 60,
         60, 50, 30, 20, 30
     )
-    var highwayTypesForCarMap: MutableSet<String> = HashSet()
-    var highwaySpeedsForCarMapMPerS: MutableMap<String, Double> = HashMap()
-    val standardTagsForEstimationFoot: MutableMap<String, String> = HashMap()
-    val standardTagsForEstimationBike: MutableMap<String, String> = HashMap()
-    val standardTagsForEstimationCar: MutableMap<String, String> = HashMap()
+    private var highwayTypesForCarMap: MutableSet<String> = mutableSetOf()
+    private var highwaySpeedsForCarMapMPerS: MutableMap<String, Double> = mutableMapOf()
+    private val standardTagsForEstimationFoot: MutableMap<String, String> = mutableMapOf()
+    private val standardTagsForEstimationBike: MutableMap<String, String> = mutableMapOf()
+    private val standardTagsForEstimationCar: MutableMap<String, String> = mutableMapOf()
 
     init {
         for (t in highwayTypesNOTForPedestrians) highwayTypesNOTForPedestriansMap.add(t)
@@ -70,11 +70,11 @@ class TomsRoutingHeuristics : RoutingHeuristics {
         type: RoutingType?,
         tags: Map<String, String>?, isOriginalDirection: Boolean
     ): Double {
-        val highwayType = tags!!["highway"] ?: return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+        val highwayType = tags!!["highway"] ?: return RoutingHeuristics.BLOCKED_WAY_COST
         return when (type) {
             RoutingType.foot -> {
                 // highway types
-                if (highwayTypesNOTForPedestriansMap.contains(highwayType)) RoutingHeuristics.Companion.BLOCKED_WAY_COST else 370.3704
+                if (highwayTypesNOTForPedestriansMap.contains(highwayType)) RoutingHeuristics.BLOCKED_WAY_COST else 370.3704
                 // 1000 m / 2.7 m/s
             }
             RoutingType.bike -> {
@@ -84,7 +84,7 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         "oneway",
                         "yes"
                     )
-                ) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                ) return RoutingHeuristics.BLOCKED_WAY_COST
 
                 // check if road is not allowed for bikes, see
                 // http://wiki.openstreetmap.org/wiki/Bicycle and
@@ -92,7 +92,7 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                 // 24.05.2013
                 if (tags.containsKey("bicycle")) {
                     val bicycle = tags["bicycle"]
-                    if ("no" == bicycle) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                    if ("no" == bicycle) return RoutingHeuristics.BLOCKED_WAY_COST
                 }
 
                 // highway types
@@ -101,7 +101,7 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         tags,
                         "cycleway", "yes"
                     ))
-                ) RoutingHeuristics.Companion.BLOCKED_WAY_COST else 200.0
+                ) RoutingHeuristics.BLOCKED_WAY_COST else 200.0
                 // 1000 m / 5 m/s
             }
             RoutingType.racingBike -> {
@@ -111,12 +111,12 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         "oneway",
                         "yes"
                     )
-                ) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                ) return RoutingHeuristics.BLOCKED_WAY_COST
 
                 // check surface
                 if (tags.containsKey("surface")) {
                     val surface = tags["surface"]
-                    if ("unpaved" == surface || "cobblestone" == surface || "gravel" == surface || "pebblestone" == surface || "grass" == surface || "earth" == surface || "ground" == surface || "dirt" == surface || "mud" == surface || "sand" == surface) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                    if ("unpaved" == surface || "cobblestone" == surface || "gravel" == surface || "pebblestone" == surface || "grass" == surface || "earth" == surface || "ground" == surface || "dirt" == surface || "mud" == surface || "sand" == surface) return RoutingHeuristics.BLOCKED_WAY_COST
                 }
 
                 // check if road is not allowed for bikes, see
@@ -125,7 +125,7 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                 // 24.05.2013
                 if (tags.containsKey("bicycle")) {
                     val bicycle = tags["bicycle"]
-                    if ("no" == bicycle) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                    if ("no" == bicycle) return RoutingHeuristics.BLOCKED_WAY_COST
                 }
 
                 // highway types
@@ -134,7 +134,7 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         tags,
                         "cycleway", "yes"
                     ))
-                ) RoutingHeuristics.Companion.BLOCKED_WAY_COST else 142.8571
+                ) RoutingHeuristics.BLOCKED_WAY_COST else 142.8571
                 // 1000 m / 7 m/s
             }
             RoutingType.mountainBike -> {
@@ -144,10 +144,10 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         "oneway",
                         "yes"
                     )
-                ) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                ) return RoutingHeuristics.BLOCKED_WAY_COST
 
                 // highway types
-                if (!highwayTypesForCyclingMap.contains(highwayType)) RoutingHeuristics.Companion.BLOCKED_WAY_COST else 200.0
+                if (!highwayTypesForCyclingMap.contains(highwayType)) RoutingHeuristics.BLOCKED_WAY_COST else 200.0
                 // 1000 m / 5 m/s
             }
             RoutingType.car -> {
@@ -158,10 +158,10 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         "oneway",
                         "yes"
                     )
-                ) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                ) return RoutingHeuristics.BLOCKED_WAY_COST
 
                 // highway types
-                if (!highwayTypesForCarMap.contains(highwayType)) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                if (!highwayTypesForCarMap.contains(highwayType)) return RoutingHeuristics.BLOCKED_WAY_COST
 
                 // calculate cost
                 var timeSCar = 1000.0 / highwaySpeedsForCarMapMPerS[highwayType] as Double // v = 14 m/s, * 1000
@@ -190,16 +190,16 @@ class TomsRoutingHeuristics : RoutingHeuristics {
                         "oneway",
                         "yes"
                     )
-                ) return RoutingHeuristics.Companion.BLOCKED_WAY_COST
+                ) return RoutingHeuristics.BLOCKED_WAY_COST
 
                 // highway types
-                if (!highwayTypesForCarMap.contains(highwayType)) RoutingHeuristics.Companion.BLOCKED_WAY_COST else 71.4286
+                if (!highwayTypesForCarMap.contains(highwayType)) RoutingHeuristics.BLOCKED_WAY_COST else 71.4286
 
                 //return timeSCarShortest;
                 // 1000 m / 14 m/s
             }
             else -> {
-                if (highwayTypesNOTForPedestriansMap.contains(highwayType)) RoutingHeuristics.Companion.BLOCKED_WAY_COST else 370.3704
+                if (highwayTypesNOTForPedestriansMap.contains(highwayType)) RoutingHeuristics.BLOCKED_WAY_COST else 370.3704
             }
         }
     }
@@ -209,13 +209,13 @@ class TomsRoutingHeuristics : RoutingHeuristics {
     }
 
     override fun estimateRemainingCost(type: RoutingType?): Double {
-        var standardTags: Map<String, String>? = null
-        standardTags = when (type) {
-            RoutingType.foot -> standardTagsForEstimationFoot
-            RoutingType.bike, RoutingType.racingBike, RoutingType.mountainBike -> standardTagsForEstimationBike
-            RoutingType.car, RoutingType.carShortest -> standardTagsForEstimationCar
-            else -> standardTagsForEstimationFoot
-        }
+        val standardTags: Map<String, String> =
+            when (type) {
+                RoutingType.foot -> standardTagsForEstimationFoot
+                RoutingType.bike, RoutingType.racingBike, RoutingType.mountainBike -> standardTagsForEstimationBike
+                RoutingType.car, RoutingType.carShortest -> standardTagsForEstimationCar
+                else -> standardTagsForEstimationFoot
+            }
         return calculateCost(type, standardTags, true)
     }
 }

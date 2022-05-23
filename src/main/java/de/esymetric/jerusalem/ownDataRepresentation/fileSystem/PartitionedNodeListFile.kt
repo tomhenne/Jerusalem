@@ -15,13 +15,13 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
         rafCache.setMaxCacheSize(n)
     }
 
-    var maxNodeID = 0
-    var currentLatLonDir = LatLonDir(-1000.0, -1000.0)
-    var fileChangesRecorded = 0
+    private var maxNodeID = 0
+    private var currentLatLonDir = LatLonDir(-1000.0, -1000.0)
+    private var fileChangesRecorded = 0
     fun getFileChanges(): Int {
-        val fileChanges_ = fileChangesRecorded
+        val fileChanges = fileChangesRecorded
         fileChangesRecorded = 0
-        return fileChanges_
+        return fileChanges
     }
 
     val fileChangesWithNewFileCreation: Int

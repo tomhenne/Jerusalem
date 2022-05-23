@@ -21,10 +21,6 @@ class MemoryArrayOsmNodeID2OwnIDMap(
         osm2ownMap = LongOsmNodeID2OwnIDMapFileCache(dataDirectoryPath, maxOsm2OwnMapCacheSize)
     }
 
-    fun getAvgGetAccessNumberOfReads(): Float {
-        return 0f
-    }
-
     fun put(lat: Double, lng: Double, osmID: Long, ownID: Int) {
         val lld = LatLonDir(lat, lng)
         cellMap.put(osmID, lld)

@@ -34,7 +34,7 @@ class Rebuilder(
     private var highestNodeID: Long = 0
     private var lowestNodeID = Long.MAX_VALUE
 
-    fun cleanMem() {
+    private fun cleanMem() {
         cleanMem(startTime)
     }
 
@@ -49,8 +49,7 @@ class Rebuilder(
         // info
         cleanMem()
         println(
-            "\n"
-                    + Utils.formatTimeStopWatch(
+            "\n" + Utils.formatTimeStopWatch(
                 Date().time
                         - startTime.time
             ) + " SUMMARY:"
@@ -122,7 +121,7 @@ class Rebuilder(
         }
     }
 
-    fun processNodesCache() {
+    private fun processNodesCache() {
         Arrays.sort(nodesCache, 0, nodesCacheSize, OSMNodeByDirComparator())
         timespan()
         for (i in 0 until nodesCacheSize) {
@@ -204,7 +203,7 @@ class Rebuilder(
         translateNodesOSMID2OWNID()
         for (i in 0 until waysCacheSize) {
             val w = waysCache[i]
-            rawWaysFile.writeWay(w!!, osmNodeID2OwnIDMap!!, findNodesNodesCache)
+            rawWaysFile.writeWay(w!!, osmNodeID2OwnIDMap, findNodesNodesCache)
         }
         findNodesNodesCache.clear()
         for (i in 0 until waysCacheSize) {
@@ -224,8 +223,6 @@ class Rebuilder(
                     + nlf.getFileChanges()
                     + " wfc "
                     + wlf.numberOfFileChanges
-                    + " arl "
-                    + osmNodeID2OwnIDMap!!.getAvgGetAccessNumberOfReads()
                     + " braf:"
                     + BufferedRandomAccessFile.shortInfoAndResetCounters
                     + " t_prn "
@@ -327,7 +324,7 @@ class Rebuilder(
                 )
                         + " Rebuilding only ways: loading osm2own ID memory map\n"
             )
-            osmNodeID2OwnIDMap!!.loadExistingOsm2OwnIDIntoMemory(startTime)
+            osmNodeID2OwnIDMap.loadExistingOsm2OwnIDIntoMemory(startTime)
             println(
                 Utils.formatTimeStopWatch(
                     Date().time
@@ -452,7 +449,6 @@ class Rebuilder(
         )
         way.wayCostIDForward = wayCostIDForward
         way.wayCostIDBackward = wayCostIDBackward
-        way.tags!!.clear()
         way.tags = null // not needed after that point
     }
 

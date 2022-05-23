@@ -1,6 +1,5 @@
 package de.esymetric.jerusalem.main
 
-import de.esymetric.jerusalem.tools.CrossroadsFinder
 import de.esymetric.jerusalem.osmDataRepresentation.OSMDataReader
 import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.PartitionedOsmNodeID2OwnIDMap
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
@@ -11,6 +10,7 @@ import de.esymetric.jerusalem.routing.Router
 import de.esymetric.jerusalem.routing.RoutingType
 import de.esymetric.jerusalem.routing.algorithms.TomsAStarStarRouting
 import de.esymetric.jerusalem.routing.heuristics.TomsRoutingHeuristics
+import de.esymetric.jerusalem.tools.CrossroadsFinder
 import de.esymetric.jerusalem.utils.Utils
 import org.apache.tools.bzip2.CBZip2InputStream
 import java.io.*
@@ -20,7 +20,7 @@ object Jerusalem {
     @JvmStatic
     fun main(args: Array<String>) {
         println("JERUSALEM 0.85 Java Enabled Routing Using Speedy Algorithms for Largely Extended Maps (jerusalem.gps-sport.net) based on OSM (OpenStreetMap.org)")
-        if (args.size == 0) {
+        if (args.isEmpty()) {
             printUsage()
             return
         }
@@ -345,7 +345,7 @@ object Jerusalem {
         println("java -jar Jerusalem.jar findCrossroadsTest foot|bike|racingBike|mountainBike|car|carShortest")
     }
 
-    fun testRoute(
+    private fun testRoute(
         router: Router, lat1: Double, lng1: Double, lat2: Double,
         lng2: Double, name: String, dataDirectoryPath: String
     ) {

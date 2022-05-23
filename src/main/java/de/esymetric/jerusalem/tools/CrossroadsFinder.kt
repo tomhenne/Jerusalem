@@ -7,15 +7,14 @@ import de.esymetric.jerusalem.routing.NearestNodeFinder
 import de.esymetric.jerusalem.routing.RoutingType
 
 class CrossroadsFinder(dataDirectoryPath: String) {
-    val MAX_DISTANCE_TO_NODE = 10.0
-    var nrf: NearestNodeFinder
-    var nif: NodeIndexFile
-    var nlf: PartitionedNodeListFile
-    var wlf: PartitionedTransitionListFile
-    var wcf: PartitionedWayCostFile
+    private val MAX_DISTANCE_TO_NODE = 10.0
+    private var nrf: NearestNodeFinder = NearestNodeFinder()
+    private var nif: NodeIndexFile
+    private var nlf: PartitionedNodeListFile
+    private var wlf: PartitionedTransitionListFile
+    private var wcf: PartitionedWayCostFile
 
     init {
-        nrf = NearestNodeFinder()
         nif = PartitionedQuadtreeNodeIndexFile(
             dataDirectoryPath, true,
             false

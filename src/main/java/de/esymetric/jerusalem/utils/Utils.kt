@@ -8,9 +8,7 @@ object Utils {
                 + " MB ")
     }
 
-    fun D02(d: Int): String {
-        return if (d < 10) "0$d" else d.toString()
-    }
+    private fun d02(d: Int) = if (d < 10) "0$d" else d.toString()
 
     fun formatTimeStopWatch(ticks: Long): String {
         var sec = (ticks / 1000L).toInt()
@@ -21,6 +19,6 @@ object Utils {
         val min = sec / 60
         sec -= min * 60
         return ("" + (if (days > 0) "$days." else "") + hours + ":"
-                + D02(Math.abs(min)) + ":" + D02(Math.abs(sec)))
+                + d02(Math.abs(min)) + ":" + d02(Math.abs(sec)))
     }
 }

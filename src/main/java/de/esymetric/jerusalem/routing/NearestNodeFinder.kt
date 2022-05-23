@@ -21,7 +21,7 @@ class NearestNodeFinder {
         return null
     }
 
-    fun findNearestNode(
+    private fun findNearestNode(
         lat: Double,
         lng: Double,
         nif: NodeIndexFile,
@@ -46,7 +46,7 @@ class NearestNodeFinder {
                     val transitions = n.listTransitions(nlf, wlf, wcf)
                     var hasSuitableTransitions = false
                     for (t in transitions) {
-                        if (t.getCost(type) != RoutingHeuristics.Companion.BLOCKED_WAY_COST) {
+                        if (t.getCost(type) != RoutingHeuristics.BLOCKED_WAY_COST) {
                             hasSuitableTransitions = true
                             break
                         }

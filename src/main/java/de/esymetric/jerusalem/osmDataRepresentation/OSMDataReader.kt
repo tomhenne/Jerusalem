@@ -56,15 +56,11 @@ class OSMDataReader(
                 if (entityCount and 0xFFFFF == 0L) {
                     println(
                         Utils.formatTimeStopWatch(
-                            Date()
-                                .time
-                                    - startTime.time
-                        )
-                                + " " + entityCount + " entities read"
+                            Date().time - startTime.time
+                        ) + " " + entityCount + " entities read"
                     )
                     if (entityCount and 0x700000 == 0L) {
-                        print(
-                            "free memory: "
+                        print("free memory: "
                                     + Runtime.getRuntime().freeMemory() / 1024L / 1024L
                                     + " MB / "
                                     + Runtime.getRuntime().totalMemory() / 1024L / 1024L
@@ -119,7 +115,7 @@ class OSMDataReader(
                     }
             }
 
-            way.nodes = nodes
+            way.nodes = nodes.toTypedArray()
             way.tags = tags
             listener.foundWay(way)
         } catch (e: OsmReaderXMLParseException) {

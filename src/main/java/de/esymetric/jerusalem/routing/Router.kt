@@ -7,20 +7,16 @@ import de.esymetric.jerusalem.utils.Utils
 import java.util.*
 
 class Router(
-    dataDirectoryPath: String, routingAlgorithm: RoutingAlgorithm,
-    heuristics: RoutingHeuristics, maxExecutionTimeS: Int
+    dataDirectoryPath: String, private val routingAlgorithm: RoutingAlgorithm,
+    private val heuristics: RoutingHeuristics, private val maxExecutionTimeS: Int
 ) {
-    protected var maxExecutionTimeS = 60
-    var nrf: NearestNodeFinder
-    var nif: NodeIndexFile
+    private var nrf: NearestNodeFinder = NearestNodeFinder()
+    private var nif: NodeIndexFile
     var nlf: PartitionedNodeListFile
-    var wlf: PartitionedTransitionListFile
-    var wcf: PartitionedWayCostFile
-    var heuristics: RoutingHeuristics
-    var routingAlgorithm: RoutingAlgorithm
+    private var wlf: PartitionedTransitionListFile
+    private var wcf: PartitionedWayCostFile
 
     init {
-        nrf = NearestNodeFinder()
         nif = PartitionedQuadtreeNodeIndexFile(
             dataDirectoryPath, true,
             false
@@ -28,9 +24,6 @@ class Router(
         nlf = PartitionedNodeListFile(dataDirectoryPath, true)
         wlf = PartitionedTransitionListFile(dataDirectoryPath, true)
         wcf = PartitionedWayCostFile(dataDirectoryPath, true)
-        this.heuristics = heuristics
-        this.routingAlgorithm = routingAlgorithm
-        this.maxExecutionTimeS = maxExecutionTimeS
     }
 
     fun close() {
@@ -68,7 +61,7 @@ class Router(
         }
 
         val masterNodesB = nodeB.findConnectedMasterNodes(nlf, wlf)
-        var route = routingAlgorithm.getRoute(
+        val route = routingAlgorithm.getRoute(
             nodeA, nodeB, type,
             nlf, wlf, wcf, heuristics, masterNodesB, maxExecutionTimeS,
             true // use optimized routing?

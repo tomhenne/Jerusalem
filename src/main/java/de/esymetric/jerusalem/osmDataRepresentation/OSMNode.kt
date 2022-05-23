@@ -7,7 +7,6 @@ class OSMNode {
 	var lat = 0.0
 	var lng = 0.0
 	var ownID = 0
-    var tags: Map<String, String>? = null
 
     private var latLonDirKey: Short = 0
 
