@@ -242,8 +242,8 @@ class Rebuilder(
 
     private inner class OSMWayByDirComparator : Comparator<OSMWay?> {
         override fun compare(o1: OSMWay?, o2: OSMWay?): Int {
-            val k1 = o1?.getLatLonDirID(osmNodeID2OwnIDMap!!) ?: Short.MIN_VALUE
-            val k2 = o2?.getLatLonDirID(osmNodeID2OwnIDMap!!) ?: Short.MIN_VALUE
+            val k1 = o1?.getLatLonDirID(osmNodeID2OwnIDMap) ?: Short.MIN_VALUE
+            val k2 = o2?.getLatLonDirID(osmNodeID2OwnIDMap) ?: Short.MIN_VALUE
             return if (k1 == k2) 0 else if (k1 > k2) 1 else -1
         }
     }
@@ -545,8 +545,8 @@ class Rebuilder(
      * 18512751 nodes read, 2785394 ways read
      *
      */
-        const val MAX_NODE_CACHE_SIZE = 8000000
-        const val MAX_NEW_WAY_QUEUE_SIZE = 1500000
+        const val MAX_NODE_CACHE_SIZE = 6_000_000
+        const val MAX_NEW_WAY_QUEUE_SIZE = 1_200_000
         const val MAX_OSM2OWN_MAP_CACHE_SIZE = 1
         fun cleanMem(startTime: Date) {
             print(
