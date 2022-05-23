@@ -6,15 +6,11 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.*
-import javax.xml.parsers.DocumentBuilderFactory
 
 class OSMDataReader(
     var inputStream: InputStream,
     var listener: OSMDataReaderListener, var jumpOverNodes: Boolean
 ) {
-    val documentBuilderFactory = DocumentBuilderFactory.newInstance()
-    val documentBuilder = documentBuilderFactory.newDocumentBuilder()
-
     var entityCount: Long = 0
 
     interface OSMDataReaderListener {
@@ -100,55 +96,31 @@ class OSMDataReader(
     }
 
     private fun makeOSMWay(content: String) {
-        /*
-        try {
-            val xmlNode = XMLElement()
-            xmlNode.parseString(content)
-            val way = OSMWay()
-            way.id = xmlNode.getAttribute("id").toString().toInt()
-            way.nodes = ArrayList()
-            way.tags = HashMap()
-            val enumeration = xmlNode.childrenIterator
-            while (enumeration.hasNext()) {
-                val child = enumeration.next()
-                if ("nd" == child.name) way.nodes!!.add(
-                    child.getAttribute("ref")
-                        .toString().toLong()
-                )
-                if ("tag" == child.name)
-                    (way.tags as HashMap<String?, String?>)[child.getAttribute("k").toString()] =
-                        child.getAttribute("v").toString()
-            }
-            way.nodes!!.trimToSize()
-            listener.foundWay(way)
-        } catch (e: XMLParseException) {
-            println("XML Parse Error on: $content")
-            e.printStackTrace()
-        }*/
-
         try {
             val way = OSMWay()
             val xmlNodes = splitXmlNodes(content)
             val attributes = getAttributes(xmlNodes.first())
             way.id = attributes["id"]?.toInt() ?: throw OsmReaderXMLParseException()
-            way.nodes = ArrayList()
-            way.tags = mutableMapOf()
+
+            val nodes = mutableListOf<Long>()
+            val tags = mutableMapOf<String, String>()
 
             for (childNode in xmlNodes) {
                 if (childNode.startsWith("nd")) {
                     val childAttrib = getAttributes(childNode)
                     childAttrib["ref"]?.toLong()?.let {
-                        way.nodes!!.add(it)
+                        nodes.add(it)
                     }
                 } else
                     if (childNode.startsWith("tag")) {
                         val childAttrib = getAttributes(childNode)
-                        way.tags!![childAttrib["k"]!!] =
+                        tags[childAttrib["k"]!!] =
                             childAttrib["v"]!!
                     }
             }
 
-            way.nodes!!.trimToSize()
+            way.nodes = nodes
+            way.tags = tags
             listener.foundWay(way)
         } catch (e: OsmReaderXMLParseException) {
             println("XML Parse Error on: $content")
@@ -169,35 +141,6 @@ class OSMDataReader(
             println("XML Parse Error on: $content")
             e.printStackTrace()
         }
-
-
-/*
-        try {
-            val xmlNode = XMLElement()
-            xmlNode.parseString(content)
-            val node = OSMNode()
-            node.id = xmlNode.getAttribute("id").toString().toLong()
-            node.lat = xmlNode.getAttribute("lat")
-                .toString().toDouble()
-            node.lng = xmlNode.getAttribute("lon")
-                .toString().toDouble()
-
-            if (readTags) {
-                val tags = mutableMapOf<String, String>()
-                val enumeration = xmlNode.childrenIterator
-                while (enumeration.hasNext()) {
-                    val child = enumeration.next()
-                    if ("tag" == child.name)
-                        (tags as HashMap<String?, String?>)[child.getAttribute("k").toString()] =
-                            child.getAttribute("v").toString()
-                }
-                if (tags.isNotEmpty()) node.tags = tags
-            }
-            listener.foundNode(node)
-        } catch (e: XMLParseException) {
-            println("XML Parse Error on: $content")
-            e.printStackTrace()
-        }*/
     }
 
     @Throws(IOException::class)
@@ -229,7 +172,7 @@ class OSMDataReader(
         }
     }
 
-    private inline fun splitXmlNodes(content: String): List<String> =
+    private fun splitXmlNodes(content: String): List<String> =
         content.split('<')
 
     private fun getAttributes(content: String): Map<String, String> {

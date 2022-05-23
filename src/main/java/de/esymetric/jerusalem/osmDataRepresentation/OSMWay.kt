@@ -5,8 +5,8 @@ import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.MemoryArrayOsmNo
 class OSMWay {
     var id = 0
     var nodes // osm ids of nodes
-            : ArrayList<Long>? = null
-    var tags: MutableMap<String, String>? = null
+            : List<Long>? = null
+    var tags: Map<String, String>? = null
     var wayCostIDForward = 0
     var wayCostIDBackward = 0
     private var latLonDirKey: Short = 0
