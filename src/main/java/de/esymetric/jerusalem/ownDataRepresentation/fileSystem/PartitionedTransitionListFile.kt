@@ -66,8 +66,8 @@ class PartitionedTransitionListFile(
             val offsetBits = currentLatLonDir.getOffsetBits(
                 targetNode.lat,
                 targetNode.lng
-            )
-            daos.writeInt(targetNodeID or offsetBits!!)
+            ) ?: return -1
+            daos.writeInt(targetNodeID or offsetBits)
             daos.writeInt(nextTransitionID)
             daos.writeInt(wayCostID)
             daos.writeShort(wayCostLatLonDirKey.toInt())
@@ -136,10 +136,12 @@ class PartitionedTransitionListFile(
         get() = rafCache.andClearNumberOfFileChanges
 
     fun deleteAllTransitionFiles() {
-        for (f in File(dataDirectoryPath).listFiles()) if (f.isDirectory && f.name.startsWith("lat_")) for (g in f.listFiles()) if (g.isDirectory && g.name.startsWith(
-                "lng_"
-            )
-        ) for (h in g.listFiles()) if (h.isFile && h.name == FILENAME) h.delete()
+        for (f in File(dataDirectoryPath).listFiles())
+            if (f.isDirectory && f.name.startsWith("lat_"))
+                for (g in f.listFiles())
+                    if (g.isDirectory && g.name.startsWith("lng_"))
+                        for (h in g.listFiles()) if (h.isFile && h.name == FILENAME)
+                h.delete()
     }
 
     companion object {

@@ -11,7 +11,6 @@ import java.util.*
 class KML {
     val NS = "http://earth.google.com/kml/2.1"
     var name: String? = null
-    var description: String? = null
     var trackPositions = Vector<Position>()
 
     fun createXmlDocument(): XMLElement {

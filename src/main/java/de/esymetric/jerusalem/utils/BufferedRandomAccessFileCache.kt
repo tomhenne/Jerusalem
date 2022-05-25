@@ -29,17 +29,17 @@ class BufferedRandomAccessFileCache {
         if (readOnly && !File(filePath).exists()) return null
 
         // remove first element?
-        var raf: BufferedRandomAccessFile?
-        raf = if (queue.size >= maxSize) {
-            val fp = queue.poll()
-            cache.remove(fp)
-            // do not close here - file is closed in "open" method
+        val raf: BufferedRandomAccessFile =
+            if (queue.size >= maxSize) {
+                val fp = queue.poll()
+                cache.remove(fp) ?: BufferedRandomAccessFile()
+                // do not close here - file is closed in "open" method
 
-            // now reuse the BufferedRandomAccessFile
-        } else BufferedRandomAccessFile()
+                // now reuse the BufferedRandomAccessFile
+            } else BufferedRandomAccessFile()
         try {
             if (!readOnly) File(filePath).parentFile.mkdirs()
-            raf!!.open(filePath, if (readOnly) "r" else "rw")
+            raf.open(filePath, if (readOnly) "r" else "rw")
             numberOfFileChanges++
         } catch (e: FileNotFoundException) {
             e.printStackTrace()

@@ -63,20 +63,21 @@ class Node : Comparable<Node>, Cloneable {
     fun addTransition(
         targetNode: Node, nlf: PartitionedNodeListFile,
         wlf: PartitionedTransitionListFile, wayCostID: Int,
-        wayCostLatLonDirKey: Short, heuristics: RoutingHeuristics?,
-        isOriginalDirection: Boolean
+        wayCostLatLonDirKey: Short
     ) {
         val distanceM = calculateDistance(
             lat, lng, targetNode.lat,
             targetNode.lng
         )
-        transitionID = wlf.insertTransition(
+        wlf.insertTransition(
             this, targetNode, distanceM,
             transitionID, wayCostID, wayCostLatLonDirKey
-        )
-        nlf.setTransitionID(lat, lng, id.toInt(), transitionID) // first
-        // transition
-        // for this node
+        ).let {
+            transitionID = it
+            if (transitionID != -1)
+                nlf.setTransitionID(lat, lng, id.toInt(), transitionID)
+        // first transition for this node
+        }
     }
 
     val numberOfTransitionsIfTransitionsAreLoaded: Int

@@ -1,7 +1,6 @@
 package de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport
 
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
-import nanoxml.XMLElement
 import java.io.FileWriter
 import java.io.IOException
 import java.text.DecimalFormat
@@ -10,15 +9,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class GPX {
-    val SEC2TICKS = 1000L * 1000L * 10L
     var name: String? = null
     var description: String? = null
     var trackPositions: Vector<Position>? = Vector()
     var trackPositionTimes: Vector<Long>? = null
     var trackPositionSpeeds: Vector<Double>? = null
     var placemarks: Vector<Placemark>? = Vector()
-    var upperLeftCorner = Position()
-    var lowerRightCorner = Position()
 
     fun makeTag(tagName: String?, content: String?): String {
         val e = XMLElement()

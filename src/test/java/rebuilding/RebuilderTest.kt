@@ -122,4 +122,41 @@ class RebuilderTest {
             "eichenstrasse", dataDirectoryPath
         )
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun testRebuildTransitions() {
+        val dataDirectoryPath = "testData"
+        val tempDirectoryPath = "tempData"
+
+        // rebuild full
+        var rebuilder = Rebuilder(
+            dataDirectoryPath, tempDirectoryPath,
+            TomsRoutingHeuristics(), false, false, false
+        )
+        rebuilder.buildTransitions(true)
+
+        // test
+        val router = Router(
+            dataDirectoryPath,
+            TomsAStarStarRouting(), TomsRoutingHeuristics(), 120
+        )
+        debugMode = true
+        routerTest.makeRoute(
+            router, 48.107891, 11.461865, 48.099986, 11.511051,
+            "durch-waldfriedhof", dataDirectoryPath
+        )
+        routerTest.makeRoute(
+            router, 48.107608, 11.461648, 48.108656, 11.477371,
+            "grosshadern-fussweg", dataDirectoryPath
+        )
+        routerTest.makeRoute(
+            router, 48.107608, 11.461648, 48.108656, 11.477371,
+            "grosshadern-fussweg", dataDirectoryPath
+        )
+        routerTest.makeRoute(
+            router, 48.116892, 11.487076, 48.117909, 11.472429,
+            "eichenstrasse", dataDirectoryPath
+        )
+    }
 }

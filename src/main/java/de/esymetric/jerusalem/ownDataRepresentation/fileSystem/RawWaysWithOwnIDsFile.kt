@@ -4,7 +4,6 @@ import de.esymetric.jerusalem.osmDataRepresentation.OSMWay
 import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.MemoryArrayOsmNodeID2OwnIDMap
 import de.esymetric.jerusalem.ownDataRepresentation.Node
 import de.esymetric.jerusalem.rebuilding.Rebuilder
-import de.esymetric.jerusalem.routing.RoutingHeuristics
 import de.esymetric.jerusalem.utils.MemoryEfficientLongToIntMap
 import de.esymetric.jerusalem.utils.Utils
 import java.io.*
@@ -140,9 +139,7 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
     fun buildTransitions(
         startTime: Date,
         nlf: PartitionedNodeListFile,
-        wlf: PartitionedTransitionListFile,
-        routingHeuristics: RoutingHeuristics,
-        osmID2ownIDMap: MemoryArrayOsmNodeID2OwnIDMap?
+        wlf: PartitionedTransitionListFile
     ) {
         nlf.setMaxFileCacheSize(8)
         // ein Weg kann Nodes aus mehreren benachbarten Sektoren enthalten
@@ -156,8 +153,7 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
                 val list = g.listFiles()
                 if (list == null) {
                     println(
-                        "Cannot list files in "
-                                + g.path
+                        "Cannot list files in " + g.path
                     )
                     continue
                 }
@@ -186,7 +182,7 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
                         val way = OSMWay()
                         val nodes = readWay(way, lld, nlf) ?: break
                         if (nodes.size != 0) {
-                            insertTransitions(way, nodes, nlf, wlf, routingHeuristics, lld)
+                            insertTransitions(way, nodes, nlf, wlf, lld)
                         }
                     }
                     close()
@@ -239,7 +235,6 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
         wayNodes: MutableList<Node>,
         nlf: PartitionedNodeListFile,
         wlf: PartitionedTransitionListFile,
-        routingHeuristics: RoutingHeuristics,
         lld: LatLonDir
     ) {
         for (i in 0 until wayNodes.size - 1) {
@@ -249,15 +244,13 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
             if (way.wayCostIDForward != -1) {
                 nodeA.addTransition(
                     nodeB, nlf, wlf, way.wayCostIDForward,
-                    latLonDirKey,
-                    routingHeuristics, false
+                    latLonDirKey
                 )
             }
             if (way.wayCostIDBackward != -1) {
                 nodeB.addTransition(
                     nodeA, nlf, wlf, way.wayCostIDBackward,
-                    latLonDirKey,
-                    routingHeuristics, true
+                    latLonDirKey
                 )
             }
         }

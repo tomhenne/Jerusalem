@@ -458,8 +458,11 @@ class Rebuilder(
         }
     }
 
-    fun buildTransitions() {
-        rawWaysFile.buildTransitions(startTime, nlf, wlf, routingHeuristics, osmNodeID2OwnIDMap)
+    fun buildTransitions(deleteAllTransitionFiles: Boolean = false) {
+        if (deleteAllTransitionFiles)
+            wlf.deleteAllTransitionFiles()
+
+        rawWaysFile.buildTransitions(startTime, nlf, wlf)
     }
 
     companion object {
