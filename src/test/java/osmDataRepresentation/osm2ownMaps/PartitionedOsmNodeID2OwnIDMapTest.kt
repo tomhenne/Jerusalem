@@ -2,8 +2,8 @@ package osmDataRepresentation.osm2ownMaps
 
 import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.PartitionedOsmNodeID2OwnIDMap
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir.Companion.deleteAllLatLonDataFiles
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class PartitionedOsmNodeID2OwnIDMapTest {
     @Test
@@ -18,7 +18,7 @@ class PartitionedOsmNodeID2OwnIDMapTest {
             val key = (Math.random() * 788823).toInt()
             val value = (Math.random() * 788823548).toInt()
             map.put(lat, lng, key.toLong(), value)
-            Assert.assertTrue(map[key.toLong()] == value)
+            assertTrue(map[key.toLong()] == value)
         }
         deleteAllLatLonDataFiles("testData")
     }

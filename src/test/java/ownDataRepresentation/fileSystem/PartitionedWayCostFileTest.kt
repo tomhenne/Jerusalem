@@ -4,7 +4,7 @@ import de.esymetric.jerusalem.ownDataRepresentation.Transition
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedWayCostFile
 import de.esymetric.jerusalem.routing.RoutingHeuristics.Companion.BLOCKED_WAY_COST
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class PartitionedWayCostFileTest {

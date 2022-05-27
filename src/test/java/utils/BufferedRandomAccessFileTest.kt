@@ -1,8 +1,9 @@
 package utils
 
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFile
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.io.File
 
 class BufferedRandomAccessFileTest {
@@ -18,7 +19,7 @@ class BufferedRandomAccessFileTest {
         braf.seek(20000)
         for (i in 0..9999) braf.writeInt(-1)
         braf.close()
-        Assert.assertEquals(60000, File("testData/braf.data").length())
+        assertEquals(60000, File("testData/braf.data").length())
         braf.open("testData/braf.data", "rw")
         run {
             var i = 11
@@ -32,7 +33,7 @@ class BufferedRandomAccessFileTest {
             var i = 11
             while (i < 2000) {
                 braf.seek(i)
-                Assert.assertTrue(braf.readInt() == i)
+                assertTrue(braf.readInt() == i)
                 i += 10
             }
         }
@@ -49,7 +50,7 @@ class BufferedRandomAccessFileTest {
         var i = 55
         while (i < 2009) {
             braf.seek(i)
-            Assert.assertTrue(braf.readInt() == i)
+            assertTrue(braf.readInt() == i)
             i += 9
         }
         braf.close()
@@ -69,7 +70,7 @@ class BufferedRandomAccessFileTest {
         i = 0
         while (i < 65000) {
             braf.seek(i)
-            Assert.assertEquals(braf.readUShort(), i.toUShort())
+            assertEquals(braf.readUShort(), i.toUShort())
             i += 59
         }
         braf.close()

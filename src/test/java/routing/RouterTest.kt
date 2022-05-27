@@ -5,7 +5,8 @@ import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.KML
 import de.esymetric.jerusalem.routing.Router
 import de.esymetric.jerusalem.routing.RoutingType
-import org.junit.Assert
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import java.io.File
 import java.util.*
 
@@ -33,7 +34,7 @@ class RouterTest {
         println("---------------------------------------------")
         val route = router
             .findRoute(routingType, lat1, lng1, lat2, lng2)
-        Assert.assertNotNull(route)
+        assertNotNull(route)
         if (route == null) {
             println(
                 "ERROR: no route found for " + name + " ("
@@ -55,7 +56,7 @@ class RouterTest {
             dataDirectoryPath + File.separatorChar + name + "-"
                     + routingType + ".kml"
         )
-        Assert.assertTrue(trackPts.size > 10)
+        assertTrue(trackPts.size > 10)
         return route
     }
 }

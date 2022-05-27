@@ -2,8 +2,8 @@ package utils
 
 import de.esymetric.jerusalem.utils.FileBasedHashMap
 import de.esymetric.jerusalem.utils.FileBasedHashMapForLongKeys
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 import java.io.File
 
 class FileBasedHashMapTest {
@@ -17,7 +17,7 @@ class FileBasedHashMapTest {
             while (id > 0) {
                 val value = (Math.random() * 788823548).toInt()
                 fbhm.put(id, value)
-                Assert.assertTrue(fbhm[id] == value)
+                assertTrue(fbhm[id] == value)
                 id -= 111
             }
         }
@@ -28,9 +28,9 @@ class FileBasedHashMapTest {
                 fbhm.put(id, value)
                 if (fbhm[id] != value) {
                     fbhm.put(id, value)
-                    Assert.assertTrue(fbhm[id] == value)
+                    assertTrue(fbhm[id] == value)
                 }
-                Assert.assertTrue(fbhm[id] == value)
+                assertTrue(fbhm[id] == value)
                 id += 263
             }
         }
@@ -39,7 +39,7 @@ class FileBasedHashMapTest {
             val key = id
             val value = (Math.random() * 788823548).toInt()
             fbhm.put(key, value)
-            Assert.assertTrue(fbhm[key] == value)
+            assertTrue(fbhm[key] == value)
             id += 555
         }
         fbhm.close()
@@ -57,7 +57,7 @@ class FileBasedHashMapTest {
             while (id > 0) {
                 val value = (Math.random() * 788823548).toInt()
                 fbhm.put(id.toLong(), value)
-                Assert.assertTrue(fbhm[id.toLong()] == value)
+                assertTrue(fbhm[id.toLong()] == value)
                 id -= 111
             }
         }
@@ -68,9 +68,9 @@ class FileBasedHashMapTest {
                 fbhm.put(id.toLong(), value)
                 if (fbhm[id.toLong()] != value) {
                     fbhm.put(id.toLong(), value)
-                    Assert.assertTrue(fbhm[id.toLong()] == value)
+                    assertTrue(fbhm[id.toLong()] == value)
                 }
-                Assert.assertTrue(fbhm[id.toLong()] == value)
+                assertTrue(fbhm[id.toLong()] == value)
                 id += 263
             }
         }
@@ -79,7 +79,7 @@ class FileBasedHashMapTest {
             val key = id
             val value = (Math.random() * 788823548).toInt()
             fbhm.put(key, value)
-            Assert.assertTrue(fbhm[key] == value)
+            assertTrue(fbhm[key] == value)
             id += 23555L
         }
         fbhm.close()

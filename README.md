@@ -2,24 +2,32 @@
 
 ##Java Enabled Routing Using Speedy Algorithms for Largely Extended Maps 
 
-JERUSALEM is the name of the new routing engine used in GPS-Sport.net RoutePlanner.
+JERUSALEM is the name of the routing engine used in GPS-Sport.net RoutePlanner.
 
 Facts:
 
+* Provides fast routing covering the entire planet on low-cost hardware
 * Supports 6 routing modes: by foot, bike, mountain bike, racing bike, car (fastest), car (shortest)
-* Supports routing on the entire planet (whereever OpenStreetMap  has data) (and is fast enough to handle the entire planet even on a slow computer)
-* Uses up-to-date planet file from <http://www.OpenStreetMap.org>
-* 100% Java
+* 100% Kotlin
 
 **TRY IT OUT IN ACTION** on Run.GPS Routeplanner: <http://rp.gps-sport.net>
 
 (you need to create a free account on www.gps-sport.net first)
 
-##Minimum Requirements
+##Minimum requirements for running the routing service 
 
 * quad core
-* 4GB memory
+* 8GB RAM
 * 64 bit operating system
+* 300 GB free HD space (for the entire planet)
+
+##Minimum requirements for building the graph (for the entire planet)
+
+* quad core
+* 32GB RAM (16 GB is possible, but not very fast)
+* 64 bit operating system
+* 500 GB free HD space (for the entire planet)
+
 
 ##Usage
 

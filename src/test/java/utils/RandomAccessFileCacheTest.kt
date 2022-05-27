@@ -1,8 +1,8 @@
 package utils
 
 import de.esymetric.jerusalem.utils.RandomAccessFileCache
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class RandomAccessFileCacheTest {
     @Test
@@ -26,7 +26,7 @@ class RandomAccessFileCacheTest {
                 "testData/rafCache$i.data", false
             )
             raf!!.seek(999)
-            Assert.assertEquals(333, raf.readInt().toLong())
+            assertEquals(333, raf.readInt().toLong())
         }
         rafCache.close()
     }

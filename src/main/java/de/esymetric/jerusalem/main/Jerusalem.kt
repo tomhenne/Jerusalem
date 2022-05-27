@@ -3,7 +3,6 @@ package de.esymetric.jerusalem.main
 import de.esymetric.jerusalem.osmDataRepresentation.OSMDataReader
 import de.esymetric.jerusalem.osmDataRepresentation.osm2ownMaps.PartitionedOsmNodeID2OwnIDMap
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
-import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.GPX
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.importExport.KML
 import de.esymetric.jerusalem.rebuilding.Rebuilder
 import de.esymetric.jerusalem.routing.Router
@@ -171,7 +170,6 @@ object Jerusalem {
                 }
                 if (args.size > 6) {
                     val filename = args[6]
-                    val gpx = GPX()
                     val kml = KML()
                     val trackPts = Vector<Position>()
                     for (n in route) {
@@ -180,11 +178,6 @@ object Jerusalem {
                         p.longitude = n.lng
                         trackPts.add(p)
                     }
-                    gpx.trackPositions = trackPts
-                    gpx.save(
-                        dataDirectoryPath + File.separatorChar + filename
-                                + "-" + routingType + ".gpx"
-                    )
                     kml.trackPositions = trackPts
                     kml.save(
                         dataDirectoryPath + File.separatorChar + filename

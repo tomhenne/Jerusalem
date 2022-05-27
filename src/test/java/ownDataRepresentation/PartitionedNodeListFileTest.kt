@@ -2,8 +2,8 @@ package ownDataRepresentation
 
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir
 import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.PartitionedNodeListFile
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class PartitionedNodeListFileTest {
     @Test
@@ -26,11 +26,11 @@ class PartitionedNodeListFileTest {
         // ---
         nlf = PartitionedNodeListFile(dataDirectoryPath, true)
         val n1 = nlf.getNode(LatLonDir(48.11, 11.48), nodeID)
-        Assert.assertEquals(1111, n1!!.transitionID.toLong())
+        assertEquals(1111, n1!!.transitionID.toLong())
         val n2 = nlf.getNode(LatLonDir(48.111, 11.481), nodeID2)
-        Assert.assertEquals(2222, n2!!.transitionID.toLong())
+        assertEquals(2222, n2!!.transitionID.toLong())
         val n3 = nlf.getNode(LatLonDir(-48.111, -11.481), nodeID3)
-        Assert.assertEquals(3333, n3!!.transitionID.toLong())
+        assertEquals(3333, n3!!.transitionID.toLong())
         nlf.close()
     }
 }

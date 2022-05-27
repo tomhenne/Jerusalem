@@ -3,11 +3,13 @@ package tools
 import de.esymetric.jerusalem.ownDataRepresentation.geoData.Position
 import de.esymetric.jerusalem.routing.RoutingType
 import de.esymetric.jerusalem.tools.CrossroadsFinder
-import org.junit.Test
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
 class CrossroadsFinderTest {
     @Test
+    @Order(4)
     fun testCrossroadsFinder() {
         val dataDirectoryPath = "testData"
         val crossroadsFinder = CrossroadsFinder(dataDirectoryPath)

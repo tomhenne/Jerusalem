@@ -8,7 +8,8 @@ import de.esymetric.jerusalem.routing.algorithms.TomsAStarStarRouting
 import de.esymetric.jerusalem.routing.heuristics.TomsRoutingHeuristics
 import de.esymetric.jerusalem.utils.BufferedRandomAccessFile.Companion.shortInfoAndResetCounters
 import org.apache.tools.bzip2.CBZip2InputStream
-import org.junit.Test
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
 import routing.RouterTest
 import java.io.File
 import java.io.FileInputStream
@@ -20,6 +21,7 @@ class RebuilderTest {
     val osmTestFilePath = "osmData/hadern2.osm.bz2"
 
     @Test
+    @Order(1)
     @Throws(Exception::class)
     fun testRebuildAndRouting() {
         val dataDirectoryPath = "testData"
@@ -59,7 +61,7 @@ class RebuilderTest {
             TomsAStarStarRouting(), TomsRoutingHeuristics(), 120
         )
         debugMode = true
-        val eichenstrasse2 = routerTest.makeRoute(
+        routerTest.makeRoute(
             router, 48.116892, 11.487076, 48.117909, 11.472429,
             "eichenstrasse", dataDirectoryPath
         )
@@ -67,6 +69,7 @@ class RebuilderTest {
     }
 
     @Test
+    @Order(2)
     @Throws(Exception::class)
     fun testRebuildOnlyWays() {
         val dataDirectoryPath = "testData"
@@ -124,6 +127,7 @@ class RebuilderTest {
     }
 
     @Test
+    @Order(3)
     @Throws(Exception::class)
     fun testRebuildTransitions() {
         val dataDirectoryPath = "testData"
@@ -131,6 +135,20 @@ class RebuilderTest {
 
         // rebuild full
         var rebuilder = Rebuilder(
+            dataDirectoryPath, tempDirectoryPath,
+            TomsRoutingHeuristics(), false, false, false
+        )
+        val fis = FileInputStream(osmTestFilePath)
+        val bzis = CBZip2InputStream(fis)
+        val reader = OSMDataReader(bzis, rebuilder, false)
+        reader.read(Date())
+        bzis.close()
+        fis.close()
+        rebuilder.finishProcessingAndClose()
+
+        // rebuild transitions
+
+        rebuilder = Rebuilder(
             dataDirectoryPath, tempDirectoryPath,
             TomsRoutingHeuristics(), false, false, false
         )
