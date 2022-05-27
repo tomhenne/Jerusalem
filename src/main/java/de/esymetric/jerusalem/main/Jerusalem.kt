@@ -104,6 +104,8 @@ object Jerusalem {
                 )
                 if (filePath != null) {
                     val fis: InputStream = FileInputStream(filePath)
+                    fis.read()
+                    fis.read()
                     val bzis = CBZip2InputStream(fis)
                     val osmdr = OSMDataReader(
                         bzis, rebuilder,
