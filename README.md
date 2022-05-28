@@ -29,6 +29,23 @@ Facts:
 * 64 bit operating system
 * 500 GB free HD space (for the entire planet)
 
+## Getting started
+
+1. Clone and use the .jar file from /etc or build the project.
+2. Download planet osm or a portion of it from https://planet.openstreetmap.org/
+3. Put Jerusalem.jar and the bzipped osm file in a directory and build the graph:
+```
+bzip2 -dc planet-latest.osm.bz2 | java  -server -Xmx22000m -jar Jerusalem.jar rebuild - temp
+```
+4. Now you have all graph data stored in /jerusalemData (about 270 GB for the entire planet)
+5. Test the graph:
+```
+java  -Xmx500m -jar Jerusalem.jar routingTest
+```
+6. Use it:
+```
+java  -Xmx500m -jar Jerusalem.jar route foot 48.11 11.48 48.12 11.49
+```
 
 ## Usage
 
