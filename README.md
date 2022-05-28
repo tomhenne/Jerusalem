@@ -69,3 +69,24 @@ Does a lot of test runs (but only in the region of Bavaria (Germany), so you nee
 java -jar Jerusalem.jar routingTest
 ```
 
+## Files
+
+Each file is stored in a latitude/longitude sector in the file system.
+E.g. 
+
+```
+/lat_138/lng_191/nodes.dat
+```
+
+contains the list of nodes for latitude 48 (138 - 90) and longitude 11 (191 - 180).
+
+| File                  | Description                                             |
+|-----------------------|---------------------------------------------------------|
+| transitions.data      | Relations between nodes including distance.             |
+| wayCost.data          | Cost for traversal stored for each routing mode.        |
+| nodes.data            | List of nodes in this sector.                           |
+| quadtreeIndex.data    | Fast search index for finding nodes by geo coordinates. |
+| quadtreeNodeList.data | List of nodes contained in the quadtree leaves.         |
+
+
+

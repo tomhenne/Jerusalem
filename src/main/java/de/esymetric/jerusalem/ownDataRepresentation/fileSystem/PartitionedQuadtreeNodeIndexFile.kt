@@ -40,13 +40,13 @@ class PartitionedQuadtreeNodeIndexFile(
             return f
         }
 
-    fun getIndexFilePath(lat: Double, lng: Double): String {
+    private fun getIndexFilePath(lat: Double, lng: Double): String {
         val lld = LatLonDir(lat, lng)
         return (lld.getDir(dataDirectoryPath) + File.separatorChar
                 + INDEX_FILENAME)
     }
 
-    fun getListFilePath(lat: Double, lng: Double): String {
+    private fun getListFilePath(lat: Double, lng: Double): String {
         val lld = LatLonDir(lat, lng)
         return (lld.getDir(dataDirectoryPath) + File.separatorChar
                 + LIST_FILENAME)
@@ -57,7 +57,7 @@ class PartitionedQuadtreeNodeIndexFile(
         get() = 0 /* cache.size(); */
     var lastIndexFilePath: String? = null
     var lastIndexRaf: BufferedRandomAccessFile? = null
-    fun getIndexRaf(lat: Double, lng: Double): BufferedRandomAccessFile? {
+    private fun getIndexRaf(lat: Double, lng: Double): BufferedRandomAccessFile? {
         val filePath = getIndexFilePath(lat, lng)
         return if (filePath == lastIndexFilePath) lastIndexRaf else try {
             val raf = rafIndexCache.getRandomAccessFile(
@@ -76,8 +76,8 @@ class PartitionedQuadtreeNodeIndexFile(
         }
     }
 
-    var lastListFilePath: String? = null
-    var lastListRaf: BufferedRandomAccessFile? = null
+    private var lastListFilePath: String? = null
+    private var lastListRaf: BufferedRandomAccessFile? = null
 
     init {
         this.readOnly = readOnly
@@ -88,7 +88,7 @@ class PartitionedQuadtreeNodeIndexFile(
         for (i in 0..39) emptySentence[i] = -1
     }
 
-    fun getListRaf(lat: Double, lng: Double): BufferedRandomAccessFile? {
+    private fun getListRaf(lat: Double, lng: Double): BufferedRandomAccessFile? {
         val filePath = getListFilePath(lat, lng)
         return if (filePath == lastListFilePath) lastListRaf else try {
             val raf = rafListCache.getRandomAccessFile(
@@ -124,7 +124,7 @@ class PartitionedQuadtreeNodeIndexFile(
         }
     }
 
-    fun getID(latInt: Int, lngInt: Int): Int {
+    private fun getID(latInt: Int, lngInt: Int): Int {
         val lat = latInt / USED_DIGITS_MULT - LAT_OFFS.toInt()
         val lng = lngInt / USED_DIGITS_MULT - LNG_OFFS.toInt()
         val raf =
@@ -157,7 +157,7 @@ class PartitionedQuadtreeNodeIndexFile(
         return id // the last id is the id referring to a node
     }
 
-    fun getKeyChain(latInt: Int, lngInt: Int): IntArray {
+    private fun getKeyChain(latInt: Int, lngInt: Int): IntArray {
         var latInt = latInt
         var lngInt = lngInt
         val keyChain = IntArray(NUMBER_OF_USED_DIGITS_MULT_2)
@@ -170,15 +170,6 @@ class PartitionedQuadtreeNodeIndexFile(
             i -= 2
         }
         return keyChain
-    }
-
-    fun makeShortCacheKey(keyChain: IntArray): Int {
-        var key = 0
-        for (i in 0 until CACHE_KEY_LENGTH) {
-            key += keyChain[i]
-            key *= 10
-        }
-        return key
     }
 
     override fun getIDPlusSourroundingIDs(
@@ -215,7 +206,7 @@ class PartitionedQuadtreeNodeIndexFile(
         return list
     }
 
-    fun getAllNodeIDsFromQuadtreeList(lat: Double, lng: Double, id: Int): List<Int> {
+    private fun getAllNodeIDsFromQuadtreeList(lat: Double, lng: Double, id: Int): List<Int> {
         var id = id
         val l: MutableList<Int> = LinkedList()
         val rafList = getListRaf(lat, lng) ?: return l
@@ -291,7 +282,7 @@ class PartitionedQuadtreeNodeIndexFile(
         return oldID
     }
 
-    fun insertNewSentence(raf: BufferedRandomAccessFile?): Int {
+    private fun insertNewSentence(raf: BufferedRandomAccessFile?): Int {
         val fileLength = numberOfSentences.toLong() * SENTENCE_LENGTH
         return try {
             raf!!.seek(fileLength)
@@ -373,12 +364,6 @@ class PartitionedQuadtreeNodeIndexFile(
                                 idInListFile, rafIndex
                             )
 
-                            // TEST REMOVE
-                            /*
-										 * int testID = getID(latInt, lngInt,
-										 * rafIndex); if( testID != idInListFile
-										 * ) System.out.println("error");
-										 */
                             idInListFile++
                             rafList.writeInt(n.id.toInt())
                             rafList.writeInt(foundID)
@@ -414,7 +399,6 @@ class PartitionedQuadtreeNodeIndexFile(
         // MAX_SEARCH_RADIUS in
         // NearestNodeFinder
         const val NUMBER_OF_USED_DIGITS_MULT_2 = NUMBER_OF_USED_DIGITS * 2
-        const val NUMBER_OF_USED_DIGITS_BEHIND_COMMA = NUMBER_OF_USED_DIGITS - 3
         const val USED_DIGITS_MULT = 1000 // 4 digits
         const val LAT_OFFS = 90.0
         const val LNG_OFFS = 180.0
@@ -424,7 +408,6 @@ class PartitionedQuadtreeNodeIndexFile(
         const val MAX_LNG_INT = 360 * USED_DIGITS_MULT
         const val INDEX_FILENAME = "quadtreeIndex.data"
         const val LIST_FILENAME = "quadtreeNodeList.data"
-        const val CACHE_KEY_LENGTH = 9
 
     }
 }
