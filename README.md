@@ -42,7 +42,7 @@ bzip2 -dc planet-latest.osm.bz2 | java  -server -Xmx22000m -jar Jerusalem.jar re
 ```
 java  -Xmx500m -jar Jerusalem.jar routingTest
 ```
-6. Use it:
+6. You're all settled and can use the graph for routing:
 ```
 java  -Xmx500m -jar Jerusalem.jar route foot 48.11 11.48 48.12 11.49
 ```
