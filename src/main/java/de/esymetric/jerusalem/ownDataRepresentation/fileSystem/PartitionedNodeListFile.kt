@@ -148,7 +148,10 @@ class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boole
     fun getNode(n: Node, latLonDir: LatLonDir, id: Int): Node? {
         checkAndCreateRandomAccessFile(latLonDir)
         if (raf == null) return null
-        return if (id < 0 || id > maxNodeID) null else try {
+            return if (id < 0 || id > maxNodeID) {
+                println("Cannot load node $id in ${latLonDir.getDir("")}")
+                null
+            } else try {
             n.id = id.toLong()
             raf!!.seek(id.toLong() * SENTENCE_LENGTH)
             raf!!.read(buf)
