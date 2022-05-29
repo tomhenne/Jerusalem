@@ -18,7 +18,7 @@ import java.util.*
 object Jerusalem {
     @JvmStatic
     fun main(args: Array<String>) {
-        println("JERUSALEM 0.95 Java Enabled Routing Using Speedy Algorithms for Largely Extended Maps (jerusalem.gps-sport.net) based on OSM (OpenStreetMap.org)")
+        println("JERUSALEM 1.0 Java Enabled Routing Using Speedy Algorithms for Largely Extended Maps (jerusalem.gps-sport.net) based on OSM (OpenStreetMap.org)")
         if (args.isEmpty()) {
             printUsage()
             return
