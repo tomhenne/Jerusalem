@@ -38,7 +38,7 @@ Facts:
 ```
 bzip2 -dc planet-latest.osm.bz2 | java  -server -Xmx22000m -jar Jerusalem.jar rebuild - temp
 ```
-4. Now you have all graph data stored in /jerusalemData (about 270 GB for the entire planet)
+4. Now you have all graph data stored in /jerusalemData (about 270 GB for the entire planet). All temporary data can be deleted.
 5. Test the graph:
 ```
 java  -Xmx500m -jar Jerusalem.jar routingTest
