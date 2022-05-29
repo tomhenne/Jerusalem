@@ -34,7 +34,7 @@ Facts:
 1. Clone the project and use the .jar file from /etc or build the project.
 2. Download planet osm or a portion of it from https://planet.openstreetmap.org/
 3. Install bzip2 if you don't have it yet.
-4. Put Jerusalem.jar and the bzipped osm file in a directory and build the graph:
+4. Put Jerusalem.jar and the bzipped osm file in a directory and build the graph (takes about 24h for the entire planet):
 ```
 bzip2 -dc planet-latest.osm.bz2 | java  -server -Xmx22000m -jar Jerusalem.jar rebuild - temp
 ```
