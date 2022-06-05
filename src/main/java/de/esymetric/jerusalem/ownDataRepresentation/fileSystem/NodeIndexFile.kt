@@ -14,6 +14,5 @@ interface NodeIndexFile {
     fun close()
     val writeCacheHitRatio: Float
     val readCacheHitRatio: Float
-    val cacheSize: Int
     val maxCacheSize: Int
 }
