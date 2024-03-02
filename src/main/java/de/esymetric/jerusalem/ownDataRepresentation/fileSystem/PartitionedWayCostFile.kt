@@ -11,8 +11,8 @@ class PartitionedWayCostFile(var dataDirectoryPath: String, var readOnly: Boolea
     var filePath: String? = null
     var currentLatLonDir = LatLonDir(-1000.0, -1000.0)
     var raf: BufferedRandomAccessFile? = null
-    var rafCache = BufferedRandomAccessFileCache()
-    var numberOfWayCosts = 0
+    private var rafCache = BufferedRandomAccessFileCache()
+    private var numberOfWayCosts = 0
 
     init {
         if (readOnly) rafCache.setMaxCacheSize(30) else rafCache.setMaxCacheSize(10)

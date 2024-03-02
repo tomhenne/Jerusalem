@@ -7,20 +7,12 @@ import java.io.*
 import java.util.*
 
 class PartitionedOsmNodeID2OwnIDMap(
-    dataDirectoryPath: String,
-    readOnly: Boolean
-) {
-    var cellMap: OsmNodeID2CellIDMapMemory
-    var currentHashMap = FileBasedHashMapForLongKeys()
-    var currentHashMapLatLonDir: LatLonDir? = null
-    var dataDirectoryPath: String
+    var dataDirectoryPath: String,
     var readOnly: Boolean
-
-    init {
-        cellMap = OsmNodeID2CellIDMapMemory()
-        this.dataDirectoryPath = dataDirectoryPath
-        this.readOnly = readOnly
-    }
+) {
+    private var cellMap = OsmNodeID2CellIDMapMemory()
+    private var currentHashMap = FileBasedHashMapForLongKeys()
+    private var currentHashMapLatLonDir: LatLonDir? = null
 
     fun getAvgGetAccessNumberOfReads(): Float {
         return currentHashMap.avgGetAccessNumberOfReads

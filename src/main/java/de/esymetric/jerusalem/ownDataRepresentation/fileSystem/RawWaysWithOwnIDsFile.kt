@@ -9,10 +9,9 @@ import de.esymetric.jerusalem.utils.Utils
 import java.io.*
 import java.util.*
 
-class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
+class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, var readOnly: Boolean) {
     var filePath: String? = null
-    var readOnly = false
-    var currentLatLonDir = LatLonDir(-1000.0, -1000.0)
+    private var currentLatLonDir = LatLonDir(-1000.0, -1000.0)
 
     fun writeWay(
         way: OSMWay,
@@ -92,9 +91,6 @@ class RawWaysWithOwnIDsFile(var dataDirectoryPath: String, readOnly: Boolean) {
 
     var dain: DataInputStream? = null
 
-    init {
-        this.readOnly = readOnly
-    }
 
     fun openInputStream(newLatLonDir: LatLonDir): Boolean {
         if (dain != null && newLatLonDir.equals(currentLatLonDir)) return true

@@ -4,8 +4,8 @@ import java.io.File
 import java.lang.Math.abs
 
 class LatLonDir {
-    var latInt: Int
-    var lngInt: Int
+    private var latInt: Int
+    private var lngInt: Int
 
     constructor(lat: Double, lng: Double) {
         latInt = (lat + LAT_OFFS).toInt()

@@ -8,7 +8,7 @@ class PartitionedQuadtreeNodeIndexTest {
     @Test
     @Throws(Exception::class)
     fun testPartionedQuadtreeNodeIndex() {
-        val pf = PartitionedQuadtreeNodeIndexFile("testData", false, true)
+        val pf = PartitionedQuadtreeNodeIndexFile("testData", false)
         pf.setID(48.11, 11.48, 77)
         assertEquals(77, pf.getID(48.11, 11.48).toLong())
         pf.setID(48.11, 11.48, 55)

@@ -8,10 +8,10 @@ import java.io.InputStreamReader
 import java.util.*
 
 class OSMDataReader(
-    var inputStream: InputStream,
-    var listener: OSMDataReaderListener, var jumpOverNodes: Boolean
+    private var inputStream: InputStream,
+    private var listener: OSMDataReaderListener, var jumpOverNodes: Boolean
 ) {
-    var entityCount: Long = 0
+    private var entityCount: Long = 0
 
     interface OSMDataReaderListener {
         fun foundNode(node: OSMNode)

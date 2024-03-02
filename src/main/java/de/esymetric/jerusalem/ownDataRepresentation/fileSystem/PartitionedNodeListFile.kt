@@ -10,7 +10,7 @@ import java.util.*
 class PartitionedNodeListFile(var dataDirectoryPath: String, var readOnly: Boolean) {
     var filePath: String? = null
     var raf: BufferedRandomAccessFile? = null
-    var rafCache = BufferedRandomAccessFileCache()
+    private var rafCache = BufferedRandomAccessFileCache()
     fun setMaxFileCacheSize(n: Int) {
         rafCache.setMaxCacheSize(n)
     }

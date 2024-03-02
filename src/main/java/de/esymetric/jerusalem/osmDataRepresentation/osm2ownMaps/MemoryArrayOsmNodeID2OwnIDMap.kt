@@ -6,18 +6,13 @@ import java.io.File
 import java.util.*
 
 class MemoryArrayOsmNodeID2OwnIDMap(
-    dataDirectoryPath: String,
-    maxOsm2OwnMapCacheSize: Int, readOnly: Boolean
+    var dataDirectoryPath: String,
+    maxOsm2OwnMapCacheSize: Int, var readOnly: Boolean
 ) {
-    var cellMap: OsmNodeID2CellIDMapMemory
-    var osm2ownMap: LongOsmNodeID2OwnIDMapFileCache
-    var dataDirectoryPath: String
-    var readOnly: Boolean
+    private var cellMap = OsmNodeID2CellIDMapMemory()
+    private var osm2ownMap: LongOsmNodeID2OwnIDMapFileCache
 
     init {
-        cellMap = OsmNodeID2CellIDMapMemory()
-        this.dataDirectoryPath = dataDirectoryPath
-        this.readOnly = readOnly
         osm2ownMap = LongOsmNodeID2OwnIDMapFileCache(dataDirectoryPath, maxOsm2OwnMapCacheSize)
     }
 

@@ -4,11 +4,11 @@ import java.io.File
 import java.util.*
 
 class LongOsmNodeID2OwnIDMapFileCache(var dataDirectoryPath: String, maxCacheSize: Int) {
-    var maxSize = 1 // server: 16  pc: 2
-    var queue: Queue<Int> = LinkedList()
-    var cache: MutableMap<Int, LongOsmNodeID2OwnIDMapFile> = HashMap()
-    var numberOfAccesses = 0
-    var numberOfFileChanges = 0
+    private var maxSize = 1 // server: 16  pc: 2
+    private var queue: Queue<Int> = LinkedList()
+    private var cache: MutableMap<Int, LongOsmNodeID2OwnIDMapFile> = HashMap()
+    private var numberOfAccesses = 0
+    private var numberOfFileChanges = 0
 
     init {
         maxSize = maxCacheSize

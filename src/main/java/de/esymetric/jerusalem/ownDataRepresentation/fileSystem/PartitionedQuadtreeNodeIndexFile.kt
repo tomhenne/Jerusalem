@@ -12,17 +12,16 @@ import java.util.*
 
 class PartitionedQuadtreeNodeIndexFile(
     var dataDirectoryPath: String,
-    readOnly: Boolean, startNewFile: Boolean
+    var readOnly: Boolean
 ) : NodeIndexFile {
-    var rafIndexCache = BufferedRandomAccessFileCache()
-    var rafListCache = BufferedRandomAccessFileCache()
-    var readOnly = false
-    var numberOfSentences = 0
-    var emptySentence = ByteArray(40)
-    var writeCount = 0
-    var writeCacheHits = 0
-    var readCount = 0
-    var readCacheHits = 0
+    private var rafIndexCache = BufferedRandomAccessFileCache()
+    private var rafListCache = BufferedRandomAccessFileCache()
+    private var numberOfSentences = 0
+    private var emptySentence = ByteArray(40)
+    private var writeCount = 0
+    private var writeCacheHits = 0
+    private var readCount = 0
+    private var readCacheHits = 0
 
     override val writeCacheHitRatio: Float
         get() {
@@ -79,7 +78,6 @@ class PartitionedQuadtreeNodeIndexFile(
     private var lastListRaf: BufferedRandomAccessFile? = null
 
     init {
-        this.readOnly = readOnly
         if (readOnly) {
             rafIndexCache.setMaxCacheSize(8)
             rafListCache.setMaxCacheSize(8)

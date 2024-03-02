@@ -267,8 +267,7 @@ class Rebuilder(
                     + " Deleting files"
         )
         nif = PartitionedQuadtreeNodeIndexFile(
-            dataDirectoryPath, readOnly,
-            !readOnly
+            dataDirectoryPath, readOnly
         )
         nlf = PartitionedNodeListFile(dataDirectoryPath, readOnly)
         osmNodeID2OwnIDMap = MemoryArrayOsmNodeID2OwnIDMap(

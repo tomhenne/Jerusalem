@@ -4,23 +4,19 @@ import de.esymetric.jerusalem.ownDataRepresentation.fileSystem.LatLonDir
 import java.io.*
 
 class OsmNodeID2CellIDMapMemory {
-    var mapArrays = arrayOfNulls<ShortArray>(INITIAL_NUMBER_OF_ARRAYS)
-    var arraySize: Int
+    private var mapArrays = arrayOfNulls<ShortArray>(INITIAL_NUMBER_OF_ARRAYS)
+    private var arraySize: Int = (HIGHEST_OSM_NODE_ID / INITIAL_NUMBER_OF_ARRAYS.toLong()).toInt() + 1
     var numberOfUsedArrays = 0
 
     fun getMaxNumberOfArrays(): Int {
         return mapArrays.size
     }
 
-    init {
-        arraySize = (HIGHEST_OSM_NODE_ID / INITIAL_NUMBER_OF_ARRAYS.toLong()).toInt() + 1
-    }
-
     fun put(osmNodeID: Long, lld: LatLonDir): Boolean {
         return put(osmNodeID, lld.shortKey)
     }
 
-    fun increaseArray(requiredSize: Int) {
+    private fun increaseArray(requiredSize: Int) {
         while (mapArrays.size < requiredSize) {
             val newMapArrays = arrayOfNulls<ShortArray>(
                 mapArrays.size
@@ -116,6 +112,6 @@ class OsmNodeID2CellIDMapMemory {
     companion object {
         const val INITIAL_NUMBER_OF_ARRAYS = 512_000
         const val NUMBER_OF_ARRAYS_INCREMENT = 16000
-        const val HIGHEST_OSM_NODE_ID = 9_200_000_000 // just an estimate
+        const val HIGHEST_OSM_NODE_ID = 11_000_000_000 // just an estimate
     }
 }

@@ -18,8 +18,7 @@ class Router(
 
     init {
         nif = PartitionedQuadtreeNodeIndexFile(
-            dataDirectoryPath, true,
-            false
+            dataDirectoryPath, true
         )
         nlf = PartitionedNodeListFile(dataDirectoryPath, true)
         wlf = PartitionedTransitionListFile(dataDirectoryPath, true)

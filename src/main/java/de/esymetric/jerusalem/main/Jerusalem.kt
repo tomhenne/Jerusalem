@@ -350,7 +350,7 @@ object Jerusalem {
         )
     }
 
-    fun testRoute(
+    private fun testRoute(
         router: Router, routingType: String, lat1: Double,
         lng1: Double, lat2: Double, lng2: Double, name: String,
         dataDirectoryPath: String

@@ -4,11 +4,11 @@ import java.io.*
 import java.nio.ByteBuffer
 
 class LongOsmNodeID2OwnIDMapFile(var dataDirectoryPath: String) : LongOsmNodeID2OwnIDMap {
-    var currentFileNumber = -1
-    var currentFilePath: String? = null
-    var currentFileIsModified = false
-    var entries = IntArray(NUMBER_OF_ENTRIES_PER_FILE) { i -> -1 }
-    var buf: ByteBuffer? = null
+    private var currentFileNumber = -1
+    private var currentFilePath: String? = null
+    private var currentFileIsModified = false
+    private var entries = IntArray(NUMBER_OF_ENTRIES_PER_FILE) { i -> -1 }
+    private var buf: ByteBuffer? = null
 
     override val numberOfUsedArrays: Int
         get() = 0
@@ -17,7 +17,7 @@ class LongOsmNodeID2OwnIDMapFile(var dataDirectoryPath: String) : LongOsmNodeID2
         return isCurrentlyOpenFile(getFileNumber(osmNodeID))
     }
 
-    fun isCurrentlyOpenFile(fileNumber: Int): Boolean {
+    private fun isCurrentlyOpenFile(fileNumber: Int): Boolean {
         return fileNumber == currentFileNumber
     }
 
