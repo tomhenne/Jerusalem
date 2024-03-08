@@ -17,17 +17,13 @@ Facts:
 ## Minimum requirements 
 ### ...for running the routing service 
 
-* quad core
 * 8GB RAM
-* 64 bit operating system
-* 300 GB free HD space (for the entire planet)
+* 350 GB free HD space (for the entire planet)
 
 ### ... for building the graph (for the entire planet)
 
-* quad core
 * 32GB RAM (16 GB is possible, but not very fast)
-* 64 bit operating system
-* 500 GB free HD space (for the entire planet)
+* 1 TB free HD space (for the planet.osm file, temp data and the planet build)
 
 ## Getting started
 
@@ -36,16 +32,16 @@ Facts:
 3. Install bzip2 if you don't have it yet.
 4. Put Jerusalem.jar and the bzipped osm file in a directory and build the graph (takes about 24h for the entire planet):
 ```
-bzip2 -dc planet-latest.osm.bz2 | java  -server -Xmx22000m -jar Jerusalem.jar rebuild - temp
+bzip2 -dc planet-latest.osm.bz2 | java  -server -Xmx28000m -jar Jerusalem.jar rebuild - temp
 ```
 4. Now you have all graph data stored in /jerusalemData (about 270 GB for the entire planet). All temporary data can be deleted.
 5. Test the graph:
 ```
-java  -Xmx500m -jar Jerusalem.jar routingTest
+java  -Xmx900m -jar Jerusalem.jar routingTest
 ```
 6. You're all settled and can use the graph for routing:
 ```
-java  -Xmx500m -jar Jerusalem.jar route foot 48.11 11.48 48.12 11.49
+java  -Xmx900m -jar Jerusalem.jar route foot 48.11 11.48 48.12 11.49
 ```
 
 ## Usage
@@ -55,7 +51,7 @@ java  -Xmx500m -jar Jerusalem.jar route foot 48.11 11.48 48.12 11.49
 Compute a route from A to B. If you enter an output file name, both a GPX and a KML file will be written containing the route. Resulting list of coordinates is written on stdout.
 
 ````
-java -Xmx500m -jar Jerusalem.jar route 
+java -Xmx900m -jar Jerusalem.jar route 
 foot|bike|racingBike|mountainBike|car|carShortest 
 <latitude1> <longitude1> <latitude2> <longitude2> 
 [<output-file-base-name>]
@@ -69,7 +65,7 @@ Rebuild the planet or a subset. Input file is a bzipped osm file (e.g. "planet.o
 java -Xmx22000m -jar Jerusalem.jar rebuild <source-filepah>|- 
 ```
 
-22 GB of heap space are required to build the planet as of 05/2022. Since the planet file is getting bigger and bigger, more will be required with later planet versions. Current planet osm statistics can be found here: https://wiki.openstreetmap.org/wiki/Stats
+28 GB of heap space are required to build the planet as of 03/2024. Since the planet file is getting bigger and bigger, more will be required with later planet versions. On a Macbook Pro M3 Pro the planet rebuild currently takes about 2 days. Current planet osm statistics can be found here: https://wiki.openstreetmap.org/wiki/Stats
 
 ### Clean
 
